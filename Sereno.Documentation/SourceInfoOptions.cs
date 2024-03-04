@@ -20,15 +20,34 @@ namespace Sereno.Documentation
 
 
         /// <summary>
+        /// Typen, die ausgelesen werden
+        /// </summary>
+        public Dictionary<SourceInfoTypes, string?> Types { get; set; } = [];
+
+
+        /// <summary>
         /// Verzeichnisse, die nicht ausgelesen werden
         /// </summary>
-        public Dictionary<string, string> ExcludeDirectories { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> ExcludeDirectories { get; set; } = [];
 
 
         /// <summary>
         /// Verzeichnisse, die nicht ausgelesen werden, basierend auf einem Wildcard-Muster
         /// </summary>
-        public Dictionary<string, string> ExcludeWildcardDirectories { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, string> ExcludeWildcardDirectories { get; set; } = [];
+
+
+
+        /// <summary>
+        /// Dateien, die nicht ausgelesen werden
+        /// </summary>
+        public Dictionary<string, string> ExcludeFiles { get; set; } = [];
+
+
+        /// <summary>
+        /// Dateien, die nicht ausgelesen werden, basierend auf einem Wildcard-Muster
+        /// </summary>
+        public Dictionary<string, string> ExcludeWildcardFiles { get; set; } = [];
 
     }
 }

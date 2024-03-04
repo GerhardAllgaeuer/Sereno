@@ -16,6 +16,12 @@ namespace Sereno.Documentation
 
 
         /// <summary>
+        /// Typ des Quell-Code-Objekts
+        /// </summary>
+        public SourceInfoTypes? Type { get; set; }
+
+
+        /// <summary>
         /// Absoluter Pfad zum Ordner / zur Datei
         /// </summary>
         public string? AbsoluteLocation { get; internal set; }

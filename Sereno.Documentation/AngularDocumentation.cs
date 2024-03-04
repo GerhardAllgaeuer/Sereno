@@ -26,13 +26,25 @@ namespace Sereno.Documentation
         {
             base.Create();
 
-            using (WordprocessingDocument document = WordprocessingDocument.Open(this.DestinationFilePath!, true))
+            using WordprocessingDocument document = WordprocessingDocument.Open(this.DestinationFilePath!, true);
+            try
             {
                 this.CreateProjectStructureTable(document);
+                this.WriteSourceCode(document);
+
 
                 document.Save();
-
-
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (document != null)
+                {
+                    document.Dispose();
+                }
             }
         }
     }

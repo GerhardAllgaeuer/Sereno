@@ -1,8 +1,10 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Sereno.Office.Tables;
 using Sereno.Office.Word;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -46,16 +48,85 @@ namespace Sereno.Documentation
 
         protected virtual void CreateProjectStructureTable(WordprocessingDocument document)
         {
-            System.Data.DataTable? table = this.GetProjectFolders(this.ProjectDirectory!);
+            SourceInfoOptions options = new()
+            {
+                Root = this.ProjectDirectory,
+                Types = new Dictionary<SourceInfoTypes, string?>
+                {
+                    { SourceInfoTypes.Directory, null },
+                }
+            };
+
+            SourceInfo? rootInfo = SourceInfoUtility.GetSourceInfo(options);
+            List<SourceInfo> sourceInfos = SourceInfoUtility.Flatten(rootInfo!);
+            System.Data.DataTable? table = this.GetProjectFolders(sourceInfos);
 
             if (table != null)
             {
-                TableOption options = new TableOption()
+                TableOption tableOptions = new TableOption()
                 {
                     StartRow = 1,
                     HasHeader = true,
                 };
-                WordUtility.FillTable(document, table, "SourceStructureDescriptionTable", options);
+                WordUtility.FillTable(document, table, "SourceStructureDescriptionTable", tableOptions);
+            }
+        }
+
+
+        public void WriteSourceCode(WordprocessingDocument document)
+        {
+            SourceInfoOptions options = new()
+            {
+                Root = this.ProjectDirectory,
+                Types = new Dictionary<SourceInfoTypes, string?>
+                {
+                    { SourceInfoTypes.File, null },
+                }
+            };
+
+            SourceInfo? rootInfo = SourceInfoUtility.GetSourceInfo(options);
+            List<SourceInfo> sourceInfos = SourceInfoUtility.Flatten(rootInfo!);
+
+            BookmarkStart? bookmarkStart = WordUtility.GetBookmark(document, "SourceCode");
+
+            if (bookmarkStart != null)
+            {
+                var last = bookmarkStart.Parent!;
+
+                foreach (SourceInfo sourceInfo in sourceInfos)
+                {
+                    if (sourceInfo.Type == SourceInfoTypes.File)
+                    {
+                        TextFormatOptions headerFormat = new()
+                        {
+                            Style = TextFormatStyles.Heading2,
+                        };
+
+                        last = WordUtility.AddParagraph(last!, sourceInfo.Location!, headerFormat);
+
+
+                        TextFormatOptions codeFormat = new()
+                        {
+                            Style = TextFormatStyles.Code,
+                        };
+
+                        string[] lines = File.ReadAllLines(sourceInfo.AbsoluteLocation!);
+                        int i = 0;
+
+                        foreach (string line in lines)
+                        {
+                            if (last != null)
+                            {
+                                last = WordUtility.AddParagraph(last, line, codeFormat);
+
+                                if (i > 10)
+                                    break;
+                            }
+
+                            i++;
+                        }
+                    }
+                }
             }
         }
 
@@ -63,11 +134,8 @@ namespace Sereno.Documentation
         /// <summary>
         /// Auslesen der Projektordner
         /// </summary>
-        protected virtual System.Data.DataTable? GetProjectFolders(string path)
+        protected virtual System.Data.DataTable? GetProjectFolders(List<SourceInfo> sourceInfos)
         {
-            DirectoryInfo dirInfo = new(path);
-            SourceInfo? sourceInfo = SourceInfoUtility.GetSourceInfo(dirInfo.FullName);
-            List<SourceInfo> sourceInfos = SourceInfoUtility.Flatten(sourceInfo!);
 
             Office.Tables.TableInfo tableInfo = new()
             {

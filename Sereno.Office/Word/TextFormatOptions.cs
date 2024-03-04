@@ -8,6 +8,16 @@ namespace Sereno.Office.Word
 {
     public class TextFormatOptions
     {
+
+        /// <summary>
+        /// Einrückung
+        /// </summary>  
         public int Identation { get; set; }
+
+        /// <summary>
+        /// Formatierungsstil des Textes
+        /// </summary>
+        public string? Style { get; set; }
+
     }
 }

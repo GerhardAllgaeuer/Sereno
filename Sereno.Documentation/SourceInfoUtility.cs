@@ -1,15 +1,7 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using Sereno.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using Sereno.Utilities;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Sereno.Documentation
 {
@@ -23,14 +15,14 @@ namespace Sereno.Documentation
         /// <summary>
         /// Auslesen von Quellcode-Informationen
         /// </summary>
-        public static SourceInfo? GetSourceInfo(string directory)
+        public static SourceInfo? GetSourceInfo(SourceInfoOptions options)
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+            DirectoryInfo directoryInfo = new DirectoryInfo(options.Root!);
 
-            SourceInfoOptions options = new SourceInfoOptions();
-            options.Root = directoryInfo.FullName;
             options.ExcludeDirectories = GetExcludeDirectories();
             options.ExcludeWildcardDirectories = GetExcludeLikeDirectories();
+            options.ExcludeFiles = GetExcludeFiles();
+            options.ExcludeWildcardFiles = GetExcludeLikeFiles();
 
             SourceInfo? sourceInfo = ProcessDirectory(directoryInfo, options, 0);
 
@@ -60,8 +52,43 @@ namespace Sereno.Documentation
         }
 
 
+
         /// <summary>
-        /// Verzeichniss, die nicht ausgelesen werden
+        /// Dateien, die nicht ausgelesen werden
+        /// </summary>
+        static Dictionary<string, string> GetExcludeFiles()
+        {
+            Dictionary<string, string> directoryExcludes = new Dictionary<string, string>
+            {
+            };
+
+            return directoryExcludes;
+        }
+
+        /// <summary>
+        /// Dateien, die nicht ausgelesen werden
+        /// </summary>
+        static Dictionary<string, string> GetExcludeLikeFiles()
+        {
+            Dictionary<string, string> directoryExcludes = new Dictionary<string, string>
+            {
+                { ".*", "Hidden Files" },
+                { "*.jpg", "Bilder" },
+                { "*.png", "Bilder" },
+                { "*.glb", "3D Dateien" },
+                { "*.ico", "Icons" },
+                { "*.esproj", "Icons" },
+                { "*.eot", "Schriften" },
+                { "*.ttf", "Schriften" },
+                { "*.woff", "Schriften" },
+                { "*.woff2", "Schriften" },
+            };
+
+            return directoryExcludes;
+        }
+
+        /// <summary>
+        /// Verzeichnisse, die nicht ausgelesen werden
         /// </summary>
         static Dictionary<string, string> GetExcludeDirectories()
         {
@@ -81,7 +108,7 @@ namespace Sereno.Documentation
         }
 
         /// <summary>
-        /// Verzeichniss, die nicht ausgelesen werden
+        /// Verzeichnisse, die nicht ausgelesen werden
         /// </summary>
         static Dictionary<string, string> GetExcludeLikeDirectories()
         {
@@ -104,6 +131,7 @@ namespace Sereno.Documentation
             {
                 Location = options.Root == null ? "" : directory.FullName.Replace(options.Root, ""),
                 AbsoluteLocation = directory.FullName,
+                Type = SourceInfoTypes.Directory,
                 Level = level,
             };
 
@@ -135,19 +163,56 @@ namespace Sereno.Documentation
             }
         }
 
+        /// <summary>
+        /// Verzeichnis verarbeiten
+        /// </summary>
+        static SourceInfo? GetSourceInfoFromFile(FileInfo file, SourceInfoOptions options, int level)
+        {
+            if (StringUtility.IsExcluded(file.Name, options.ExcludeFiles, options.ExcludeWildcardFiles))
+                return null;
+
+            SourceInfo sourceInfo = new()
+            {
+                Location = options.Root == null ? "" : file.FullName.Replace(options.Root, ""),
+                AbsoluteLocation = file.FullName,
+                Type = SourceInfoTypes.File,
+                Level = level,
+            };
+
+            // Entfernen des führenden Backslash
+            if (sourceInfo.Location.StartsWith('\\'))
+                sourceInfo.Location = sourceInfo.Location.Substring(1);
+
+            return sourceInfo;
+        }
+
+
 
         /// <summary>
         /// Informationen aus dem Verzeichnis auslesen
         /// </summary>
-        static SourceInfo? ProcessDirectory(DirectoryInfo dirInfo, SourceInfoOptions options, int level)
+        static SourceInfo? ProcessDirectory(DirectoryInfo directory, SourceInfoOptions options, int level)
         {
-            if (StringUtility.IsExcluded(dirInfo.Name, options.ExcludeDirectories, options.ExcludeWildcardDirectories))
+            if (StringUtility.IsExcluded(directory.Name, options.ExcludeDirectories, options.ExcludeWildcardDirectories))
                 return null;
 
-            SourceInfo sourceInfo = GetSourceInfoFromDirectory(dirInfo, options, level);
+            SourceInfo sourceInfo = GetSourceInfoFromDirectory(directory, options, level);
+
+            if (options.Types.ContainsKey(SourceInfoTypes.File))
+            {
+                // Durchlaufen der Dateien
+                foreach (FileInfo file in directory.GetFiles())
+                {
+                    SourceInfo? childSourceInfo = GetSourceInfoFromFile(file, options, level++);
+
+                    if (childSourceInfo != null)
+                        sourceInfo.Children.Add(childSourceInfo);
+                }
+            }
+
 
             // Durchlaufen von Unterverzeichnissen
-            foreach (DirectoryInfo subdir in dirInfo.GetDirectories())
+            foreach (DirectoryInfo subdir in directory.GetDirectories())
             {
                 SourceInfo? childSourceInfo = ProcessDirectory(subdir, options, level++);
 

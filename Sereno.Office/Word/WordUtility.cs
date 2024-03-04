@@ -92,28 +92,39 @@ namespace Sereno.Office.Word
         /// <summary>
         /// Text an ein OpenXmlElement anhängen
         /// </summary>
-        public static void AddParagraph(OpenXmlElement element, string text, TextFormatOptions? options = null)
+        public static Paragraph AddParagraph(OpenXmlElement element, string text, TextFormatOptions? options = null)
         {
+            Paragraph? result;
+
+            text = "\u00A0" + text;
+
             if (element is Body || element is TableCell)
             {
-                var para = new Paragraph();
+                result = new Paragraph();
+                FormatParagraph(result, options);
                 var run = new Run(new Text(text));
-                para.Append(run);
-                element.Append(para);
+                result.Append(run);
+                element.Append(result);
             }
             if (element is Paragraph existing)
             {
-                var para = new Paragraph();
+                result = new Paragraph();
                 var run = new Run(new Text(text));
-                para.Append(run);
-                existing.InsertAfterSelf(para);
+                FormatParagraph(result, options);
+                result.Append(run);
+                existing.InsertAfterSelf(result);
             }
             else
             {
-                Paragraph newParagraph = new Paragraph(new Run(new Text("Dies ist der Text des neuen Paragraphen")));
-                element.InsertAfterSelf(newParagraph);
+                result = new Paragraph(new Run(new Text(text)));
+                FormatParagraph(result, options);
+                element.InsertAfterSelf(result);
             }
+
+            return result;
         }
+
+
 
         /// <summary>
         /// Text an ein OpenXmlElement anhängen
@@ -126,6 +137,7 @@ namespace Sereno.Office.Word
                 var para = new Paragraph();
                 var run = new Run(new Text(text));
                 para.Append(run);
+                FormatParagraph(para, options);
                 element.Append(para);
             }
             else if (element is Paragraph para)
@@ -133,6 +145,7 @@ namespace Sereno.Office.Word
                 // Direktes Hinzufügen des Texts zu einem bestehenden Paragraphen
                 var run = new Run(new Text(text));
                 para.Append(run);
+                FormatParagraph(para, options);
             }
             else
             {
@@ -141,6 +154,17 @@ namespace Sereno.Office.Word
                 element.Append(run);
             }
         }
+
+        private static void FormatParagraph(Paragraph paragraph, TextFormatOptions? options)
+        {
+            if(options?.Style != null)
+            {
+                ParagraphProperties paragraphProperties = new ParagraphProperties(
+                                       new ParagraphStyleId() { Val = options.Style });
+                paragraph.Append(paragraphProperties);
+            }
+        }
+
 
 
         /// <summary>

@@ -28,6 +28,7 @@ const layoutRoutes: Routes = [
 
 ];
 
+
 @NgModule({
   imports: [RouterModule.forChild(layoutRoutes)],
   exports: [RouterModule]
