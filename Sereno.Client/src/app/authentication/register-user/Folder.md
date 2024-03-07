@@ -1,3 +1,3 @@
 # Kurzbeschreibung
-Komponente zum Anlegen von neuen Benutzern
+Komponente, die Benutzer für die Registrierung verwenden.
 

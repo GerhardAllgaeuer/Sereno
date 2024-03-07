@@ -11,6 +11,87 @@ namespace Sereno.Office.Word
     public class WordUtility
     {
 
+
+        /// <summary>
+        /// Text aus den Paragraphen als Plain Text zurückgeben
+        /// </summary>
+        public static string GetGroupText(DocumentGroup group)
+        {
+            return StringUtility.CleanAndJoinStringList(group.Paragraphs.Select(p => p.InnerText).ToList(), Environment.NewLine);
+        }
+
+
+        /// <summary>
+        /// Gruppen von Absätzen in einem Word-Dokument ermitteln
+        /// </summary>
+        public static List<DocumentGroup> GetDocumentGroups(WordprocessingDocument document, DocumentGroupOptions options)
+        {
+            List<DocumentGroup> groups = [];
+
+            if (document == null ||
+                document.MainDocumentPart == null ||
+                document.MainDocumentPart.Document == null ||
+                document.MainDocumentPart.Document.Body == null)
+            {
+                return groups;
+            }
+
+            var body = document.MainDocumentPart.Document.Body;
+            var documentParagraphs = body.Elements<Paragraph>().ToList();
+            string? previousStyleId = null;
+            DocumentGroup currentGroup = new();
+
+            for (int i = 0; i < documentParagraphs.Count; i++)
+            {
+                Paragraph currentParagraph = documentParagraphs[i];
+                string? currentStyleId = currentParagraph.ParagraphProperties?.ParagraphStyleId?.Val?.Value;
+
+                // Überprüfen, ob der Absatz dem akutellen Stil entspricht
+                // Dann so lange Absätze sammeln, bis ein Absatz ohne den Stil 'Sereno' gefunden wird
+
+                if (currentStyleId != previousStyleId)
+                {
+                    // Vorherige Gruppe speichern
+                    DocumentGroup previousGroup = currentGroup;
+
+                    // Neue Gruppe erstellen
+                    // Absatz verketten, vorherige Gruppe
+                    currentGroup = new()
+                    {
+                        StyleId = currentStyleId,
+                        PreviousGroup = previousGroup
+                    };
+
+                    groups.Add(currentGroup);
+
+                    // Absätze verketten, anschließende Gruppe
+                    previousGroup.NextGroup = currentGroup;
+                }
+
+                currentGroup.Paragraphs.Add(currentParagraph);
+
+                previousStyleId = currentStyleId;
+            }
+
+            if (!String.IsNullOrWhiteSpace(options.ParagraphStyleFilter))
+            {
+                groups = groups.Where(obj => StringUtility.MatchesWildCardPattern(obj.StyleId, options.ParagraphStyleFilter)).ToList();
+            }
+
+            if (options.ExtractInnerText)
+            {
+                foreach (DocumentGroup group in groups)
+                {
+                    group.InnerText = GetGroupText(group);
+                }
+            }   
+
+            return groups;
+        }
+
+
+
+
         /// <summary>
         /// Dokument öffnen
         /// </summary>

@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Sereno.Office.Tables;
+using Sereno.Office.Windows.Word;
 using Sereno.Office.Word;
 using System.Diagnostics;
 using System.IO;
@@ -30,7 +31,7 @@ namespace Sereno.Documentation
             try
             {
 
-                AngularDocumentation angularDocumentation = new();
+                SourceDocumentation angularDocumentation = new();
                 angularDocumentation.Create();
                 angularDocumentation.OpenDocumentation();
 

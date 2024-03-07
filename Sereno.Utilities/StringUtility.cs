@@ -5,11 +5,31 @@ namespace Sereno.Utilities
     public class StringUtility
     {
 
+
+        /// <summary>
+        /// Entfernt doppelte Leerzeichen, CR/LFs und Tabs aus einer Liste von Strings
+        /// </summary>
+        public static string CleanAndJoinStringList(List<string> strings, string join)
+        {
+            return string.Join(join,
+                strings
+                    .Where(s => !string.IsNullOrWhiteSpace(s)) // Entferne leere Strings
+                    .Select(s => Regex.Replace(s.Trim(), @"\s+", " ")) // Entferne doppelte Leerzeichen, cr/lfs und tabs
+                    .Select(s => s.Replace("\n", "").Replace("\r", "").Replace("\t", "")) // Alternativ zum Regex, explizites Entfernen von CR/LFs und Tabs
+                    .Distinct() // Entferne Duplikate
+            );
+        }
+
+
+
         /// <summary>
         /// Konvertiert ein Wildcard-Muster in ein Regex-Muster
         /// </summary>
-        public static string ConvertWildcardToRegex(string pattern)
+        public static string ConvertWildcardToRegex(string? pattern)
         {
+            if (String.IsNullOrWhiteSpace(pattern))
+                return "";
+
             string escapedPattern = Regex.Escape(pattern).Replace("\\*", ".*");
 
             return "^" + escapedPattern + "$";
@@ -19,10 +39,17 @@ namespace Sereno.Utilities
         /// <summary>
         /// Überprüft, ob ein Eingabestring zu einem Wildcard-Muster passt
         /// </summary>
-        public static bool MatchesWildCardPattern(string input, string wildcardPattern)
+        public static bool MatchesWildCardPattern(string? input, string? wildcardPattern)
         {
+            if (String.IsNullOrWhiteSpace(input))
+                input = "";
+
+            if (String.IsNullOrWhiteSpace(wildcardPattern))
+                wildcardPattern = "";
+
             string regexPattern = ConvertWildcardToRegex(wildcardPattern);
             return Regex.IsMatch(input, regexPattern);
+
         }
 
 

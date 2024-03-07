@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sereno.Office", "Sereno.Off
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sereno.Utilities", "Sereno.Utilities\Sereno.Utilities.csproj", "{69378DB8-597D-4590-98B9-9811FF897DDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Utilities.Markdown", "Sereno.Utilities.Markdown\Sereno.Utilities.Markdown.csproj", "{2C0CC24B-BDD0-4B21-B6F3-9243551B6238}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sereno.Utilities.Markdown", "Sereno.Utilities.Markdown\Sereno.Utilities.Markdown.csproj", "{2C0CC24B-BDD0-4B21-B6F3-9243551B6238}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Office.Windows", "Sereno.Office.Windows\Sereno.Office.Windows.csproj", "{6D36D7C0-99FB-405D-91CB-76419F781161}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{2C0CC24B-BDD0-4B21-B6F3-9243551B6238}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C0CC24B-BDD0-4B21-B6F3-9243551B6238}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C0CC24B-BDD0-4B21-B6F3-9243551B6238}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D36D7C0-99FB-405D-91CB-76419F781161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D36D7C0-99FB-405D-91CB-76419F781161}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D36D7C0-99FB-405D-91CB-76419F781161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D36D7C0-99FB-405D-91CB-76419F781161}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

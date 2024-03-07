@@ -119,8 +119,8 @@ namespace Sereno.Documentation
                             {
                                 last = WordUtility.AddParagraph(last, line, codeFormat);
 
-                                if (i > 10)
-                                    break;
+                                //if (i > 10)
+                                    //break;
                             }
 
                             i++;
