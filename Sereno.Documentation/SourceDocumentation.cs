@@ -37,19 +37,41 @@ namespace Sereno.Documentation
             Console.WriteLine($"Text des gelöschten Sereno-Absatzes: {serenoText}");
         }
 
-
-
-        public override void Create()
+        public void CreateDocumentation()
         {
             base.Create();
 
             using WordprocessingDocument document = WordprocessingDocument.Open(this.DestinationFilePath!, true);
             try
             {
-                SerenoWordUtility.ProcessDocument(document, HandleSerenoParagraph);
+                document.Save();
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                if (document != null)
+                {
+                    document.Dispose();
+                }
+            }
+        }
 
-                //this.CreateProjectStructureTable(document);
-                //this.WriteSourceCode(document);
+
+
+        public void CreateSourceDocumentation()
+        {
+            base.Create();
+
+            using WordprocessingDocument document = WordprocessingDocument.Open(this.DestinationFilePath!, true);
+            try
+            {
+                //SerenoWordUtility.ProcessDocument(document, HandleSerenoParagraph);
+
+                this.CreateProjectStructureTable(document);
+                this.WriteSourceCode(document);
 
 
                 document.Save();

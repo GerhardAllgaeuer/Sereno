@@ -31,9 +31,48 @@ namespace Sereno.Documentation
             try
             {
 
-                SourceDocumentation angularDocumentation = new();
-                angularDocumentation.Create();
-                angularDocumentation.OpenDocumentation();
+                SourceDocumentation introduction = new()
+                {
+                    TemplateFileName = $@"01 Einleitung.Template.docx",
+                    ProjectName = $@"",
+                };
+
+                introduction.CreateDocumentation();
+
+
+
+
+                SourceDocumentation angular = new()
+                {
+                    TemplateFileName = $@"11 Technik-Angular-Source.Template.docx",
+                    ProjectName = $@"Sereno.Client",
+                };
+
+                angular.CreateSourceDocumentation();
+
+
+
+
+                SourceDocumentation identityApi = new()
+                {
+                    TemplateFileName = $@"12 Technik-Identity-API.Source.Template.docx",
+                    ProjectName = $@"Sereno.Identity.Api",
+                };
+
+                identityApi.CreateSourceDocumentation();
+
+
+
+
+                SourceDocumentation identityDto = new()
+                {
+                    TemplateFileName = $@"13 Technik-Identity-DTO.Source.Template.docx",
+                    ProjectName = $@"Sereno.Identity.Dto",
+                };
+
+                identityDto.CreateSourceDocumentation();
+
+
 
 
                 textBlockMessage.Text = "";

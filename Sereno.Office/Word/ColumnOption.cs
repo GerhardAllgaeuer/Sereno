@@ -9,9 +9,9 @@ namespace Sereno.Office.Word
     public class ColumnOption
     {
         /// <summary>
-        /// Bezeichnung / Titel der Spalte
+        /// Bezeichnung / Titel der Spalte aus dem Quell-Objekt
         /// </summary>
-        public string? ColumnName { get; set; }
+        public string? SourceName { get; set; }
 
         /// <summary>  
         /// Formatierungsstring für die Spalte

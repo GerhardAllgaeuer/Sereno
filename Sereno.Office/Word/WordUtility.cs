@@ -260,7 +260,7 @@ namespace Sereno.Office.Word
             {
                 columnOptions.Add(new ColumnOption()
                 {
-                    ColumnName = column.ColumnName,
+                    SourceName = column.ColumnName,
                 });
             }
 
@@ -315,7 +315,7 @@ namespace Sereno.Office.Word
 
                 // Spaltenoptionen in ein Dictionary umwandeln
                 // Aus Performancegründen machen wir das vor der Schleife
-                Dictionary<string, ColumnOption> columnDictionary = DictionaryUtility.CreateDictionaryFromList<ColumnOption, string>(options.ColumnOptions, nameof(ColumnOption.ColumnName));
+                Dictionary<string, ColumnOption> columnDictionary = DictionaryUtility.CreateDictionaryFromList<ColumnOption, string>(options.ColumnOptions, nameof(ColumnOption.SourceName));
 
 
                 // Wir merken uns für die Formatierung der Texte eine Referenzzeile

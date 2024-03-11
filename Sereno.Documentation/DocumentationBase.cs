@@ -22,7 +22,7 @@ namespace Sereno.Documentation
 
         public string? TemplateFileName { get; set; }
 
-        public string? TemplateFilePath => $@"{this.DocumentationRoot}\{this.TemplateFileName}";
+        public string? TemplateFilePath => $@"{this.DocumentationRoot}\Templates\{this.TemplateFileName}";
 
         public string? DestinationFileName { get; set; }
 
@@ -33,8 +33,11 @@ namespace Sereno.Documentation
         public string? ProjectDirectory => $@"{this.SourceRoot}\{this.ProjectName}";
 
 
-        public virtual void Create()
+        protected virtual void Create()
         {
+
+            this.DestinationFileName = this.TemplateFileName!.Replace(".Template", "");
+
             File.Copy(this.TemplateFilePath!, this.DestinationFilePath!, true);
 
         }
