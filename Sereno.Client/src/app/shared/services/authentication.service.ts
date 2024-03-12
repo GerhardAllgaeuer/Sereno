@@ -3,11 +3,16 @@ import { UserForRegistrationDto } from './../../_interfaces/user/userForRegistra
 import { RegistrationResponseDto } from './../../_interfaces/response/registrationResponseDto.model';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentUrlService } from './environment-url.service';
+import { UserForAuthenticationDto } from './../../_interfaces/user/userForAuthenticationDto.model';
+import { AuthResponseDto } from './../../_interfaces/response/authResponseDto.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+  private authChangeSub = new Subject<boolean>()
+  public authChanged = this.authChangeSub.asObservable();
 
   constructor(private http: HttpClient, private envUrl: EnvironmentUrlService) { }
 
@@ -17,5 +22,13 @@ export class AuthenticationService {
 
   private createCompleteRoute = (route: string, envAddress: string) => {
     return `${envAddress}/${route}`;
+  }
+
+  public loginUser = (route: string, body: UserForAuthenticationDto) => {
+    return this.http.post<AuthResponseDto>(this.createCompleteRoute(route, this.envUrl.urlAddress), body);
+  }
+
+  public sendAuthStateChangeNotification = (isAuthenticated: boolean) => {
+    this.authChangeSub.next(isAuthenticated);
   }
 }

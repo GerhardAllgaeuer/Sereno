@@ -8,17 +8,17 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class ErrorHandlerService implements HttpInterceptor {
-  
+
   constructor(private router: Router) { }
-  
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req)
-    .pipe(
-      catchError((error: HttpErrorResponse) => {
-        let errorMessage = this.handleError(error);
-        return throwError(() => new Error(errorMessage));
-      })
-    )
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          let errorMessage = this.handleError(error);
+          return throwError(() => new Error(errorMessage));
+        })
+      )
   }
 
   private handleError = (error: HttpErrorResponse): string => {
@@ -36,7 +36,7 @@ export class ErrorHandlerService implements HttpInterceptor {
     this.router.navigate(['/404']);
     return error.message;
   }
-  
+
   private handleBadRequest = (error: HttpErrorResponse): string => {
     // Prüfen, ob das 'errors'-Feld im 'error.error'-Objekt existiert
     if (error.error && 'errors' in error.error) {
