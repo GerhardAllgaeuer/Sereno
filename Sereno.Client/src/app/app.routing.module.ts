@@ -8,14 +8,15 @@ const routes: Routes = [
     component: DefaultComponent,
   },
 
-  {
-    path: '', redirectTo: '/authentication/registration', pathMatch: 'full'
-  },
-
   //{
-  //  path: '',
-  //  loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
+  //  path: '', redirectTo: '/authentication/registration', pathMatch: 'full'
   //},
+
+  {
+    path: '',
+
+    loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule)
+  },
 
   {
     path: 'authentication',

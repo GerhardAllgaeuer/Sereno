@@ -52,10 +52,8 @@ export class ErrorHandlerService implements HttpInterceptor {
   }
 
   private handleBadRequest = (error: HttpErrorResponse): string => {
-    // Prüfen, ob das 'errors'-Feld im 'error.error'-Objekt existiert
     if (error.error && 'errors' in error.error) {
       let message = '';
-      // Typzusicherung, dass 'errors' ein Objekt mit Strings als Werte ist
       const errors = error.error.errors as { [key: string]: string };
       const values = Object.values(errors);
 
@@ -63,10 +61,8 @@ export class ErrorHandlerService implements HttpInterceptor {
         message += m + '<br>';
       });
 
-      // Entfernen des letzten '<br>', falls vorhanden
       return message.slice(0, -4);
     } else {
-      // Standard-Fehlerbehandlung, wenn kein 'errors'-Feld vorhanden ist
       return error.error ? JSON.stringify(error.error) : error.message;
     }
   }
