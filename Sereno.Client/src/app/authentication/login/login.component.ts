@@ -3,7 +3,7 @@ import { AuthResponseDto } from './../../_interfaces/response/authResponseDto.mo
 import { UserForAuthenticationDto } from './../../_interfaces/user/userForAuthenticationDto.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from './../../shared/services/authentication.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -11,22 +11,30 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
   private returnUrl: string = '';
 
   loginForm!: FormGroup;
   errorMessage: string = '';
   showError: boolean = false;
 
-  constructor(private authService: AuthenticationService, private router: Router, private route: ActivatedRoute) { }
+  isLoggingIn: boolean = false;
+
+
+
+  @ViewChild('username') usernameInput: ElementRef;
+
+  constructor(private authService: AuthenticationService, private router: Router, private route: ActivatedRoute) {
+    this.loginForm = new FormGroup({
+      username: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]) // Korrektur für den Namen des Feldes
+    });
+  }
 
   ngOnInit(): void {
-    this.loginForm = new FormGroup({
-      username: new FormControl("", [Validators.required]),
-      password: new FormControl("", [Validators.required])
-    })
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
+
 
   validateControl = (controlName: string): boolean => {
     return !this.loginForm.get(controlName)?.valid && (this.loginForm.get(controlName)?.touched ?? false);
@@ -37,6 +45,9 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser = (loginFormValue: { username: string, password: string }): void => {
+
+    this.isLoggingIn = true;
+
     this.showError = false;
     const login = { ...loginFormValue };
 
@@ -51,11 +62,17 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("token", res.token || '');
           this.authService.sendAuthStateChangeNotification(res.isAuthSuccessful || false);
           this.router.navigate([this.returnUrl]);
+          this.isLoggingIn = false;
         },
         error: (err: HttpErrorResponse) => {
           this.errorMessage = err.message || 'Unknown error';
           this.showError = true;
+          this.isLoggingIn = false;
         }
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.usernameInput.nativeElement.focus();
   }
 }
