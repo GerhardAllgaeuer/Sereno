@@ -1,10 +1,10 @@
 @font-face {
     font-family: "sereno";
-    src: url("./sereno.eot?1365e8852da5efe4043c89e41a73db52?#iefix") format("embedded-opentype"),
-url("./sereno.woff2?1365e8852da5efe4043c89e41a73db52") format("woff2"),
-url("./sereno.woff?1365e8852da5efe4043c89e41a73db52") format("woff"),
-url("./sereno.ttf?1365e8852da5efe4043c89e41a73db52") format("truetype"),
-url("./sereno.svg?1365e8852da5efe4043c89e41a73db52#sereno") format("svg");
+    src: url("./sereno.eot?f79e405f4c1841ba27655fc6f23c541f?#iefix") format("embedded-opentype"),
+url("./sereno.woff2?f79e405f4c1841ba27655fc6f23c541f") format("woff2"),
+url("./sereno.woff?f79e405f4c1841ba27655fc6f23c541f") format("woff"),
+url("./sereno.ttf?f79e405f4c1841ba27655fc6f23c541f") format("truetype"),
+url("./sereno.svg?f79e405f4c1841ba27655fc6f23c541f#sereno") format("svg");
 }
 
 i[class^="icon-"]:before, i[class*=" icon-"]:before {
@@ -18,21 +18,24 @@ i[class^="icon-"]:before, i[class*=" icon-"]:before {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-incoming-nav:before {
+.icon-nav-user:before {
     content: "\f101";
 }
-.icon-new-nav:before {
+.icon-side-incoming:before {
     content: "\f102";
 }
-.icon-outgoing-nav:before {
+.icon-side-new:before {
     content: "\f103";
 }
-.icon-person-nav:before {
+.icon-side-outgoing:before {
     content: "\f104";
 }
-.icon-point-nav:before {
+.icon-side-person:before {
     content: "\f105";
 }
-.icon-workflow-nav:before {
+.icon-side-point:before {
     content: "\f106";
+}
+.icon-side-workflow:before {
+    content: "\f107";
 }

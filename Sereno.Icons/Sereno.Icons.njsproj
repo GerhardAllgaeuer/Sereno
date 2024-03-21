@@ -46,12 +46,13 @@
     <Content Include="Project.md" />
     <Content Include="README.md" />
     <Content Include="svg\Folder.md" />
-    <Content Include="svg\incoming-nav.svg" />
-    <Content Include="svg\new-nav.svg" />
-    <Content Include="svg\outgoing-nav.svg" />
-    <Content Include="svg\person-nav.svg" />
-    <Content Include="svg\point-nav.svg" />
-    <Content Include="svg\workflow-nav.svg" />
+    <Content Include="svg\side-incoming.svg" />
+    <Content Include="svg\side-new.svg" />
+    <Content Include="svg\side-outgoing.svg" />
+    <Content Include="svg\nav-user.svg" />
+    <Content Include="svg\side-person.svg" />
+    <Content Include="svg\side-point.svg" />
+    <Content Include="svg\side-workflow.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="font\" />
