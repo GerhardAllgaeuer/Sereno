@@ -31,4 +31,9 @@ export class AuthenticationService {
   public sendAuthStateChangeNotification = (isAuthenticated: boolean) => {
     this.authChangeSub.next(isAuthenticated);
   }
+
+  public logout = () => {
+    localStorage.removeItem("token");
+    this.sendAuthStateChangeNotification(false);
+  }
 }
