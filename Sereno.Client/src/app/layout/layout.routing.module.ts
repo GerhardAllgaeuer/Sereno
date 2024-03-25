@@ -1,4 +1,3 @@
-// layout-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainWindowComponent } from './main-window/main-window.component';
