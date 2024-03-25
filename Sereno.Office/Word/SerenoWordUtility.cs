@@ -17,7 +17,7 @@ namespace Sereno.Office.Word
         /// <summary>
         /// Sereno-Kommandos in einem Word-Dokument verarbeiten
         /// </summary>
-        public static void ProcessDocument(WordprocessingDocument document, Action<OpenXmlElement?, string> action)
+        public static void ProcessDocument(WordprocessingDocument document, Action<OpenXmlElement?, string?> action)
         {
 
             DocumentGroupOptions options = new()
@@ -38,7 +38,7 @@ namespace Sereno.Office.Word
 
             foreach (DocumentGroup group in groups)
             {
-                action(group?.NextGroup?.Paragraphs.FirstOrDefault(), group.InnerText); // Rufe die Aktion auf
+                action(group?.NextGroup?.Paragraphs.FirstOrDefault(), group!.InnerText); // Rufe die Aktion auf
             }
 
         }

@@ -5,6 +5,7 @@ import { MainWindowComponent } from './main-window/main-window.component';
 import { ContactListComponent } from '../pages/contact-list/contact-list.component';
 import { InboxViewComponent } from '../pages/inbox-view/inbox-view.component';
 import { MasterComponent } from '../master/master.component'
+import { AuthGuard } from '../shared/guards/auth.guard';
 
 const layoutRoutes: Routes = [
   {
@@ -14,18 +15,20 @@ const layoutRoutes: Routes = [
       {
         path: 'contacts',
         component: ContactListComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'inbox',
         component: InboxViewComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'master',
         component: MasterComponent,
+        canActivate: [AuthGuard],
       }
     ]
   }
-
 ];
 
 
