@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserForRegistrationDto } from './../../_interfaces/user/userForRegistrationDto.model'; 
+import { UserForRegistrationDto } from './../../_interfaces/user/userForRegistrationDto.model';
 import { RegistrationResponseDto } from './../../_interfaces/response/registrationResponseDto.model';
 import { HttpClient } from '@angular/common/http';
 import { EnvironmentUrlService } from './environment-url.service';
@@ -7,6 +7,8 @@ import { UserForAuthenticationDto } from './../../_interfaces/user/userForAuthen
 import { AuthResponseDto } from './../../_interfaces/response/authResponseDto.model';
 import { Subject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +17,15 @@ export class AuthenticationService {
   private authChangeSub = new Subject<boolean>()
   public authChanged = this.authChangeSub.asObservable();
 
-  constructor(private http: HttpClient, private envUrl: EnvironmentUrlService, private jwtHelper: JwtHelperService) { }
+  constructor(
+    private http: HttpClient,
+    private envUrl: EnvironmentUrlService,
+    private jwtHelper: JwtHelperService,
+    private router: Router
+  ) { }
 
   public registerUser = (route: string, body: UserForRegistrationDto) => {
-    return this.http.post<RegistrationResponseDto> (this.createCompleteRoute(route, this.envUrl.urlAddress), body);
+    return this.http.post<RegistrationResponseDto>(this.createCompleteRoute(route, this.envUrl.urlAddress), body);
   }
 
   private createCompleteRoute = (route: string, envAddress: string) => {
@@ -29,6 +36,9 @@ export class AuthenticationService {
     return this.http.post<AuthResponseDto>(this.createCompleteRoute(route, this.envUrl.urlAddress), body);
   }
 
+  public navigateTo = (returnUrl: string) => {
+    this.router.navigate(['/authentication/login'], { queryParams: { returnUrl: returnUrl } });
+  }
   public sendAuthStateChangeNotification = (isAuthenticated: boolean) => {
     this.authChangeSub.next(isAuthenticated);
   }
