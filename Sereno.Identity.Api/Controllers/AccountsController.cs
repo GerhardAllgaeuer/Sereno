@@ -30,13 +30,15 @@ namespace Sereno.Identity.Controllers
                 return BadRequest();
 
             var user = _mapper.Map<User>(userForRegistration);
-            var result = await _userManager.CreateAsync(user, userForRegistration.Password);
+            var result = await _userManager.CreateAsync(user, userForRegistration.Password!);
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(e => e.Description);
 
                 return BadRequest(new RegistrationResponseDto { Errors = errors });
             }
+
+            await _userManager.AddToRoleAsync(user, "Viewer");
 
             return StatusCode(201);
         }
@@ -47,20 +49,20 @@ namespace Sereno.Identity.Controllers
         {
             try
             {
-                var user = await _userManager.FindByNameAsync(userForAuthentication.Email);
-                if (user == null || !await _userManager.CheckPasswordAsync(user, userForAuthentication.Password))
+                var user = await _userManager.FindByNameAsync(userForAuthentication.Email!);
+                if (user == null || !await _userManager.CheckPasswordAsync(user, userForAuthentication.Password!))
                     return Unauthorized(new AuthResponseDto { ErrorMessage = "Invalid Authentication" });
 
                 var signingCredentials = _jwtHandler.GetSigningCredentials();
-                var claims = _jwtHandler.GetClaims(user);
+                var claims = await _jwtHandler.GetClaims(user);
                 var tokenOptions = _jwtHandler.GenerateTokenOptions(signingCredentials, claims);
                 var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
                 return Ok(new AuthResponseDto { IsAuthSuccessful = true, Token = token });
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
 
         }
