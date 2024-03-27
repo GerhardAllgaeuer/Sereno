@@ -30,10 +30,18 @@ export class ErrorHandlerService implements HttpInterceptor {
     }
     else if (error.status === 401) {
       return this.handleUnauthorized(error);
-
-    } else {
+    }
+    else if (error.status === 403) {
+      return this.handleForbidden(error);
+    }
+    else {
       return "An unexpected error occurred.";
     }
+  }
+
+  private handleForbidden = (error: HttpErrorResponse) => {
+    this.router.navigate(["/authentication/forbidden"], { queryParams: { returnUrl: this.router.url } });
+    return "Forbidden";
   }
 
   private handleNotFound = (error: HttpErrorResponse): string => {

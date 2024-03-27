@@ -5,6 +5,7 @@ import { ContactListComponent } from '../pages/contact-list/contact-list.compone
 import { InboxViewComponent } from '../pages/inbox-view/inbox-view.component';
 import { MasterComponent } from '../master/master.component'
 import { DenyGuestsGuard } from '../shared/guards/auth.guard';
+import { AdminGuard } from '../shared/guards/admin.guard';
 
 const layoutRoutes: Routes = [
   {
@@ -14,7 +15,7 @@ const layoutRoutes: Routes = [
       {
         path: 'contacts',
         component: ContactListComponent,
-        canActivate: [DenyGuestsGuard],
+        canActivate: [DenyGuestsGuard, AdminGuard],
       },
       {
         path: 'inbox',
