@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { LoginComponent } from './login/login.component';
+import { PrivacyComponent } from './privacy/privacy.component';
+
 
 
 
@@ -11,6 +13,7 @@ import { LoginComponent } from './login/login.component';
   declarations: [
     RegisterUserComponent,
     LoginComponent,
+    PrivacyComponent,
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegisterUserComponent } from './register-user/register-user.component';
 import { LoginComponent } from './login/login.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
+import { PrivacyComponent } from './privacy/privacy.component';
+import { AdminGuard } from '../shared/guards/admin.guard';
 
 
 const routes: Routes = [
@@ -18,7 +20,12 @@ const routes: Routes = [
   {
     path: 'forbidden',
     component: ForbiddenComponent,
-  }
+  },
+  {
+    path: 'privacy',
+    component: PrivacyComponent,
+    canActivate: [AdminGuard],
+  },
 
 ];
 @NgModule({

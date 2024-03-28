@@ -11,7 +11,7 @@ export const AdminGuard: CanActivateFn = (route, state) => {
   if (authService.isUserAdmin()) {
     return true;
   } else {
-    authService.navigateTo(returnUrl);
+    authService.navigateToLogin(returnUrl);
     return false;
   }
 };

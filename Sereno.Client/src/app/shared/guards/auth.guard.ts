@@ -11,7 +11,7 @@ export const DenyGuestsGuard: CanActivateFn = (route, state) => {
   if (authService.isUserAuthenticated()) {
     return true;
   } else {
-    authService.navigateTo(returnUrl);
+    authService.navigateToLogin(returnUrl);
     return false;
   }
 };

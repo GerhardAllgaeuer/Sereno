@@ -15,7 +15,7 @@ const layoutRoutes: Routes = [
       {
         path: 'contacts',
         component: ContactListComponent,
-        canActivate: [DenyGuestsGuard, AdminGuard],
+        canActivate: [DenyGuestsGuard],
       },
       {
         path: 'inbox',

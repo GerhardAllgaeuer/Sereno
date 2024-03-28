@@ -48,7 +48,6 @@ export class NavPanelComponent implements OnInit {
 
   public logout = () => {
     this.authService.logout();
-    this.router.navigate(["/authentication/login"]);
 }
 
   getTitle() {

@@ -8,6 +8,8 @@ import { AuthResponseDto } from './../../_interfaces/response/authResponseDto.mo
 import { Subject } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Claim } from '../../_interfaces/response/Claim';
 
 
 @Injectable({
@@ -36,7 +38,13 @@ export class AuthenticationService {
     return this.http.post<AuthResponseDto>(this.createCompleteRoute(route, this.envUrl.urlAddress), body);
   }
 
-  public navigateTo = (returnUrl: string) => {
+
+  public getClaims(route: string): Observable<Claim[]> {
+    return this.http.get<Claim[]>(this.createCompleteRoute(route, this.envUrl.urlAddress));
+  }
+
+
+  public navigateToLogin = (returnUrl: string) => {
     this.router.navigate(['/authentication/login'], { queryParams: { returnUrl: returnUrl } });
   }
   public sendAuthStateChangeNotification = (isAuthenticated: boolean) => {
@@ -65,5 +73,7 @@ export class AuthenticationService {
   public logout = () => {
     localStorage.removeItem("token");
     this.sendAuthStateChangeNotification(false);
+    this.navigateToLogin("");
+
   }
 }

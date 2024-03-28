@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Sereno.Identity.JwtFeatures;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Sereno.Identity.Controllers
 {
@@ -22,6 +23,19 @@ namespace Sereno.Identity.Controllers
             _mapper = mapper;
             _jwtHandler = jwtHandler;
         }
+
+
+        [HttpGet("Privacy")]
+        [Authorize(Roles = "Administrator")]
+        public IActionResult Privacy()
+        {
+            var claims = User.Claims
+                .Select(c => new { c.Type, c.Value })
+                .ToList();
+
+            return Ok(claims);
+        }
+
 
         [HttpPost("Registration")]
         public async Task<IActionResult> RegisterUser([FromBody] UserForRegistrationDto userForRegistration)
