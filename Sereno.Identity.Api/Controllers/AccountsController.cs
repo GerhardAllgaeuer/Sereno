@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sereno.Identity.JwtFeatures;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using Sereno.Communication.Email;
 
 namespace Sereno.Identity.Controllers
 {
@@ -16,12 +17,14 @@ namespace Sereno.Identity.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
         private readonly JwtHandler _jwtHandler;
+        private readonly IEmailSender _emailSender;
 
-        public AccountsController(UserManager<User> userManager, IMapper mapper, JwtHandler jwtHandler)
+        public AccountsController(UserManager<User> userManager, IMapper mapper, IEmailSender emailSender, JwtHandler jwtHandler)
         {
             _userManager = userManager;
             _mapper = mapper;
             _jwtHandler = jwtHandler;
+            _emailSender = emailSender;
         }
 
 
@@ -34,6 +37,15 @@ namespace Sereno.Identity.Controllers
                 .ToList();
 
             return Ok(claims);
+        }
+
+        [HttpGet("Email")]
+        public async Task<IActionResult> SendEmail()
+        {
+            var message = new Message(new string[] { "gerhard.allgaeuer@gmail.com" }, "Test email", "This is the content from our email.");
+            await _emailSender.SendEmailAsync(message); 
+
+            return StatusCode(200);
         }
 
 

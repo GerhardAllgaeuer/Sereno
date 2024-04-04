@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Sereno.Identity.JwtFeatures;
+using Sereno.Communication.Email;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +62,27 @@ builder.Services.AddAuthentication(opt =>
             .GetBytes(jwtSettings.GetSection("securityKey").Value ?? ""))
     };
 });
+
+
+
+
+var emailConfig = builder.Configuration
+        .GetSection("EmailConfiguration")
+        .Get<EmailConfiguration>();
+
+if (emailConfig is null)
+{
+    throw new InvalidOperationException("EmailConfiguration is not configured properly.");
+}
+
+builder.Services.AddSingleton(emailConfig);
+
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+
+
+
+
+builder.Services.AddControllers();
 
 builder.Services.AddScoped<JwtHandler>();
 

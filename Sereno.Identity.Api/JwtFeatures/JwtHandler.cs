@@ -22,7 +22,7 @@ namespace Sereno.Identity.JwtFeatures
 
         public SigningCredentials GetSigningCredentials()
         {
-            var key = Encoding.UTF8.GetBytes(_jwtSettings.GetSection("securityKey").Value);
+            var key = Encoding.UTF8.GetBytes(_jwtSettings.GetSection("securityKey").Value!);
             var secret = new SymmetricSecurityKey(key);
 
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
