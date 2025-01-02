@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ErrorHandlerService } from './shared/services/error-handler.service';
 
 import { AppRoutingModule } from './app.routing.module';
@@ -18,26 +18,22 @@ export function tokenGetter() {
   declarations: [
     AppComponent
   ],
-  imports: [
-    BrowserModule,
+  bootstrap: [AppComponent], imports: [BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
         allowedDomains: ["localhost:5001"],
         disallowedRoutes: []
       }
-    }),
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorHandlerService,
-      multi: true
-    }
-  ],
-  bootstrap: [AppComponent]
+    })], providers: [
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: ErrorHandlerService,
+        multi: true
+      },
+      provideHttpClient(withInterceptorsFromDi())
+    ]
 })
 export class AppModule { }
