@@ -6,17 +6,16 @@ import { NavPanelComponent } from '../nav-panel/nav-panel.component';
 import { FixedPluginComponent } from '../fixedplugin/fixedplugin.component';
 
 @Component({
-  selector: 'main-wnd',
-  imports: [
-    RouterModule,
-    SidePanelComponent,
-    FooterPanelComponent, 
-    NavPanelComponent,
-    FixedPluginComponent,
-  ],
-  standalone: true,
-  templateUrl: './main-window.component.html',
-  styleUrl: './main-window.component.scss'
+    selector: 'main-wnd',
+    imports: [
+        RouterModule,
+        SidePanelComponent,
+        FooterPanelComponent,
+        NavPanelComponent,
+        FixedPluginComponent,
+    ],
+    templateUrl: './main-window.component.html',
+    styleUrl: './main-window.component.scss'
 })
 export class MainWindowComponent {
 

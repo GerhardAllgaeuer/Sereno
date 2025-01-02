@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  moduleId: module.id,
-  standalone: true,
-  selector: 'fixedplugin-cmp',
-  imports: [CommonModule],
-  templateUrl: 'fixedplugin.component.html'
+    moduleId: module.id,
+    selector: 'fixedplugin-cmp',
+    imports: [CommonModule],
+    templateUrl: 'fixedplugin.component.html'
 })
 
 export class FixedPluginComponent implements OnInit {

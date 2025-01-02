@@ -6,11 +6,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthenticationService } from './../../shared/services/authentication.service';
 
 @Component({
-  moduleId: module.id,
-  standalone: true,
-  imports: [NgbModule],
-  selector: 'navbar-cmp',
-  templateUrl: 'nav-panel.component.html'
+    moduleId: module.id,
+    imports: [NgbModule],
+    selector: 'navbar-cmp',
+    templateUrl: 'nav-panel.component.html'
 })
 
 export class NavPanelComponent implements OnInit {

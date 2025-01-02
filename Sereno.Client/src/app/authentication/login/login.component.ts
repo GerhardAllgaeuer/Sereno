@@ -7,9 +7,10 @@ import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angula
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    standalone: false
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   private returnUrl: string = '';

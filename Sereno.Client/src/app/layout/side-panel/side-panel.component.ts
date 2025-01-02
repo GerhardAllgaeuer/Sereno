@@ -15,13 +15,12 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 @Component({
-  moduleId: module.id,
-  imports: [
-    RouterModule, CommonModule
-  ],
-  standalone: true,
-  selector: 'sidebar-cmp',
-  templateUrl: 'side-panel.component.html',
+    moduleId: module.id,
+    imports: [
+        RouterModule, CommonModule
+    ],
+    selector: 'sidebar-cmp',
+    templateUrl: 'side-panel.component.html'
 })
 
 export class SidePanelComponent implements OnInit {

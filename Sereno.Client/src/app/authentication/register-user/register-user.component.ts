@@ -6,9 +6,10 @@ import { UserForRegistrationDto } from './../../_interfaces/user/userForRegistra
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-register-user',
-  templateUrl: './register-user.component.html',
-  styleUrls: ['./register-user.component.scss']
+    selector: 'app-register-user',
+    templateUrl: './register-user.component.html',
+    styleUrls: ['./register-user.component.scss'],
+    standalone: false
 })
 export class RegisterUserComponent implements OnInit {
   registerForm: FormGroup;
