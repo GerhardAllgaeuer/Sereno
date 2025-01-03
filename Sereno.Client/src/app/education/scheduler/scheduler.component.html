@@ -1,14 +1,12 @@
-<dx-scheduler
-
-  timeZone="Europe/Vienna"
-              [dataSource]="schedulerData"
-  [views]="['timelineDay', 'timelineWeek', 'timelineWorkWeek', 'timelineMonth']"
-  currentView="timelineMonth"
-  [firstDayOfWeek]="0"
-  [startDayHour]="8"
-  [endDayHour]="20"
-  [cellDuration]="60"
-  [groups]="['priority']"
-  [height]="580">
-
-</dx-scheduler>
+<div class="flex-container">
+  <dx-scheduler timeZone="Europe/Vienna"
+                [dataSource]="appointmentsData"
+                [views]="[]"
+                currentView="timelineMonth"
+                groupOrientation="vertical"
+                [cellDuration]="60"
+                [groups]="['priorityId']"
+                [showAllDayPanel]="false"
+                [height]="'100%'">
+  </dx-scheduler>
+</div>

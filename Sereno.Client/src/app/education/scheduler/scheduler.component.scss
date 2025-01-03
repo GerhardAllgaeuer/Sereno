@@ -1,0 +1,9 @@
+.flex-container {
+  display: flex;
+  flex-direction: column;
+  height: 85vh; // Volle Höhe des Viewports
+}
+
+dx-scheduler {
+  flex: 1 1 auto; // Scheduler nimmt den verfügbaren Platz ein
+}
