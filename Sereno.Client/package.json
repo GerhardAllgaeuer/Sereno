@@ -21,7 +21,7 @@
     "@angular/platform-browser-dynamic": "^19.0.5",
     "@angular/router": "^19.0.5",
     "@auth0/angular-jwt": "^5.2.0",
-    "@ng-bootstrap/ng-bootstrap": "^16.0.0",
+    "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "bootstrap": "^5.3.2",
     "jest-editor-support": "*",
     "ngx-toastr": "^19.0.0",
