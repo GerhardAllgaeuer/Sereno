@@ -10,6 +10,7 @@ export interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
+  { path: '/education/scheduler', title: 'Planer', icon: 'icon-side-incoming', class: '' },
   { path: '/contacts', title: 'Kontakte', icon: 'icon-side-incoming', class: '' },
   { path: '/inbox', title: 'Eingang', icon: 'icon-side-new', class: '' },
 ];

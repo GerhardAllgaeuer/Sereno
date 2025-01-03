@@ -1,0 +1,14 @@
+<dx-scheduler
+
+  timeZone="Europe/Vienna"
+              [dataSource]="schedulerData"
+  [views]="['timelineDay', 'timelineWeek', 'timelineWorkWeek', 'timelineMonth']"
+  currentView="timelineMonth"
+  [firstDayOfWeek]="0"
+  [startDayHour]="8"
+  [endDayHour]="20"
+  [cellDuration]="60"
+  [groups]="['priority']"
+  [height]="580">
+
+</dx-scheduler>

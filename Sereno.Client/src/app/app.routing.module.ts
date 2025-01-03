@@ -15,6 +15,11 @@ const routes: Routes = [
   //},
 
   {
+    path: 'education',
+    loadChildren: () => import('./education/education.module').then(m => m.EducationModule)
+  },
+
+  {
     path: '',
     loadChildren: () => import('./layout/layout.module').then(m => m.LayoutModule),
     canActivate: [DenyGuestsGuard]
