@@ -22,7 +22,12 @@
           "options": {
             "stylePreprocessorOptions": {
               "sass": {
-                "silenceDeprecations": [ "color-functions", "global-builtin", "import", "mixed-decls" ]
+                "silenceDeprecations": [
+                  "color-functions",
+                  "global-builtin",
+                  "import",
+                  "mixed-decls"
+                ]
               }
             },
             "outputPath": {
@@ -39,6 +44,7 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/devextreme/dist/css/dx.light.css",
               "node_modules/bootstrap/scss/bootstrap.scss",
               "src/assets/scss/paper-dashboard.scss",
               "node_modules/ngx-toastr/toastr.css",
@@ -121,8 +127,8 @@
           "options": {
             "buildTarget": "connexia-angular:build"
           }
+        }
       }
     }
   }
-}
 }
