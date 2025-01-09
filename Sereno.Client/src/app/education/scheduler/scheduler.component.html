@@ -1,12 +1,22 @@
 <div class="flex-container">
   <dx-scheduler timeZone="Europe/Vienna"
                 [dataSource]="appointmentsData"
-                [views]="[]"
-                currentView="timelineMonth"
-                groupOrientation="vertical"
-                [cellDuration]="60"
+                currentView="Vertical Grouping"
+                [startDayHour]="8"
+                [endDayHour]="18"
                 [groups]="['priorityId']"
-                [showAllDayPanel]="false"
-                [height]="'100%'">
+                [showCurrentTimeIndicator]="false"
+                [showAllDayPanel]="true"
+                [crossScrollingEnabled]="false"
+                [height]="'680px'">
+    <dxi-view type="timelineMonth"
+              name="Vertical Grouping"
+              groupOrientation="vertical"
+              maxAppointmentsPerCell="unlimited">
+    </dxi-view>
+    <dxi-resource [dataSource]="prioritiesData"
+                  fieldExpr="priorityId"
+                  label="Priority">
+    </dxi-resource>
   </dx-scheduler>
 </div>

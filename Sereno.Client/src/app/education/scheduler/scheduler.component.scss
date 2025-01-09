@@ -1,9 +1,89 @@
-.flex-container {
+
+:host {
   display: flex;
   flex-direction: column;
-  height: 85vh; // Volle Höhe des Viewports
-}
+  flex-grow: 1;
+  height: 100%;
 
-dx-scheduler {
+
+  ::ng-deep {
+
+    .dx-scheduler-cell-sizes-horizontal,
+    .dx-scheduler-date-table-cell {
+      width: 50px !important;
+    }
+/*
+    .dx-scheduler-cell-sizes-horizontal {
+      width: 40px !important;
+      max-width: 40px !important;
+      white-space: normal !important;
+    }
+
+    .dx-scheduler-header-panel-cell {
+      width: 40px !important;
+      max-width: 40px !important;
+      white-space: normal !important;
+      word-wrap: break-word !important;
+    }*/
+
+    /*.dx-scheduler-appointment-content {
+      color: #333;*/
+      /*max-width: 70px;*/
+    /*}
+
+    .dx-scheduler-cell-sizes-vertical {
+      max-height: 80px !important;
+    }
+
+    .dx-scheduler-header-panel {
+      width: unset;
+    }
+
+    .dx-scheduler-appointment {
+      color: #333;
+      max-height: 70px;
+    }
+
+    .dx-scheduler-work-space {
+      border-radius: 0 0 8px 8px;
+    }*/
+  }
+}
+/*.flex-container {
+  display: flex;
+  flex-direction: column;
+  height: 75vh; // Volle Höhe des Viewports
+}
+*/
+/*dx-scheduler {
   flex: 1 1 auto; // Scheduler nimmt den verfügbaren Platz ein
 }
+*/
+/*.dx-scheduler-cell-sizes-horizontal {
+  width: 20px !important;
+}*/
+/*:host ::ng-deep .dx-scheduler-appointment {
+  background-color: white !important;
+  color: red !important;
+  min-height: 120px !important;
+  height: 120px !important;
+}
+:host ::ng-deep .dx-scheduler-appointment-content {
+  border: 20px !important;
+  height: 50px !important;
+  min-height: 80px !important;
+  margin-bottom: 10px !important;
+}
+
+:host ::ng-deep .dx-scheduler-appointment-has-resource-color {
+  margin: 5px !important;
+}
+
+:host ::ng-deep .dx-scheduler-date-table-row {
+  height: 80px !important;
+}
+
+:host ::ng-deep .dx-scheduler-appointment-strip {
+  height: 50px !important;
+}
+    */

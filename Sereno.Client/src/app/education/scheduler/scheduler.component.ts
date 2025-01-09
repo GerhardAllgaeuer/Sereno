@@ -28,7 +28,19 @@ export class SchedulerComponent {
       text: 'Website Re-Design Plan',
       priorityId: 2,
       startDate: new Date(2025, 0, 3, 16, 30),
-      endDate: new Date(2025, 0, 3, 18, 30),
+      endDate: new Date(2025, 0, 4, 18, 30),
+    },
+    {
+      text: 'Website Re-Design Plan',
+      priorityId: 2,
+      startDate: new Date(2025, 0, 3, 16, 30),
+      endDate: new Date(2025, 0, 4, 18, 30),
+    },
+    {
+      text: 'Website Re-Design Plan',
+      priorityId: 2,
+      startDate: new Date(2025, 0, 3, 16, 30),
+      endDate: new Date(2025, 0, 4, 18, 30),
     },
     {
       text: "Meeting",
