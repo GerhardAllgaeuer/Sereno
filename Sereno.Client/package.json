@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^19.0.5",
     "@angular/router": "^19.0.5",
     "@auth0/angular-jwt": "^5.2.0",
+    "@bryntum/schedulerpro": "npm:@bryntum/schedulerpro-trial@^6.1.5",
+    "@bryntum/schedulerpro-angular": "^6.1.5",
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "bootstrap": "^5.3.3",
     "devextreme": "24.2.3",
