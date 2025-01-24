@@ -27,7 +27,9 @@ namespace Sereno.Documentation
                 .Options);
 
             // Erstelle die Datenbank, falls sie nicht existiert
-            context.Database.EnsureCreated();
+            context.Database.EnsureDeleted();
+
+            context.Database.Migrate();
 
 
             List<Document> set = context.Documents.ToList();
