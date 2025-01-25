@@ -16,4 +16,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sereno.Database.Extensions\Sereno.Database.Extensions.csproj" />
+  </ItemGroup>
+
 </Project>

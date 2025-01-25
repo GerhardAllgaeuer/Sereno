@@ -8,22 +8,22 @@ namespace Sereno.Documentation
     [TestClass]
     public sealed class Test1
     {
-        private string? _connectionString;
+        private string? connectionString;
 
 
         [TestInitialize]
         public void Setup()
         {
             var configuration = ConfigurationHelper.GetConfiguration();
-            _connectionString = configuration.GetConnectionString("TestDatabase");
+            connectionString = configuration.GetConnectionString("Documentation_ConnectionString");
         }
 
 
         [TestMethod]
-        public void TestDatabaseConnection()
+        public void Config_DatabaseCreate_Auto()
         {
             using var context = new AppDbContext(new DbContextOptionsBuilder<AppDbContext>()
-                .UseSqlServer(_connectionString)
+                .UseSqlServer(connectionString)
                 .Options);
 
             // Erstelle die Datenbank, falls sie nicht existiert
@@ -31,6 +31,11 @@ namespace Sereno.Documentation
 
             context.Database.Migrate();
 
+
+            Func<DbContextOptions<AppDbContext>, AppDbContext> logContextFactory = logOptions =>
+                new AppDbContext(logOptions);
+
+            context.InitializeLogDatabase(connectionString, logContextFactory);
 
             List<Document> set = context.Documents.ToList();
 

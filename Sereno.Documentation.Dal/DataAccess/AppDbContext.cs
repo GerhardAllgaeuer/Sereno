@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Sereno.Database;
 using Sereno.Documentation.DataAccess.Entities;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,13 @@ namespace Sereno.Documentation.DataAccess
             modelBuilder.Entity<Document>()
                 .HasIndex(u => u.Id)
                 .IsUnique();
+        }
+
+        public void InitializeLogDatabase(string? connectionString, Func<DbContextOptions<AppDbContext>, AppDbContext> logContextFactory)
+        {
+            ArgumentNullException.ThrowIfNull(connectionString);
+
+            LogDatabaseUpdater.UpdateLogDatabase(this, connectionString, logContextFactory);
         }
     }
 }
