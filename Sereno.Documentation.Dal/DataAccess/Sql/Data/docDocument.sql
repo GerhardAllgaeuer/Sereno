@@ -3,7 +3,8 @@
 insert into docDocument(vTitle) values ('x');
 
 Select *
-from docDocument;
+from docDocument
+order by dModify desc;
 
 Update docDocument set vTitle = 'y' where 1 = 1;
 

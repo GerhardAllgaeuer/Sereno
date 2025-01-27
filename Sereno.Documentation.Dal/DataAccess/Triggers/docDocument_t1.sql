@@ -27,6 +27,14 @@ BEGIN
         END;
     END;
 
+    -- Benutzer aus SESSION_CONTEXT auslesen und in NVARCHAR konvertieren
+    DECLARE @SessionUser NVARCHAR(500);
+    SET @SessionUser = CONVERT(NVARCHAR(500), SESSION_CONTEXT(N'UserName'));
+
+    -- Fallback auf SUSER_NAME(), falls SESSION_CONTEXT keinen Wert liefert
+    IF @SessionUser IS NULL
+        SET @SessionUser = SUSER_NAME();
+
     -- Temporäre Tabelle für Datenverarbeitung
     DECLARE @ProcessedData TABLE (
         vId NVARCHAR(50),
@@ -49,11 +57,11 @@ BEGIN
             ELSE dCreate 
         END,
         CASE 
-            WHEN vCreateUser IS NULL THEN SUSER_NAME() 
+            WHEN vCreateUser IS NULL THEN @SessionUser  -- Aus SESSION_CONTEXT oder Fallback
             ELSE vCreateUser 
         END,
         GETDATE(),  -- Aktuelles Datum/Uhrzeit für dModify
-        SUSER_NAME()  -- Aktueller Benutzer für vModifyUser
+        @SessionUser  -- Benutzer aus SESSION_CONTEXT oder Fallback
     FROM inserted;
 
     -- INSERT in die Tabelle (nur für neue Datensätze)
@@ -74,4 +82,4 @@ BEGIN
     INNER JOIN @ProcessedData AS pd ON d.vId = pd.vId;
 END;
 GO
-commit;
+commit

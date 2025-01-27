@@ -15,7 +15,7 @@ namespace Sereno.Documentation.DataAccess
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             optionsBuilder.UseSqlServer(@"Server=localhost\SQLExpress;Database=Documentation;User Id=sa;Password=krxs8187;TrustServerCertificate=True;");
 
-            return new AppDbContext(optionsBuilder.Options);
+            return new AppDbContext(optionsBuilder.Options, "test@test.com");
         }
     }
 }

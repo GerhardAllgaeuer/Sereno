@@ -32,21 +32,19 @@ namespace Sereno.Documentation.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("vContent");
 
-                    b.Property<DateTime>("Create")
+                    b.Property<DateTime?>("Create")
                         .HasColumnType("datetime2")
                         .HasColumnName("dCreate");
 
                     b.Property<string>("CreateUser")
-                        .IsRequired()
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("vCreateUser");
 
-                    b.Property<DateTime>("Modify")
+                    b.Property<DateTime?>("Modify")
                         .HasColumnType("datetime2")
                         .HasColumnName("dModify");
 
                     b.Property<string>("ModifyUser")
-                        .IsRequired()
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("vModifyUser");
 
@@ -57,6 +55,8 @@ namespace Sereno.Documentation.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("docDocument");
+
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 #pragma warning restore 612, 618
         }

@@ -24,9 +24,8 @@ namespace Sereno.Documentation
         [TestMethod]
         public void Config_DatabaseCreate_Auto()
         {
-            using var context = new AppDbContext(new DbContextOptionsBuilder<AppDbContext>()
-                .UseSqlServer(connectionString)
-                .Options);
+            using var context = AppDbContext.Create(connectionString, "inserter@test.com");
+
 
             // Datenbank neu erstellen
             context.Database.EnsureDeleted();

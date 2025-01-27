@@ -17,15 +17,15 @@ namespace Sereno.Documentation.DataAccess.Entities
 
 
 
-        public DateTime Create { get; set; }
+        public DateTime? Create { get; set; }
 
         [Column(TypeName = "nvarchar(500)")]
-        public required string CreateUser { get; set; }
+        public string? CreateUser { get; set; }
 
-        public DateTime Modify { get; set; }
+        public DateTime? Modify { get; set; }
 
         [Column(TypeName = "nvarchar(500)")]
-        public required string ModifyUser { get; set; }
+        public string? ModifyUser { get; set; }
 
     }
 }
