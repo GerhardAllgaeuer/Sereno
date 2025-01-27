@@ -16,7 +16,7 @@ namespace Sereno.Documentation.Migrations
                 columns: table => new
                 {
                     vId = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    vTitle = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    vTitle = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     vContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     dCreate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     vCreateUser = table.Column<string>(type: "nvarchar(500)", nullable: false),

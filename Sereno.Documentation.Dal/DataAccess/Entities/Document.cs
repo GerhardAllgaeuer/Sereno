@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.IO.Pipelines;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Sereno.Documentation.DataAccess.Entities
 {
@@ -14,8 +8,9 @@ namespace Sereno.Documentation.DataAccess.Entities
         [Column(TypeName = "nvarchar(50)")]
         public required string Id { get; set; }
 
+
         [Column(TypeName = "nvarchar(500)")]
-        public required string Title { get; set; }
+        public string? Title { get; set; }
 
         [Column(TypeName = "nvarchar(max)")]
         public string? Content { get; set; }

@@ -12,7 +12,7 @@ using Sereno.Documentation.DataAccess;
 namespace Sereno.Documentation.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250127190236_InitialCreate")]
+    [Migration("20250127190941_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,7 +54,6 @@ namespace Sereno.Documentation.Migrations
                         .HasColumnName("vModifyUser");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("vTitle");
 

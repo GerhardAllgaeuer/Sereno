@@ -51,7 +51,6 @@ namespace Sereno.Documentation.Migrations
                         .HasColumnName("vModifyUser");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("vTitle");
 
