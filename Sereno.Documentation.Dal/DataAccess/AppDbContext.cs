@@ -27,12 +27,5 @@ namespace Sereno.Documentation.DataAccess
                 .HasIndex(u => u.Id)
                 .IsUnique();
         }
-
-        public void InitializeLogDatabase(string? connectionString, Func<DbContextOptions<AppDbContext>, AppDbContext> logContextFactory)
-        {
-            ArgumentNullException.ThrowIfNull(connectionString);
-
-            LogDatabaseUpdater.UpdateLogDatabase(this, connectionString, logContextFactory);
-        }
     }
 }
