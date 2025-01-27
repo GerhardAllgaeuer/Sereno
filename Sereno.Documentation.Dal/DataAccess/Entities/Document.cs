@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sereno.Documentation.DataAccess.Entities
 {
+    [Table("docDocument")]
     public class Document
     {
         [Column(TypeName = "nvarchar(50)")]
@@ -19,8 +20,17 @@ namespace Sereno.Documentation.DataAccess.Entities
         [Column(TypeName = "nvarchar(max)")]
         public string? Content { get; set; }
 
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
+
+
+        public DateTime Create { get; set; }
+
+        [Column(TypeName = "nvarchar(500)")]
+        public required string CreateUser { get; set; }
+
+        public DateTime Modify { get; set; }
+
+        [Column(TypeName = "nvarchar(500)")]
+        public required string ModifyUser { get; set; }
 
     }
 }

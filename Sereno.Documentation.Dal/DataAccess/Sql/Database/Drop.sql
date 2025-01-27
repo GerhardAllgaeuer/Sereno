@@ -7,7 +7,10 @@
 ALTER DATABASE Documentation SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 GO
 
--- Datenbank löschen
 DROP DATABASE Documentation;
+
+go
+DROP DATABASE DocumentationLog;
+
 
 go

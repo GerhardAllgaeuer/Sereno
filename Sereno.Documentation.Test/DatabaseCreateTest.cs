@@ -57,7 +57,7 @@ namespace Sereno.Documentation
                 connection.Open();
                 using var command = connection.CreateCommand();
                 command.CommandText = $@"
-                    Alter table Documents alter column Title nvarchar(400);
+                    Alter table docDocument alter column vTitle nvarchar(400);
                 ";
                 command.ExecuteNonQuery();
             }
