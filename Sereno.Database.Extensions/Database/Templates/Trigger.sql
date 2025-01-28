@@ -37,21 +37,16 @@ BEGIN
 
     -- Temporäre Tabelle für Datenverarbeitung
     DECLARE @ProcessedData TABLE (
-        vId NVARCHAR(50),
-        vTitle NVARCHAR(500),
-        vContent NVARCHAR(MAX),
-        dCreate DATETIME2(7),
-        vCreateUser NVARCHAR(500),
-        dModify DATETIME2(7),
-        vModifyUser NVARCHAR(500)
+{{ColumnsWithType}}
     );
 
     -- Übernehme die eingefügten/aktualisierten Daten in eine temporäre Tabelle
-    INSERT INTO @ProcessedData (vId, vTitle, vContent, dCreate, vCreateUser, dModify, vModifyUser)
+    INSERT INTO @ProcessedData (
+{{Columns}}        
+        )
     SELECT 
         ISNULL(vId, NEWID()),  -- Generiere eine neue ID, falls diese nicht vorhanden ist
-        vTitle,
-        vContent,
+{{ColumnsWithoutId}}
         CASE 
             WHEN dCreate IS NULL THEN GETDATE() 
             ELSE dCreate 
@@ -65,8 +60,11 @@ BEGIN
     FROM inserted;
 
     -- INSERT in die Tabelle (nur für neue Datensätze)
-    INSERT INTO {{TableName}}(vId, vTitle, vContent, dCreate, vCreateUser, dModify, vModifyUser)
-    SELECT pd.vId, pd.vTitle, pd.vContent, pd.dCreate, pd.vCreateUser, pd.dModify, pd.vModifyUser
+    INSERT INTO {{TableName}}(
+{{Columns}} 
+    )
+    SELECT 
+{{ColumnsWithPd}}    
     FROM @ProcessedData AS pd
     WHERE NOT EXISTS (
         SELECT 1 FROM {{TableName}} AS d WHERE d.vId = pd.vId
@@ -74,10 +72,8 @@ BEGIN
 
     -- UPDATE nur für existierende Datensätze
     UPDATE d
-    SET d.vTitle = pd.vTitle,
-        d.vContent = pd.vContent,
-        d.dModify = pd.dModify,
-        d.vModifyUser = pd.vModifyUser
+    SET 
+{{ColumnsToUpdate}}
     FROM {{TableName}} AS d
     INNER JOIN @ProcessedData AS pd ON d.vId = pd.vId;
 END;

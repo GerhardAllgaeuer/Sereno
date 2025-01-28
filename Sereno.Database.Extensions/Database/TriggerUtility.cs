@@ -21,9 +21,52 @@ namespace Sereno.Database
                 {
                     string? tableName = tableRow["TABLE_NAME"].ToString();
 
+                    DataTable columnsTable = SchemaUtility.GetTableColuns(connectionString, tableName!);
+
+                    string columnsWithType = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
+                    {
+                        Columns = columnsTable,
+                        BuilderType = SchemaColumnBuilderType.ColumnsWithDatatype,
+                        Spaces = 8,
+                    });
+
+                    string columns = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
+                    {
+                        Columns = columnsTable,
+                        Spaces = 8,
+                    });
+
+                    string columnsWithoutId = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
+                    {
+                        Columns = columnsTable,
+                        Spaces = 8,
+                        ExcludeColumns = ["vId"],
+                    });
+
+                    string columnsWithPd = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
+                    {
+                        Columns = columnsTable,
+                        Prefix = "pd",
+                        Spaces = 8,
+                    });
+
+                    string columnsToUpdate = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
+                    {
+                        Columns = columnsTable,
+                        Prefix = "d",
+                        UpdatePrefix = "pd",
+                        Spaces = 8,
+                        ExcludeColumns = ["vId", "dCreate", "vCreateUser"],
+                    });
+
                     Dictionary<string, string> replacements = new Dictionary<string, string>
                     {
                         { "TableName", tableName! },
+                        { "ColumnsWithType", columnsWithType },
+                        { "Columns", columns },
+                        { "ColumnsWithoutId", columnsWithoutId },
+                        { "ColumnsWithPd", columnsWithPd },
+                        { "ColumnsToUpdate", columnsToUpdate },
                     };
 
                     string sqlFile = ReplaceVariables(triggerTemplate, replacements);

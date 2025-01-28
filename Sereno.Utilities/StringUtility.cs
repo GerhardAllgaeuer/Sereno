@@ -4,6 +4,44 @@ namespace Sereno.Utilities
 {
     public class StringUtility
     {
+        public static string RemoveLastLineBreak(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            // Entferne den letzten Zeilenumbruch, falls vorhanden
+            string trimmedValue = value.TrimEnd('\r', '\n');
+            return trimmedValue;
+        }
+
+
+        public static string RemoveLastCharacter(string value, string character)
+        {
+            if (string.IsNullOrEmpty(value))
+                return value;
+
+            // Rückwärts maximal 10 Zeichen vom Ende durchlaufen
+            int startIndex = Math.Max(0, value.Length - 10);
+
+            // Teilstring von den letzten 10 Zeichen
+            string lastPart = value.Substring(startIndex);
+
+            // Position des letzten Kommas in diesem Teilstring
+            int lastCommaIndex = lastPart.LastIndexOf(character);
+
+            if (lastCommaIndex >= 0)
+            {
+                // Absolute Position des Kommas im ursprünglichen String
+                int commaPosition = startIndex + lastCommaIndex;
+
+                // Entferne das letzte Komma
+                return value.Remove(commaPosition, 1);
+            }
+
+            // Kein Komma gefunden, unverändert zurückgeben
+            return value;
+        }
+
 
 
         /// <summary>
