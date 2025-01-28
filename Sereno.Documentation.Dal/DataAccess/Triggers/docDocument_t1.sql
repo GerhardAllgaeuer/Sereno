@@ -47,7 +47,15 @@ BEGIN
     );
 
     -- Übernehme die eingefügten/aktualisierten Daten in eine temporäre Tabelle
-    INSERT INTO @ProcessedData (vId, vTitle, vContent, dCreate, vCreateUser, dModify, vModifyUser)
+    INSERT INTO @ProcessedData (
+        vId, 
+        vTitle, 
+        vContent, 
+        dCreate, 
+        vCreateUser, 
+        dModify, 
+        vModifyUser
+     )
     SELECT 
         ISNULL(vId, NEWID()),  -- Generiere eine neue ID, falls diese nicht vorhanden ist
         vTitle,
@@ -65,8 +73,23 @@ BEGIN
     FROM inserted;
 
     -- INSERT in die Tabelle (nur für neue Datensätze)
-    INSERT INTO docDocument(vId, vTitle, vContent, dCreate, vCreateUser, dModify, vModifyUser)
-    SELECT pd.vId, pd.vTitle, pd.vContent, pd.dCreate, pd.vCreateUser, pd.dModify, pd.vModifyUser
+    INSERT INTO docDocument(
+        vId, 
+        vTitle, 
+        vContent, 
+        dCreate, 
+        vCreateUser, 
+        dModify, 
+        vModifyUser
+    )
+    SELECT 
+        pd.vId, 
+        pd.vTitle, 
+        pd.vContent, 
+        pd.dCreate, 
+        pd.vCreateUser, 
+        pd.dModify, 
+        pd.vModifyUser
     FROM @ProcessedData AS pd
     WHERE NOT EXISTS (
         SELECT 1 FROM docDocument AS d WHERE d.vId = pd.vId
@@ -74,7 +97,8 @@ BEGIN
 
     -- UPDATE nur für existierende Datensätze
     UPDATE d
-    SET d.vTitle = pd.vTitle,
+    SET 
+        d.vTitle = pd.vTitle,
         d.vContent = pd.vContent,
         d.dModify = pd.dModify,
         d.vModifyUser = pd.vModifyUser

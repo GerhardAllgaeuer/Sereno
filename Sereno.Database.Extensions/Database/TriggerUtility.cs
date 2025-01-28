@@ -23,50 +23,51 @@ namespace Sereno.Database
 
                     DataTable columnsTable = SchemaUtility.GetTableColuns(connectionString, tableName!);
 
+                    HashSet<string> defaultColumns = ["vId", "dCreate", "vCreateUser", "dModify", "vModifyUser"];
+
                     string columnsWithType = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
                     {
                         Columns = columnsTable,
                         BuilderType = SchemaColumnBuilderType.ColumnsWithDatatype,
+                        ExcludeColumns = defaultColumns,
                         Spaces = 8,
                     });
 
-                    string columns = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
+
+                    // ohne Id und ohne Create/Update Columns
+                    string dataColumns = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
                     {
                         Columns = columnsTable,
                         Spaces = 8,
-                    });
+                        ExcludeColumns = defaultColumns,
+                    });                    
 
-                    string columnsWithoutId = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
-                    {
-                        Columns = columnsTable,
-                        Spaces = 8,
-                        ExcludeColumns = ["vId"],
-                    });
-
-                    string columnsWithPd = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
+                    string dataColumnsWithPd = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
                     {
                         Columns = columnsTable,
                         Prefix = "pd",
                         Spaces = 8,
+                        ExcludeColumns = defaultColumns,
                     });
 
-                    string columnsToUpdate = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
+                    string updateColumns = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
                     {
                         Columns = columnsTable,
+                        BuilderType = SchemaColumnBuilderType.Update,
                         Prefix = "d",
                         UpdatePrefix = "pd",
                         Spaces = 8,
-                        ExcludeColumns = ["vId", "dCreate", "vCreateUser"],
+                        ExcludeColumns = defaultColumns,
                     });
 
                     Dictionary<string, string> replacements = new Dictionary<string, string>
                     {
                         { "TableName", tableName! },
+
                         { "ColumnsWithType", columnsWithType },
-                        { "Columns", columns },
-                        { "ColumnsWithoutId", columnsWithoutId },
-                        { "ColumnsWithPd", columnsWithPd },
-                        { "ColumnsToUpdate", columnsToUpdate },
+                        { "DataColumnsWithPd", dataColumnsWithPd },
+                        { "DataColumns", dataColumns },
+                        { "UpdateColumns", updateColumns },
                     };
 
                     string sqlFile = ReplaceVariables(triggerTemplate, replacements);

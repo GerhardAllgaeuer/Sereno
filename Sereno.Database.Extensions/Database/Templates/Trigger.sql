@@ -37,16 +37,26 @@ BEGIN
 
     -- Temporäre Tabelle für Datenverarbeitung
     DECLARE @ProcessedData TABLE (
+        vId nvarchar(50),
 {{ColumnsWithType}}
+        dCreate datetime2,
+        vCreateUser nvarchar(500),
+        dModify datetime2,
+        vModifyUser nvarchar(500)
     );
 
     -- Übernehme die eingefügten/aktualisierten Daten in eine temporäre Tabelle
     INSERT INTO @ProcessedData (
-{{Columns}}        
-        )
+        vId,
+{{DataColumns}}        
+        dCreate,
+        vCreateUser,
+        dModify,
+        vModifyUser        
+    )
     SELECT 
         ISNULL(vId, NEWID()),  -- Generiere eine neue ID, falls diese nicht vorhanden ist
-{{ColumnsWithoutId}}
+{{DataColumns}}
         CASE 
             WHEN dCreate IS NULL THEN GETDATE() 
             ELSE dCreate 
@@ -61,10 +71,20 @@ BEGIN
 
     -- INSERT in die Tabelle (nur für neue Datensätze)
     INSERT INTO {{TableName}}(
-{{Columns}} 
+        vId, 
+{{DataColumns}} 
+        dCreate,
+        vCreateUser,
+        dModify,
+        vModifyUser  
     )
     SELECT 
-{{ColumnsWithPd}}    
+        vId, 
+{{DataColumnsWithPd}} 
+        dCreate,
+        vCreateUser,
+        dModify,
+        vModifyUser 
     FROM @ProcessedData AS pd
     WHERE NOT EXISTS (
         SELECT 1 FROM {{TableName}} AS d WHERE d.vId = pd.vId
@@ -73,9 +93,9 @@ BEGIN
     -- UPDATE nur für existierende Datensätze
     UPDATE d
     SET 
-{{ColumnsToUpdate}}
+{{UpdateColumns}}
+        d.dModify = pd.dModify,
+        d.vModifyUser = pd.vModifyUser
     FROM {{TableName}} AS d
     INNER JOIN @ProcessedData AS pd ON d.vId = pd.vId;
 END;
-GO
-commit

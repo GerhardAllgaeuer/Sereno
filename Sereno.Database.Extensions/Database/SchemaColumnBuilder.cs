@@ -44,7 +44,7 @@ namespace Sereno.Database
                             stringbuilder.AppendLine($"{spaces}{tabs}{prefix}{columnName} {dataType},");
                             break;
 
-                        case SchemaColumnBuilderType.ColumnsAsUpdate:
+                        case SchemaColumnBuilderType.Update:
                             stringbuilder.AppendLine($"{spaces}{tabs}{prefix}{columnName} = {updatePrefix}{columnName},");
                             break;
 
@@ -58,7 +58,11 @@ namespace Sereno.Database
 
             result = stringbuilder.ToString();
 
-            result = StringUtility.RemoveLastCharacter(result, ",");
+            if (parameters.RemoveLastComma)
+            {
+                result = StringUtility.RemoveLastCharacter(result, ",");
+            }
+
             result = StringUtility.RemoveLastLineBreak(result);
 
             return result;

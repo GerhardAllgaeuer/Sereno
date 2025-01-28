@@ -9,10 +9,10 @@ namespace Sereno.Database
         ColumnsWithDatatype,
 
         // a.vId = b.vId
-        ColumnsAsUpdate,
+        Update,
 
         // vId, vTitle, ..
-        ColumnsList,
+        OnlyColumns,
     }
 
     public class SchemaColumnBuilderParameters
@@ -23,7 +23,7 @@ namespace Sereno.Database
 
         public string UpdatePrefix { get; set; } = "";
 
-        public SchemaColumnBuilderType BuilderType { get; set; } = SchemaColumnBuilderType.ColumnsList;
+        public SchemaColumnBuilderType BuilderType { get; set; } = SchemaColumnBuilderType.OnlyColumns;
 
         public string Delimiter { get; set; } = ",";
 
@@ -32,6 +32,8 @@ namespace Sereno.Database
         public int Spaces { get; set; }
 
         public HashSet<string> ExcludeColumns { get; set; } = [];
+
+        public bool RemoveLastComma { get; set; } = false;
 
 
     }
