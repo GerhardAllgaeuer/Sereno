@@ -79,12 +79,12 @@ BEGIN
         vModifyUser  
     )
     SELECT 
-        vId, 
+        pd.vId, 
 {{DataColumnsWithPd}} 
-        dCreate,
-        vCreateUser,
-        dModify,
-        vModifyUser 
+        pd.dCreate,
+        pd.vCreateUser,
+        pd.dModify,
+        pd.vModifyUser 
     FROM @ProcessedData AS pd
     WHERE NOT EXISTS (
         SELECT 1 FROM {{TableName}} AS d WHERE d.vId = pd.vId

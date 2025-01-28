@@ -37,25 +37,25 @@ BEGIN
 
     -- Temporäre Tabelle für Datenverarbeitung
     DECLARE @ProcessedData TABLE (
-        vId NVARCHAR(50),
-        vTitle NVARCHAR(500),
-        vContent NVARCHAR(MAX),
-        dCreate DATETIME2(7),
-        vCreateUser NVARCHAR(500),
-        dModify DATETIME2(7),
-        vModifyUser NVARCHAR(500)
+        vId nvarchar(50),
+        vTitle nvarchar(500),
+        vContent nvarchar(max),
+        dCreate datetime2,
+        vCreateUser nvarchar(500),
+        dModify datetime2,
+        vModifyUser nvarchar(500)
     );
 
     -- Übernehme die eingefügten/aktualisierten Daten in eine temporäre Tabelle
     INSERT INTO @ProcessedData (
-        vId, 
-        vTitle, 
-        vContent, 
-        dCreate, 
-        vCreateUser, 
-        dModify, 
-        vModifyUser
-     )
+        vId,
+        vTitle,
+        vContent,        
+        dCreate,
+        vCreateUser,
+        dModify,
+        vModifyUser        
+    )
     SELECT 
         ISNULL(vId, NEWID()),  -- Generiere eine neue ID, falls diese nicht vorhanden ist
         vTitle,
@@ -75,21 +75,21 @@ BEGIN
     -- INSERT in die Tabelle (nur für neue Datensätze)
     INSERT INTO docDocument(
         vId, 
-        vTitle, 
+        vTitle,
         vContent, 
-        dCreate, 
-        vCreateUser, 
-        dModify, 
-        vModifyUser
+        dCreate,
+        vCreateUser,
+        dModify,
+        vModifyUser  
     )
     SELECT 
         pd.vId, 
-        pd.vTitle, 
+        pd.vTitle,
         pd.vContent, 
-        pd.dCreate, 
-        pd.vCreateUser, 
-        pd.dModify, 
-        pd.vModifyUser
+        pd.dCreate,
+        pd.vCreateUser,
+        pd.dModify,
+        pd.vModifyUser 
     FROM @ProcessedData AS pd
     WHERE NOT EXISTS (
         SELECT 1 FROM docDocument AS d WHERE d.vId = pd.vId
@@ -105,5 +105,3 @@ BEGIN
     FROM docDocument AS d
     INNER JOIN @ProcessedData AS pd ON d.vId = pd.vId;
 END;
-GO
-commit
