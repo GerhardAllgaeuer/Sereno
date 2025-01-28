@@ -17,44 +17,38 @@ namespace Sereno.Database
 
         private static void UpdateLogSchema(string connectionString)
         {
-            DataTable? mainTables = null;
-            using (var connection = new SqlConnection(connectionString))
+            DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString);
+
+            if (mainTables != null)
             {
-                connection.Open();
-                mainTables = connection.GetSchema("Tables");
-            }
-
-            FilterTables(mainTables);
-
-
-
-            DataTable? logTables = null;
-            string logConnectionString = GetLogDatabaseConnectionString(connectionString);
-            using (var connection = new SqlConnection(logConnectionString))
-            {
-                connection.Open();
-                logTables = connection.GetSchema("Tables");
-            }
-
-            var logTableDictionary = logTables.AsEnumerable()
-                .Where(row => !string.IsNullOrEmpty(row.Field<string>("TABLE_NAME")))
-                .ToDictionary(
-                    row => row.Field<string>("TABLE_NAME")!,
-                    row => row
-                );
-
-
-            foreach (DataRow row in mainTables.Rows)
-            {
-                string? tableName = row["TABLE_NAME"].ToString();
-
-                if (!logTableDictionary.ContainsKey(tableName!))
+                DataTable? logTables = null;
+                string logConnectionString = GetLogDatabaseConnectionString(connectionString);
+                using (var connection = new SqlConnection(logConnectionString))
                 {
-                    CreateLogTable(connectionString, logConnectionString, tableName!);
+                    connection.Open();
+                    logTables = connection.GetSchema("Tables");
                 }
-                else
+
+                var logTableDictionary = logTables.AsEnumerable()
+                    .Where(row => !string.IsNullOrEmpty(row.Field<string>("TABLE_NAME")))
+                    .ToDictionary(
+                        row => row.Field<string>("TABLE_NAME")!,
+                        row => row
+                    );
+
+
+                foreach (DataRow row in mainTables.Rows)
                 {
-                    TableColumnsUpdate(connectionString, logConnectionString, tableName!);
+                    string? tableName = row["TABLE_NAME"].ToString();
+
+                    if (!logTableDictionary.ContainsKey(tableName!))
+                    {
+                        CreateLogTable(connectionString, logConnectionString, tableName!);
+                    }
+                    else
+                    {
+                        TableColumnsUpdate(connectionString, logConnectionString, tableName!);
+                    }
                 }
             }
         }
@@ -124,7 +118,7 @@ namespace Sereno.Database
         private static void AddColumn(SqlConnection connection, string tableName, string columnName, string dataType, int maxLength, int precision, int scale)
         {
             using var command = connection.CreateCommand();
-            string columnDefinition = GetColumnDefinition(dataType, maxLength, precision, scale);
+            string columnDefinition = SchemaUtility.GetColumnType(dataType, maxLength, precision, scale);
             command.CommandText = $"ALTER TABLE {tableName} ADD {columnName} {columnDefinition};";
             command.ExecuteNonQuery();
         }
@@ -132,26 +126,12 @@ namespace Sereno.Database
         private static void UpdateColumnType(SqlConnection connection, string tableName, string columnName, string dataType, int maxLength, int precision, int scale)
         {
             using var command = connection.CreateCommand();
-            string columnDefinition = GetColumnDefinition(dataType, maxLength, precision, scale);
+            string columnDefinition = SchemaUtility.GetColumnType(dataType, maxLength, precision, scale);
             command.CommandText = $"ALTER TABLE {tableName} ALTER COLUMN {columnName} {columnDefinition};";
             command.ExecuteNonQuery();
         }
 
-        private static string GetColumnDefinition(string dataType, int maxLength, int precision, int scale)
-        {
-            return dataType switch
-            {
-                "nvarchar" => maxLength > 0 ? $"nvarchar({maxLength})" : "nvarchar(max)",
-                "varchar" => maxLength > 0 ? $"varchar({maxLength})" : "varchar(max)",
-                "decimal" => $"decimal({precision}, {scale})",
-                "numeric" => $"numeric({precision}, {scale})",
-                "int" => "int",
-                "bit" => "bit",
-                "datetime" => "datetime",
-                "datetime2" => "datetime2",
-                _ => throw new NotSupportedException($"Der Datentyp '{dataType}' wird nicht unterstützt."),
-            };
-        }
+
 
 
         public static void DeleteLogDatabase(string connectionString)
@@ -190,20 +170,6 @@ namespace Sereno.Database
             }
         }
 
-
-        private static void FilterTables(DataTable tables)
-        {
-            var rowsToDelete = tables.AsEnumerable()
-                .Where(row =>
-                    !string.IsNullOrEmpty(row.Field<string>("TABLE_NAME")) &&
-                    row.Field<string>("TABLE_NAME")!.StartsWith("__EF"))
-                .ToList();
-
-            foreach (var row in rowsToDelete)
-            {
-                tables.Rows.Remove(row);
-            }
-        }
 
         private static void CreateLogTable(string mainConnectionString, string logConnectionString, string tableName)
         {

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sereno.Documentation.Dal\Sereno.Documentation.Dal.csproj" />
+    <ProjectReference Include="..\Sereno.Utilities\Sereno.Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

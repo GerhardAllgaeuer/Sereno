@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Sereno.Database;
 using Sereno.Documentation.DataAccess;
 using Sereno.Documentation.DataAccess.Entities;
+using Sereno.Utilities;
 
 namespace Sereno.Documentation
 {
@@ -18,6 +19,14 @@ namespace Sereno.Documentation
         {
             var configuration = ConfigurationHelper.GetConfiguration();
             connectionString = configuration.GetConnectionString("Documentation_ConnectionString")!;
+        }
+
+
+        [TestMethod]
+        public void Trigger_Create_Auto()
+        {
+            TriggerUtility.CreateDefaultValuesTriggers(connectionString);
+
         }
 
 

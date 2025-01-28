@@ -83,7 +83,7 @@ namespace Sereno.Documentation.DataAccess
             EntityFrameworkUtility.EnableTriggersOnTables(modelBuilder);
 
             // Präfixe vor die Spalten setzen (z.B. vTitle, ...)
-            EntityFrameworkUtility.SetColumnPrefixes(modelBuilder);
+            EntityFrameworkUtility.SetDatabaseColumnPrefixes(modelBuilder);
         }
 
 

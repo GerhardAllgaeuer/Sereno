@@ -33,8 +33,7 @@ namespace Sereno.Database
             }
         }
 
-
-        public static void SetColumnPrefixes(ModelBuilder modelBuilder)
+        public static void SetDatabaseColumnPrefixes(ModelBuilder modelBuilder)
         {
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
