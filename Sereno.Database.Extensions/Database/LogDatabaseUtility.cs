@@ -225,7 +225,7 @@ namespace Sereno.Database
                 int precision = row.Field<int?>("NUMERIC_PRECISION") ?? 0;
                 int scale = row.Field<int?>("NUMERIC_SCALE") ?? 0;
 
-                sql += $"    {columnName} {MapSqlDataType(dataType!, maxLength, precision, scale)}";
+                sql += $"    {columnName} {SchemaUtility.GetColumnType(dataType!, maxLength, precision, scale)}";
 
                 if (!isNullable)
                 {
@@ -239,30 +239,6 @@ namespace Sereno.Database
             sql = sql.TrimEnd(',', '\n') + "\n);";
 
             return sql;
-        }
-
-        private static string MapSqlDataType(string dataType, int maxLength, int precision, int scale)
-        {
-            // Mape die Datenbanktypen aus dem Schema auf gültige SQL-Typen
-            return dataType switch
-            {
-                // Zeichenketten-Typen
-                "nvarchar" => maxLength > 0 ? $"nvarchar({maxLength})" : "nvarchar(max)",
-                "varchar" => maxLength > 0 ? $"varchar({maxLength})" : "varchar(max)",
-
-                // Numerische Typen
-                "decimal" => $"decimal({precision}, {scale})",
-                "numeric" => $"numeric({precision}, {scale})",
-
-                // Andere Typen
-                "int" => "int",
-                "bit" => "bit",
-                "datetime" => "datetime",
-                "datetime2" => "datetime2",
-
-                // Standard für nicht unterstützte Typen
-                _ => throw new NotSupportedException($"Der Datentyp '{dataType}' wird nicht unterstützt."),
-            };
         }
 
         public static string GetLogDatabaseConnectionString(string connectionString)
@@ -301,30 +277,11 @@ namespace Sereno.Database
 
         private static string GetLogDatabaseName(string connectionString)
         {
-            string? databaseName = GetDatabaseName(connectionString);
-            var logDatabaseName = $"{databaseName}Log";
+            ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
+
+            var logDatabaseName = $"{connectionInfo.Database}Log";
 
             return logDatabaseName;
         }
-
-        private static string? GetDatabaseName(string connectionString)
-        {
-            var builder = new DbConnectionStringBuilder
-            {
-                ConnectionString = connectionString
-            };
-
-            if (builder.TryGetValue("Initial Catalog", out var initialCatalog))
-            {
-                return initialCatalog?.ToString();
-            }
-            else if (builder.TryGetValue("Database", out var database))
-            {
-                return database?.ToString();
-            }
-
-            throw new InvalidOperationException("Databasename not found.");
-        }
-
     }
 }

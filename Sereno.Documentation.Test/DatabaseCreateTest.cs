@@ -18,7 +18,7 @@ namespace Sereno.Documentation
         public void Setup()
         {
             var configuration = ConfigurationHelper.GetConfiguration();
-            connectionString = configuration.GetConnectionString("Documentation_ConnectionString")!;
+            connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
         }
 
 
@@ -26,7 +26,6 @@ namespace Sereno.Documentation
         public void Trigger_Create_Auto()
         {
             TriggerUtility.CreateDefaultValuesTriggers(connectionString);
-
         }
 
 

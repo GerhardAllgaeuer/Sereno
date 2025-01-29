@@ -70,7 +70,19 @@ namespace Sereno.Database
                         { "UpdateColumns", updateColumns },
                     };
 
-                    string sqlFile = ReplaceVariables(triggerTemplate, replacements);
+                    string sql = ReplaceVariables(triggerTemplate, replacements);
+
+                    ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
+                    ScriptParameters scriptParameters = new ScriptParameters()
+                    {
+                        ServerName = connectionInfo.Server!,
+                        DatabaseName = connectionInfo.Database!,
+                        UserName = connectionInfo.User!,
+                        Password = connectionInfo.Password!,
+                        ScriptContent = sql,
+                    };
+
+                    ScriptUtility.ExecuteDatabaseScript(scriptParameters);
                 }
 
             }
