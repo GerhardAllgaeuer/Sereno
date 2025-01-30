@@ -12,6 +12,7 @@ namespace Sereno.Documentation
     public sealed class DatabaseCreateTest
     {
         private string connectionString = "";
+        private Context appContext = ContextUtility.Create("autotest@test.com");
 
 
         [TestInitialize]
@@ -25,14 +26,13 @@ namespace Sereno.Documentation
         [TestMethod]
         public void Trigger_Create_Auto()
         {
-            TriggerUtility.CreateDefaultValuesTriggers(connectionString);
         }
 
 
         [TestMethod]
         public void Config_DatabaseCreate_Auto()
         {
-            using var context = AppDbContext.Create(connectionString, "inserter@test.com");
+            using var context = AppDbContext.Create(connectionString, appContext);
 
 
             // Datenbank neu erstellen
@@ -42,6 +42,9 @@ namespace Sereno.Documentation
             // Log Datenbank neu erstellen
             LogDatabaseUtility.DeleteLogDatabase(connectionString);
             LogDatabaseUtility.UpdateLogDatabase(connectionString);
+            TriggerUtility.CreateDefaultValuesTriggers(connectionString);
+
+
 
 
             // Log Datenbank ändern und erneut abgleichen

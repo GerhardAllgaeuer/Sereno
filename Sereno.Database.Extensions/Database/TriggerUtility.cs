@@ -60,7 +60,7 @@ namespace Sereno.Database
                         ExcludeColumns = defaultColumns,
                     });
 
-                    Dictionary<string, string> replacements = new Dictionary<string, string>
+                    Dictionary<string, string> replacements = new()
                     {
                         { "TableName", tableName! },
 
@@ -73,7 +73,7 @@ namespace Sereno.Database
                     string sql = ReplaceVariables(triggerTemplate, replacements);
 
                     ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
-                    ScriptParameters scriptParameters = new ScriptParameters()
+                    ScriptParameters scriptParameters = new()
                     {
                         ServerName = connectionInfo.Server!,
                         DatabaseName = connectionInfo.Database!,

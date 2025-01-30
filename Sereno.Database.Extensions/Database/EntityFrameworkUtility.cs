@@ -15,21 +15,21 @@ namespace Sereno.Database
             // Für alle Entitäten im Modell durchlaufen
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
-                // Setze die ID-Eigenschaft auf ValueGeneratedNever, wenn eine ID existiert
-                var primaryKey = entityType.FindPrimaryKey();
-                if (primaryKey != null)
-                {
-                    foreach (var keyProperty in primaryKey.Properties)
-                    {
-                        modelBuilder.Entity(entityType.ClrType)
-                            .Property(keyProperty.Name)
-                            .ValueGeneratedNever();
-                    }
-                }
+                //// Setze die ID-Eigenschaft auf ValueGeneratedNever, wenn eine ID existiert
+                //var primaryKey = entityType.FindPrimaryKey();
+                //if (primaryKey != null)
+                //{
+                //    foreach (var keyProperty in primaryKey.Properties)
+                //    {
+                //        modelBuilder.Entity(entityType.ClrType)
+                //            .Property(keyProperty.Name)
+                //            .ValueGeneratedNever();
+                //    }
+                //}
 
-                // Deaktiviere die OUTPUT-Klausel für alle Tabellen mit Triggern
-                modelBuilder.Entity(entityType.ClrType)
-                    .ToTable(tb => tb.UseSqlOutputClause(false));
+                //// Deaktiviere die OUTPUT-Klausel für alle Tabellen mit Triggern
+                //modelBuilder.Entity(entityType.ClrType)
+                //    .ToTable(tb => tb.UseSqlOutputClause(false));
             }
         }
 

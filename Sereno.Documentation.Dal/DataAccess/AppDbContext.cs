@@ -1,44 +1,63 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Sereno.Database;
+using Sereno.Database.ChangeTracking;
 using Sereno.Documentation.DataAccess.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sereno.Documentation.DataAccess
 {
     public class AppDbContext : DbContext
     {
 
-        private readonly string userName;
+        private readonly Context context;
 
-        public AppDbContext(DbContextOptions<AppDbContext> options, string userName)
+        public AppDbContext(DbContextOptions<AppDbContext> options, Context context)
             : base(options)
         {
-            this.userName = userName;
+            this.context = context;
         }
 
-        public static AppDbContext Create(string connectionString, string userName)
+        public static AppDbContext Create(string connectionString, Context context)
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseSqlServer(connectionString)
                 .Options;
 
-            return new AppDbContext(options, userName);
+            return new AppDbContext(options, context);
         }
 
         public DbSet<Document> Documents { get; set; }
 
+
         public override int SaveChanges()
         {
             SetSessionContext();
+            SetChangeTrackingData();
+
             return base.SaveChanges();
         }
+
+        public void SetChangeTrackingData()
+        {
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.Entity is IChangeTracking &&
+                (e.State == EntityState.Added || e.State == EntityState.Modified));
+
+            foreach (var entry in entries)
+            {
+                var entity = (IChangeTracking)entry.Entity;
+
+                if (entry.State == EntityState.Added)
+                {
+                    entity.Create = DateTime.Now;
+                    entity.CreateUser = context.UserName;
+                }
+
+                entity.ModifyUser = context.UserName;
+                entity.Modify = DateTime.Now;
+            }
+        }
+
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -56,7 +75,7 @@ namespace Sereno.Documentation.DataAccess
             using var command = Database.GetDbConnection().CreateCommand();
             command.CommandText = "EXEC sp_set_session_context @key = @keyParam, @value = @valueParam";
             command.Parameters.Add(new SqlParameter("@keyParam", "UserName"));
-            command.Parameters.Add(new SqlParameter("@valueParam", this.userName));
+            command.Parameters.Add(new SqlParameter("@valueParam", context.UserName));
             command.ExecuteNonQuery();
         }
 
@@ -70,7 +89,7 @@ namespace Sereno.Documentation.DataAccess
             using var command = Database.GetDbConnection().CreateCommand();
             command.CommandText = "EXEC sp_set_session_context @key = @keyParam, @value = @valueParam";
             command.Parameters.Add(new SqlParameter("@keyParam", "UserName"));
-            command.Parameters.Add(new SqlParameter("@valueParam", this.userName));
+            command.Parameters.Add(new SqlParameter("@valueParam", context.UserName));
             await command.ExecuteNonQueryAsync();
         }
 

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Sereno.Database;
 using Sereno.Documentation.DataAccess;
 using Sereno.Documentation.DataAccess.Entities;
+using Sereno.Utilities;
 
 namespace Sereno.Documentation
 {
@@ -11,20 +12,21 @@ namespace Sereno.Documentation
     public sealed class DatabaseUpdateTest
     {
         private string connectionString = "";
+        private Context appContext = ContextUtility.Create("autotest@test.com");
 
 
         [TestInitialize]
         public void Setup()
         {
             var configuration = ConfigurationHelper.GetConfiguration();
-            connectionString = configuration.GetConnectionString("Documentation_ConnectionString")!;
+            connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
         }
 
 
         [TestMethod]
         public void Update_Data_Auto()
         {
-            using var context = AppDbContext.Create(connectionString, "inserter@test.com");
+            using var context = AppDbContext.Create(connectionString, appContext);
 
             string id = Guid.NewGuid().ToString();
 
@@ -42,7 +44,7 @@ namespace Sereno.Documentation
 
 
 
-            using var updatecontext = AppDbContext.Create(connectionString, "updater@test.com");
+            using var updatecontext = AppDbContext.Create(connectionString, appContext);
 
             // Ändere den Datensatz
             var existingDocument = updatecontext.Documents.FirstOrDefault(d => d.Id == id);

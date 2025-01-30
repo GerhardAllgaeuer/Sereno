@@ -1,12 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Sereno.Database.ChangeTracking;
 
 namespace Sereno.Documentation.DataAccess.Entities
 {
     [Table("docDocument")]
-    public class Document
+    public class Document : IChangeTracking
     {
+
         [Column(TypeName = "nvarchar(50)")]
         public required string Id { get; set; }
+
+
 
 
         [Column(TypeName = "nvarchar(500)")]
@@ -14,6 +18,7 @@ namespace Sereno.Documentation.DataAccess.Entities
 
         [Column(TypeName = "nvarchar(max)")]
         public string? Content { get; set; }
+
 
 
 
