@@ -71,7 +71,7 @@ namespace Sereno.Database.ChangeTracking.TlDb1
         public static void CreateDefaultValuesTriggers(string connectionString)
         {
             DirectoryInfo solutionDirectory = CodeUtility.GetSolutionDirectory();
-            DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + @"\Sereno.Database.Extensions\Database\ChangeTracking\Tl1\Templates");
+            DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + @"\Sereno.Database.Extensions\Database\ChangeTracking\TlDb1\Templates");
 
             string triggerTemplate = File.ReadAllText($@"{templateDirectory.FullName}\Trigger.sql");
 

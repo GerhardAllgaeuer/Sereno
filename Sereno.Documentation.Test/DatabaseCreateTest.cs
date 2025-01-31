@@ -19,7 +19,7 @@ namespace Sereno.Documentation
         [TestInitialize]
         public void Setup()
         {
-            var configuration = ConfigurationHelper.GetConfiguration();
+            var configuration = ConfigurationUtility.GetConfiguration();
             connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
         }
 

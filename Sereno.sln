@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Documentation.Test",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Database.Extensions", "Sereno.Database.Extensions\Sereno.Database.Extensions.csproj", "{FB3E6ED7-0A58-46E9-9472-6CB0E4B45EE5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Database.TlDb1.Dal", "Sereno.Database.TlDb1.Dal\Sereno.Database.TlDb1.Dal.csproj", "{0FFD34DB-B0DF-405B-AFFE-A82B1B1644B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Database.TlDb1.Test", "Sereno.Database.TlDb1.Test\Sereno.Database.TlDb1.Test.csproj", "{AEC719FA-D32A-4115-918D-AF57FE3F7569}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +111,14 @@ Global
 		{FB3E6ED7-0A58-46E9-9472-6CB0E4B45EE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB3E6ED7-0A58-46E9-9472-6CB0E4B45EE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB3E6ED7-0A58-46E9-9472-6CB0E4B45EE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FFD34DB-B0DF-405B-AFFE-A82B1B1644B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FFD34DB-B0DF-405B-AFFE-A82B1B1644B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FFD34DB-B0DF-405B-AFFE-A82B1B1644B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FFD34DB-B0DF-405B-AFFE-A82B1B1644B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEC719FA-D32A-4115-918D-AF57FE3F7569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEC719FA-D32A-4115-918D-AF57FE3F7569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEC719FA-D32A-4115-918D-AF57FE3F7569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEC719FA-D32A-4115-918D-AF57FE3F7569}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

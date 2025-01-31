@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sereno.Database;
 using Sereno.Database.ChangeTracking.TlDb1;
-using Sereno.Documentation.DataAccess.Entities;
+using Sereno.TlDb1.DataAccess.Entities;
 
-namespace Sereno.Documentation.DataAccess
+namespace Sereno.TlDb1.DataAccess
 {
     public class AppDbContext : DbContext
     {
@@ -25,12 +25,13 @@ namespace Sereno.Documentation.DataAccess
             return new AppDbContext(options, context);
         }
 
-        public DbSet<Document> Documents { get; set; }
+        public DbSet<SimpleTable> Documents { get; set; }
 
 
         public override int SaveChanges()
         {
             TrackingUtility.SetSessionContext(context, Database.GetDbConnection());
+            SetChangeTrackingData();
 
             return base.SaveChanges();
         }
@@ -41,6 +42,29 @@ namespace Sereno.Documentation.DataAccess
             return await base.SaveChangesAsync(cancellationToken);
         }
 
+
+
+
+        public void SetChangeTrackingData()
+        {
+            var entries = ChangeTracker.Entries()
+                .Where(e => e.Entity is ITracking &&
+                (e.State == EntityState.Added || e.State == EntityState.Modified));
+
+            foreach (var entry in entries)
+            {
+                //var entity = (IChangeTracking)entry.Entity;
+
+                //if (entry.State == EntityState.Added)
+                //{
+                //    entity.Create = DateTime.Now;
+                //    entity.CreateUser = context.UserName;
+                //}
+
+                //entity.ModifyUser = context.UserName;
+                //entity.Modify = DateTime.Now;
+            }
+        }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

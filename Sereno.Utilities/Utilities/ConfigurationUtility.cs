@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-public static class ConfigurationHelper
+public static class ConfigurationUtility
 {
     public static IConfiguration GetConfiguration()
     {
