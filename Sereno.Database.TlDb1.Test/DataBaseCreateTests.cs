@@ -10,33 +10,20 @@ using Sereno.Utilities;
 namespace Sereno.Database.TlDb1.Test;
 
 [TestClass]
-public sealed class DataBaseCreateTests
+public sealed class DatabaseCreateTests : DatabaseTestBase
 {
-    private string connectionString = "";
-    private Context appContext = ContextUtility.Create("autotest@test.com");
 
-    [TestInitialize]
-    public void Setup()
+    [TestMethod]
+    public void Test_Create_Init()
     {
-        var configuration = ConfigurationUtility.GetConfiguration();
-        connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
     }
 
 
+
     [TestMethod]
-    public void Config_DatabaseCreate_Auto()
+    public void Config_LogDatabase_Update()
     {
         using var context = AppDbContext.Create(connectionString, appContext);
-
-        // Datenbank neu erstellen
-        context.Database.EnsureDeleted();
-        context.Database.Migrate();
-
-        // Log Datenbank neu erstellen
-        LogDatabaseUtility.DeleteLogDatabase(connectionString);
-        LogDatabaseUtility.UpdateLogDatabase(connectionString);
-        TrackingUtility.CreateDefaultValuesTriggers(connectionString);
-
 
         // Log Datenbank ändern und erneut abgleichen
         ChangeLogDatabase();
