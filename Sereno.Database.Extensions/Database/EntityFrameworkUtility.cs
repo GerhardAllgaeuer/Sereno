@@ -1,38 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sereno.Database
 {
     public class EntityFrameworkUtility
     {
 
-        public static void EnableTriggersOnTables(ModelBuilder modelBuilder)
-        {
-            // Für alle Entitäten im Modell durchlaufen
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            {
-                //// Setze die ID-Eigenschaft auf ValueGeneratedNever, wenn eine ID existiert
-                //var primaryKey = entityType.FindPrimaryKey();
-                //if (primaryKey != null)
-                //{
-                //    foreach (var keyProperty in primaryKey.Properties)
-                //    {
-                //        modelBuilder.Entity(entityType.ClrType)
-                //            .Property(keyProperty.Name)
-                //            .ValueGeneratedNever();
-                //    }
-                //}
-
-                //// Deaktiviere die OUTPUT-Klausel für alle Tabellen mit Triggern
-                //modelBuilder.Entity(entityType.ClrType)
-                //    .ToTable(tb => tb.UseSqlOutputClause(false));
-            }
-        }
-
+        /// <summary>
+        /// Präfixe vor die Spalten setzen (z.B. vTitle, ...)
+        /// </summary>
         public static void SetDatabaseColumnPrefixes(ModelBuilder modelBuilder)
         {
             foreach (var entity in modelBuilder.Model.GetEntityTypes())

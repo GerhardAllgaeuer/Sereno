@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Sereno.Database.ChangeTracking;
+using Sereno.Database.ChangeTracking.Tl1;
 
 namespace Sereno.Documentation.DataAccess.Entities
 {
     [Table("docDocument")]
-    public class Document : IChangeTracking
+    public class Document : ITracking
     {
 
         [Column(TypeName = "nvarchar(50)")]

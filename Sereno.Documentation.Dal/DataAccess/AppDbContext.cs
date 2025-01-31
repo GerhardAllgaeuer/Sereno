@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Sereno.Database;
-using Sereno.Database.ChangeTracking;
+using Sereno.Database.ChangeTracking.Tl1;
 using Sereno.Documentation.DataAccess.Entities;
 
 namespace Sereno.Documentation.DataAccess
@@ -31,66 +31,40 @@ namespace Sereno.Documentation.DataAccess
 
         public override int SaveChanges()
         {
-            SetSessionContext();
+            TrackingUtility.SetSessionContext(context, Database.GetDbConnection());
             SetChangeTrackingData();
 
             return base.SaveChanges();
         }
 
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            await TrackingUtility.SetSessionContextAsync(context, Database.GetDbConnection());
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+
+
+
         public void SetChangeTrackingData()
         {
             var entries = ChangeTracker.Entries()
-                .Where(e => e.Entity is IChangeTracking &&
+                .Where(e => e.Entity is ITracking &&
                 (e.State == EntityState.Added || e.State == EntityState.Modified));
 
             foreach (var entry in entries)
             {
-                var entity = (IChangeTracking)entry.Entity;
+                //var entity = (IChangeTracking)entry.Entity;
 
-                if (entry.State == EntityState.Added)
-                {
-                    entity.Create = DateTime.Now;
-                    entity.CreateUser = context.UserName;
-                }
+                //if (entry.State == EntityState.Added)
+                //{
+                //    entity.Create = DateTime.Now;
+                //    entity.CreateUser = context.UserName;
+                //}
 
-                entity.ModifyUser = context.UserName;
-                entity.Modify = DateTime.Now;
+                //entity.ModifyUser = context.UserName;
+                //entity.Modify = DateTime.Now;
             }
-        }
-
-
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            await SetSessionContextAsync();
-            return await base.SaveChangesAsync(cancellationToken);
-        }
-
-        private void SetSessionContext()
-        {
-            if (Database.GetDbConnection().State == System.Data.ConnectionState.Closed)
-            {
-                Database.GetDbConnection().Open();
-            }
-
-            using var command = Database.GetDbConnection().CreateCommand();
-            command.CommandText = "EXEC sp_set_session_context @key = @keyParam, @value = @valueParam";
-            command.Parameters.Add(new SqlParameter("@keyParam", "UserName"));
-            command.Parameters.Add(new SqlParameter("@valueParam", context.UserName));
-            command.ExecuteNonQuery();
-        }
-
-        private async Task SetSessionContextAsync()
-        {
-            if (Database.GetDbConnection().State == System.Data.ConnectionState.Closed)
-            {
-                await Database.GetDbConnection().OpenAsync();
-            }
-
-            using var command = Database.GetDbConnection().CreateCommand();
-            command.CommandText = "EXEC sp_set_session_context @key = @keyParam, @value = @valueParam";
-            command.Parameters.Add(new SqlParameter("@keyParam", "UserName"));
-            command.Parameters.Add(new SqlParameter("@valueParam", context.UserName));
-            await command.ExecuteNonQueryAsync();
         }
 
 
@@ -98,10 +72,8 @@ namespace Sereno.Documentation.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            // Entities so konfigurieren, damit Trigger funktionieren
-            EntityFrameworkUtility.EnableTriggersOnTables(modelBuilder);
+            TrackingUtility.EnableTriggersOnTables(modelBuilder);
 
-            // Präfixe vor die Spalten setzen (z.B. vTitle, ...)
             EntityFrameworkUtility.SetDatabaseColumnPrefixes(modelBuilder);
         }
 

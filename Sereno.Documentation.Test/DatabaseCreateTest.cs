@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sereno.Database;
+using Sereno.Database.ChangeTracking.Tl1;
 using Sereno.Documentation.DataAccess;
 using Sereno.Documentation.DataAccess.Entities;
 using Sereno.Utilities;
@@ -24,16 +25,9 @@ namespace Sereno.Documentation
 
 
         [TestMethod]
-        public void Trigger_Create_Auto()
-        {
-        }
-
-
-        [TestMethod]
         public void Config_DatabaseCreate_Auto()
         {
             using var context = AppDbContext.Create(connectionString, appContext);
-
 
             // Datenbank neu erstellen
             context.Database.EnsureDeleted();
@@ -42,9 +36,7 @@ namespace Sereno.Documentation
             // Log Datenbank neu erstellen
             LogDatabaseUtility.DeleteLogDatabase(connectionString);
             LogDatabaseUtility.UpdateLogDatabase(connectionString);
-            TriggerUtility.CreateDefaultValuesTriggers(connectionString);
-
-
+            TrackingUtility.CreateDefaultValuesTriggers(connectionString);
 
 
             // Log Datenbank ändern und erneut abgleichen
