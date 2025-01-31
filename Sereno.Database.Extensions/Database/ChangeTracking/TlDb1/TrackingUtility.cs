@@ -4,7 +4,7 @@ using Sereno.Utilities;
 using System.Data;
 using System.Data.Common;
 
-namespace Sereno.Database.ChangeTracking.Tl1
+namespace Sereno.Database.ChangeTracking.TlDb1
 {
     public class TrackingUtility
     {

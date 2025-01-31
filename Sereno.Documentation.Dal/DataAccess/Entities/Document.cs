@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Sereno.Database.ChangeTracking.Tl1;
+using Sereno.Database.ChangeTracking.TlDb1;
 
 namespace Sereno.Documentation.DataAccess.Entities
 {

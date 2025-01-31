@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Sereno.Database;
-using Sereno.Database.ChangeTracking.Tl1;
+using Sereno.Database.ChangeTracking.TlDb1;
 using Sereno.Documentation.DataAccess.Entities;
 
 namespace Sereno.Documentation.DataAccess

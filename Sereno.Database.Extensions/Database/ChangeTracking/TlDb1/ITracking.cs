@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Sereno.Database.ChangeTracking.Tl1
+namespace Sereno.Database.ChangeTracking.TlDb1
 {
     public interface ITracking
     {
