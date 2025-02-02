@@ -9,7 +9,7 @@ public sealed class DatabaseTests : DatabaseTestBase
 {
     [TestMethod]
     [TestProperty("Auto", "")]
-    public void ReadSimpleTable_Auto()
+    public void ReadSimpleTable()
     {
         using var context = AppDbContext.Create(connectionString, appContext);
 

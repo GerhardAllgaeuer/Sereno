@@ -18,7 +18,7 @@ public sealed class LogDatabaseTests : DatabaseTestBase
 
     [TestMethod]
     [TestProperty("Auto", "")]
-    public void LogTableCheck_Auto()
+    public void LogDatabaseExistance()
     {
         using var connection = new SqlConnection(logConnectionString);
         connection.Open();
@@ -28,7 +28,7 @@ public sealed class LogDatabaseTests : DatabaseTestBase
 
     [TestMethod]
     [TestProperty("Auto", "")]
-    public void LogDatabaseChange_Auto()
+    public void LogDatabaseChange()
     {
         // Log Datenbank ändern und erneut abgleichen
         ChangeLogDatabase();

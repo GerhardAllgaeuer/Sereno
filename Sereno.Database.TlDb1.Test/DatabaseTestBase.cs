@@ -11,7 +11,7 @@ namespace Sereno.Database.TlDb1.Test
     [TestClass]
     public class DatabaseTestBase
     {
-        static bool createDatabase = false;
+        static bool createDatabase = true;
 
         protected string connectionString = "";
         protected string logConnectionString = "";
