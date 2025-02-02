@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
@@ -5,36 +6,39 @@ using Microsoft.Extensions.Configuration;
 using Sereno.Database.ChangeTracking.TlDb1;
 using Sereno.TlDb1.DataAccess;
 using Sereno.TlDb1.DataAccess.Entities;
+using FluentAssertions.DapperExtensions;
 using Sereno.Utilities;
 
 namespace Sereno.Database.TlDb1.Test;
 
 [TestClass]
-public sealed class DatabaseCreateTests : DatabaseTestBase
+public sealed class LogDatabaseTests : DatabaseTestBase
 {
 
+
     [TestMethod]
-    public void Test_Create_Init()
+    [TestProperty("Auto", "")]
+    public void LogTableCheck_Auto()
     {
+        using var connection = new SqlConnection(logConnectionString);
+        connection.Open();
+        connection.Should().HaveTable("tstSimple");
     }
 
 
-
     [TestMethod]
-    public void Config_LogDatabase_Update()
+    [TestProperty("Auto", "")]
+    public void LogDatabaseChange_Auto()
     {
-        using var context = AppDbContext.Create(connectionString, appContext);
-
         // Log Datenbank ändern und erneut abgleichen
         ChangeLogDatabase();
         LogDatabaseUtility.UpdateLogDatabase(connectionString);
 
-
-        List<SimpleTable> set = context.Documents.ToList();
-
-
-        Assert.IsNotNull(context);
+        using var connection = new SqlConnection(logConnectionString);
+        connection.Open();
+        connection.Should().HaveColumnType("tstSimple", "vTitle", "nvarchar(500)");
     }
+
 
     private void ChangeLogDatabase()
     {

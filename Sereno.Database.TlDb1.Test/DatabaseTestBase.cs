@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Sereno.Database.ChangeTracking.TlDb1;
 using Sereno.TlDb1.DataAccess;
 using Sereno.Utilities;
+using FluentAssertions;
 using System;
 
 namespace Sereno.Database.TlDb1.Test
@@ -13,6 +14,7 @@ namespace Sereno.Database.TlDb1.Test
         static bool createDatabase = false;
 
         protected string connectionString = "";
+        protected string logConnectionString = "";
         protected Context appContext = ContextUtility.Create("autotest@test.com");
 
         [TestInitialize]
@@ -20,6 +22,7 @@ namespace Sereno.Database.TlDb1.Test
         {
             var configuration = ConfigurationUtility.GetConfiguration();
             connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
+            logConnectionString = configuration.GetConnectionString("CreateTestLog_ConnectionString")!;
         }
 
 
@@ -40,7 +43,7 @@ namespace Sereno.Database.TlDb1.Test
 
                 // Datenbank neu erstellen
                 context.Database.EnsureDeleted();
-                context.Database.Migrate();
+                context.Database.EnsureCreated();
 
                 // Log Datenbank neu erstellen
                 LogDatabaseUtility.DeleteLogDatabase(connectionString);

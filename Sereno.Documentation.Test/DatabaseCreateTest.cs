@@ -38,31 +38,9 @@ namespace Sereno.Documentation
             LogDatabaseUtility.UpdateLogDatabase(connectionString);
             TrackingUtility.CreateDefaultValuesTriggers(connectionString);
 
-
-            // Log Datenbank ändern und erneut abgleichen
-            ChangeLogDatabase();
-            LogDatabaseUtility.UpdateLogDatabase(connectionString);
-
-
             List<Document> set = context.Documents.ToList();
 
-
             Assert.IsNotNull(context);
-        }
-
-
-        private void ChangeLogDatabase()
-        {
-            string logConnectionString = LogDatabaseUtility.GetLogDatabaseConnectionString(connectionString);
-            using (var connection = new SqlConnection(logConnectionString))
-            {
-                connection.Open();
-                using var command = connection.CreateCommand();
-                command.CommandText = $@"
-                    Alter table docDocument alter column vTitle nvarchar(400);
-                ";
-                command.ExecuteNonQuery();
-            }
         }
     }
 }

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sereno.Database.Extensions\Sereno.Database.Extensions.csproj" />
+    <ProjectReference Include="..\Sereno.Database.Test.Extensions\Sereno.Database.Test.Extensions.csproj" />
   </ItemGroup>
 
 </Project>
