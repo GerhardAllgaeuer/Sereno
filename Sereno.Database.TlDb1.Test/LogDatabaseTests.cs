@@ -1,13 +1,6 @@
 using FluentAssertions;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
-using Microsoft.Extensions.Configuration;
-using Sereno.Database.ChangeTracking.TlDb1;
-using Sereno.TlDb1.DataAccess;
-using Sereno.TlDb1.DataAccess.Entities;
-using FluentAssertions.DapperExtensions;
-using Sereno.Utilities;
+using Sereno.Test.Database;
 
 namespace Sereno.Database.TlDb1.Test;
 

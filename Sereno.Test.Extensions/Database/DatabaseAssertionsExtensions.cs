@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace FluentAssertions.DapperExtensions
+namespace Sereno.Test.Database
 {
     public static class DatabaseAssertionsExtensions
     {
