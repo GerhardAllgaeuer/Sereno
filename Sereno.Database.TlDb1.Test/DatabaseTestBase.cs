@@ -3,8 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Sereno.Database.ChangeTracking.TlDb1;
 using Sereno.TlDb1.DataAccess;
 using Sereno.Utilities;
-using FluentAssertions;
-using System;
 
 namespace Sereno.Database.TlDb1.Test
 {
