@@ -46,7 +46,7 @@ namespace Sereno.Database.TlDb1.Test
                 // Log Datenbank neu erstellen
                 LogDatabaseUtility.DeleteLogDatabase(connectionString);
                 LogDatabaseUtility.UpdateLogDatabase(connectionString);
-                TrackingUtility.CreateDefaultValuesTriggers(connectionString);
+                TrackingUtility.CreateChangeTrackingTriggers(connectionString);
             }
         }
     }

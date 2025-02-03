@@ -60,14 +60,27 @@ namespace Sereno.Database
             {
                 mainConnection.Open();
 
-                var mainTableSchema = mainConnection.GetSchema("Columns", new string[] { null, null, tableName, null });
+                var mainTableSchema = mainConnection.GetSchema("Columns",
+                [
+                    string.Empty,
+                    string.Empty,
+                    tableName ?? string.Empty,
+                    string.Empty
+                ]);
 
                 // Hole das Schema der Tabelle aus der Logdatenbank
                 using (var logConnection = new SqlConnection(logConnectionString))
                 {
                     logConnection.Open();
 
-                    var logTableSchema = logConnection.GetSchema("Columns", new string[] { null, null, tableName, null });
+                    var logTableSchema = mainConnection.GetSchema("Columns",
+                    [
+                        string.Empty,
+                        string.Empty,
+                        tableName ?? string.Empty,
+                        string.Empty
+                    ]);
+
 
                     // Erstelle ein Dictionary für die Log-Tabelle, um schnell Spalten zu prüfen
                     var logColumns = logTableSchema.AsEnumerable()
@@ -84,7 +97,7 @@ namespace Sereno.Database
                         if (!logColumns.ContainsKey(columnName))
                         {
                             // Spalte existiert nicht in der Log-Tabelle -> hinzufügen
-                            AddColumn(logConnection, tableName, columnName, mainDataType, maxLength, precision, scale);
+                            AddColumn(logConnection, tableName!, columnName, mainDataType, maxLength, precision, scale);
                         }
                         else
                         {
@@ -97,7 +110,7 @@ namespace Sereno.Database
 
                             if (!IsDataTypeEqual(mainDataType, maxLength, precision, scale, logDataType, logMaxLength, logPrecision, logScale))
                             {
-                                UpdateColumnType(logConnection, tableName, columnName, mainDataType, maxLength, precision, scale);
+                                UpdateColumnType(logConnection, tableName!, columnName, mainDataType, maxLength, precision, scale);
                             }
                         }
                     }

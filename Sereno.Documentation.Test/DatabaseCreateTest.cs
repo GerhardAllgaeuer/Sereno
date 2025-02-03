@@ -36,7 +36,7 @@ namespace Sereno.Documentation
             // Log Datenbank neu erstellen
             LogDatabaseUtility.DeleteLogDatabase(connectionString);
             LogDatabaseUtility.UpdateLogDatabase(connectionString);
-            TrackingUtility.CreateDefaultValuesTriggers(connectionString);
+            TrackingUtility.CreateChangeTrackingTriggers(connectionString);
 
             List<Document> set = context.Documents.ToList();
 

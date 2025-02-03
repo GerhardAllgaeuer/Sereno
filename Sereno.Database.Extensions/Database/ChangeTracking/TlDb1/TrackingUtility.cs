@@ -66,9 +66,9 @@ namespace Sereno.Database.ChangeTracking.TlDb1
 
 
         /// <summary>
-        /// Trigger für Default Values erstellen (dCreate, ...)
+        /// Trigger für ChangeTracking erstellen (Default Values , dCreate, ...)
         /// </summary>
-        public static void CreateDefaultValuesTriggers(string connectionString)
+        public static void CreateChangeTrackingTriggers(string connectionString)
         {
             DirectoryInfo solutionDirectory = CodeUtility.GetSolutionDirectory();
             DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + @"\Sereno.Database.Extensions\Database\ChangeTracking\TlDb1\Templates");
