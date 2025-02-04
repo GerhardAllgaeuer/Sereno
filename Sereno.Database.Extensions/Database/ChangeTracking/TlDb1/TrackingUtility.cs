@@ -73,7 +73,7 @@ namespace Sereno.Database.ChangeTracking.TlDb1
             DirectoryInfo solutionDirectory = CodeUtility.GetSolutionDirectory();
             DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + @"\Sereno.Database.Extensions\Database\ChangeTracking\TlDb1\Templates");
 
-            string triggerTemplate = File.ReadAllText($@"{templateDirectory.FullName}\Trigger.sql");
+            string triggerTemplate = File.ReadAllText($@"{templateDirectory.FullName}\ChangeTrackingTrigger.sql");
 
             DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString);
 
@@ -94,7 +94,6 @@ namespace Sereno.Database.ChangeTracking.TlDb1
                         ExcludeColumns = defaultColumns,
                         Spaces = 8,
                     });
-
 
                     // ohne Id und ohne Create/Update Columns
                     string dataColumns = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()

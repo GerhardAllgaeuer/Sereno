@@ -62,10 +62,10 @@ namespace Sereno.Database
 
                 var mainTableSchema = mainConnection.GetSchema("Columns",
                 [
-                    string.Empty,
-                    string.Empty,
-                    tableName ?? string.Empty,
-                    string.Empty
+                    null,
+                    null,
+                    tableName!,
+                    null
                 ]);
 
                 // Hole das Schema der Tabelle aus der Logdatenbank
@@ -73,12 +73,12 @@ namespace Sereno.Database
                 {
                     logConnection.Open();
 
-                    var logTableSchema = mainConnection.GetSchema("Columns",
+                    var logTableSchema = logConnection.GetSchema("Columns",
                     [
-                        string.Empty,
-                        string.Empty,
-                        tableName ?? string.Empty,
-                        string.Empty
+                        null,
+                        null,
+                        tableName!,
+                        null
                     ]);
 
 
@@ -94,15 +94,13 @@ namespace Sereno.Database
                         int precision = mainColumn.Field<int?>("NUMERIC_PRECISION") ?? 0;
                         int scale = mainColumn.Field<int?>("NUMERIC_SCALE") ?? 0;
 
-                        if (!logColumns.ContainsKey(columnName))
+                        if (!logColumns.TryGetValue(columnName, out DataRow? logColumn))
                         {
                             // Spalte existiert nicht in der Log-Tabelle -> hinzufügen
                             AddColumn(logConnection, tableName!, columnName, mainDataType, maxLength, precision, scale);
                         }
                         else
                         {
-                            // Spalte existiert -> Datentyp prüfen und ggf. ändern
-                            var logColumn = logColumns[columnName];
                             string logDataType = logColumn["DATA_TYPE"].ToString()!;
                             int logMaxLength = logColumn.Field<int?>("CHARACTER_MAXIMUM_LENGTH") ?? -1;
                             int logPrecision = logColumn.Field<int?>("NUMERIC_PRECISION") ?? 0;
