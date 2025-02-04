@@ -1,31 +1,22 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Sereno.Database;
 using Sereno.Documentation.DataAccess;
 using Sereno.Documentation.DataAccess.Entities;
+using Sereno.Documentation.Test;
 using Sereno.Utilities;
 
 namespace Sereno.Documentation
 {
     [TestClass]
-    public sealed class DatabaseUpdateTest
+    public sealed class DatabaseUpdateTest : DatabaseTestBase
     {
-        private string connectionString = "";
-        private Context appContext = ContextUtility.Create("autotest@test.com");
-
-
-        [TestInitialize]
-        public void Setup()
-        {
-            var configuration = ConfigurationUtility.GetConfiguration();
-            connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
-        }
-
 
         [TestMethod]
         public void Update_Data_Auto()
         {
+
+            Console.WriteLine(connectionString);
+
             using var context = AppDbContext.Create(connectionString, appContext);
 
             string id = Guid.NewGuid().ToString();
@@ -42,6 +33,7 @@ namespace Sereno.Documentation
             context.Documents.Add(document);
             context.SaveChanges();
 
+            Console.WriteLine(connectionString);
 
 
             using var updatecontext = AppDbContext.Create(connectionString, appContext);
