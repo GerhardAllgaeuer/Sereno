@@ -25,7 +25,7 @@ namespace Sereno.TlDb1.DataAccess
             return new AppDbContext(options, context);
         }
 
-        public DbSet<SimpleTable> Documents { get; set; }
+        public DbSet<SimpleTable> SimpleTables { get; set; }
 
 
         public override int SaveChanges()

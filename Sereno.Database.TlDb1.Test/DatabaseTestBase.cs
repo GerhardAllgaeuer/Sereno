@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sereno.Database.ChangeTracking.TlDb1;
 using Sereno.TlDb1.DataAccess;
@@ -11,8 +12,12 @@ namespace Sereno.Database.TlDb1.Test
     {
         static bool createDatabase = true;
 
+        protected SqlConnection? connection;
         protected string connectionString = "";
+
+        protected SqlConnection? logConnection;
         protected string logConnectionString = "";
+
         protected Context appContext = ContextUtility.Create("autotest@test.com");
 
         [TestInitialize]
@@ -21,6 +26,20 @@ namespace Sereno.Database.TlDb1.Test
             var configuration = ConfigurationUtility.GetConfiguration();
             connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
             logConnectionString = configuration.GetConnectionString("CreateTestLog_ConnectionString")!;
+
+            connection = new SqlConnection(connectionString);
+            connection.Open();
+
+            logConnection = new SqlConnection(logConnectionString);
+            logConnection.Open();
+        }
+
+
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            connection?.Dispose(); // Verbindung sauber schließen
         }
 
 
