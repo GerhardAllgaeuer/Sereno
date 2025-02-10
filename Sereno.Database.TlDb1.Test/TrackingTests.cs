@@ -1,8 +1,8 @@
 ﻿using Sereno.Test.Database;
 using Sereno.TlDb1.DataAccess;
 using Sereno.TlDb1.DataAccess.Entities;
-using FluentAssertions.Extensions;
 using FluentAssertions;
+using Sereno.Utilities;
 
 namespace Sereno.Database.TlDb1.Test;
 
@@ -12,11 +12,9 @@ public sealed class TrackingTests : DatabaseTestBase
     [TestMethod]
     [DoNotParallelize]
     [TestProperty("Auto", "")]
-    public void InsertTracking()
+    public void Track_Insert_And_Update_Correctly()
     {
         DatabaseUtility.TruncateTables(connection, "tstSimple");
-
-        using var context = AppDbContext.Create(connectionString, appContext);
 
         DateTime insertTime = DateTime.Now;
 
@@ -27,9 +25,11 @@ public sealed class TrackingTests : DatabaseTestBase
             Description = "Description 1",
         };
 
-        context.SimpleTables.Add(newEntry);
-        context.SaveChanges();
-
+        using (var context = AppDbContext.Create(connectionString, appContext))
+        {
+            context.SimpleTables.Add(newEntry);
+            context.SaveChanges();
+        }
 
         // Auslesen der Trigger geänderten Werte
         DateTime create = connection.DataRow("tstSimple", newEntry.Id)
@@ -57,6 +57,39 @@ public sealed class TrackingTests : DatabaseTestBase
         // Benutzer, muss der sein, der über den App Context gesetzt wurde
         createUser.Should().Be(appContext.UserName);
         modifyUser.Should().Be(appContext.UserName);
+
+
+
+
+
+        Context appContext2 = ContextUtility.Create("autotest2@test.com");
+        using (var context = AppDbContext.Create(connectionString, appContext2))
+        {
+            SimpleTable? entryFound = context.SimpleTables.Find(newEntry.Id);
+            entryFound!.Title = "Description 2";
+            context.SaveChanges();
+        }
+
+        // Auslesen der Trigger geänderten Werte
+        create = connection.DataRow("tstSimple", newEntry.Id)
+            .Column<DateTime>("dCreate");
+
+        modify = connection.DataRow("tstSimple", newEntry.Id)
+            .Column<DateTime>("dModify");
+
+        createUser = connection.DataRow("tstSimple", newEntry.Id)
+            .Column("vCreateUser");
+
+        modifyUser = connection.DataRow("tstSimple", newEntry.Id)
+            .Column("vModifyUser");
+
+        // Create Werte sollen unverändert sein
+        create.Should().BeCloseTo(insertTime, TimeSpan.FromSeconds(10));
+        createUser.Should().Be(appContext.UserName);
+
+        // Geändertes Datum muss höher, als das Erstelldatum sein
+        modify.Should().BeAfter(create);
+        modifyUser.Should().Be(appContext2.UserName);
 
     }
 }

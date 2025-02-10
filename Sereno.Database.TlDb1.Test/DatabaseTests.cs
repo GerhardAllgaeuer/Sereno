@@ -10,7 +10,7 @@ public sealed class DatabaseTests : DatabaseTestBase
 {
     [TestMethod]
     [TestProperty("Auto", "")]
-    public void ReadSimpleTable()
+    public void Should_Read_Records_From_SimpleTable()
     {
         using var context = AppDbContext.Create(connectionString, appContext);
 
@@ -23,7 +23,7 @@ public sealed class DatabaseTests : DatabaseTestBase
     [TestMethod]
     [DoNotParallelize]
     [TestProperty("Auto", "")]
-    public void InsertSimpleTable()
+    public void Should_Track_Insert_And_Update_Correctly()
     {
         // Tabelle bereinigen
         DatabaseUtility.TruncateTables(connection, "tstSimple");
