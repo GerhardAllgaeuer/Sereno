@@ -1,8 +1,4 @@
-﻿using FluentAssertions;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Sereno.Test.Database
+﻿namespace Sereno.Test.Database
 {
     public class DatabaseRowsAssertion
     {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using Sereno.Test.Database;
 using Sereno.TlDb1.DataAccess;
 using Sereno.TlDb1.DataAccess.Entities;
 
@@ -18,26 +19,47 @@ public sealed class DatabaseTests : DatabaseTestBase
         Assert.IsNotNull(context);
     }
 
+
     [TestMethod]
+    [DoNotParallelize]
     [TestProperty("Auto", "")]
     public void InsertSimpleTable()
     {
+        // Tabelle bereinigen
+        DatabaseUtility.TruncateTables(connection, "tstSimple");
+
+        // EF Inserts
         using var context = AppDbContext.Create(connectionString, appContext);
 
-        var newDocument = new SimpleTable
+        var newEntry1 = new SimpleTable
         {
             Id = Guid.NewGuid().ToString(),
-            Title = "Test Title",
-            Description = "This is a test content",
+            Title = "Title 1",
+            Description = "Description 1",
         };
 
-        context.SimpleTables.Add(newDocument);
+        context.SimpleTables.Add(newEntry1);
         context.SaveChanges();
 
-        var insertedDocument = context.SimpleTables.FirstOrDefault(d => d.Title == "Test Title");
 
-        Assert.IsNotNull(insertedDocument, "Der Datensatz wurde nicht in der Datenbank gespeichert.");
-        Assert.AreEqual("Test Title", insertedDocument.Title, "Der Titel des gespeicherten Dokuments ist falsch.");
-        Assert.AreEqual("This is a test content", insertedDocument.Description, "Der Inhalt des gespeicherten Dokuments ist falsch.");
+        var newEntry2 = new SimpleTable
+        {
+            Id = Guid.NewGuid().ToString(),
+            Title = "Title 2",
+            Description = "Description 2",
+        };
+
+        context.SimpleTables.Add(newEntry2);
+        context.SaveChanges();
+
+
+        // Zeilen prüfen
+        connection!.DataRows("tstSimple", null, "dModify")
+            .Should().ContainValues(
+            [
+                new { vTitle = "Title 1", vDescription = "Description 1" },
+                new { vTitle = "Title 2", vDescription = "Description 2" },
+            ]);
+
     }
 }

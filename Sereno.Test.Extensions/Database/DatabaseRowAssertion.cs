@@ -39,10 +39,16 @@ namespace Sereno.Test.Database
         }
 
 
-        public DatabaseColumnAssertion Column(string columnName)
+        public object Column(string columnName)
         {
             rowData.Should().ContainKey(columnName, $"Die Spalte '{columnName}' existiert nicht in der Zeile.");
-            return new DatabaseColumnAssertion(rowData[columnName]);
+            return rowData[columnName];
+        }
+
+        public T Column<T>(string columnName)
+        {
+            rowData.Should().ContainKey(columnName, $"Die Spalte '{columnName}' existiert nicht.");
+            return (T)Convert.ChangeType(rowData[columnName], typeof(T));
         }
 
         public DatabaseRowAssertion HasValues(object expectedValues)

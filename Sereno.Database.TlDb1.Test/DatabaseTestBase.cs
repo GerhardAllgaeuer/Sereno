@@ -4,21 +4,23 @@ using Microsoft.Extensions.Configuration;
 using Sereno.Database.ChangeTracking.TlDb1;
 using Sereno.TlDb1.DataAccess;
 using Sereno.Utilities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Sereno.Database.TlDb1.Test
 {
     [TestClass]
-    public class DatabaseTestBase
+    public abstract class DatabaseTestBase
     {
         static bool createDatabase = true;
 
-        protected SqlConnection? connection;
+        protected SqlConnection connection = new();
         protected string connectionString = "";
 
-        protected SqlConnection? logConnection;
+        protected SqlConnection logConnection = new();
         protected string logConnectionString = "";
 
         protected Context appContext = ContextUtility.Create("autotest@test.com");
+
 
         [TestInitialize]
         public void SetupBase()
