@@ -11,9 +11,9 @@ namespace Sereno.Test.Database
             actualValue = value;
         }
 
-        public void Be(object expectedValue)
+        public FluentAssertions.Primitives.ObjectAssertions Should()
         {
-            actualValue.Should().Be(expectedValue, $"Expected '{expectedValue}', was '{actualValue}'.");
+            return actualValue.Should();
         }
     }
 }

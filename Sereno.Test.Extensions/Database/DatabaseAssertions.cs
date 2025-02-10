@@ -24,7 +24,6 @@ namespace Sereno.Test.Database
             return this;
         }
 
-
         public DatabaseAssertions HaveColumnType(string tableName, string columnName, string expectedType)
         {
             var actualType = connection.ExecuteScalar<string>(

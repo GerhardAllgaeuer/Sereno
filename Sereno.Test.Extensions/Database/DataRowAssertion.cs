@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using Dapper;
 using FluentAssertions;
 using Microsoft.Data.SqlClient;
@@ -45,5 +44,20 @@ namespace Sereno.Test.Database
             rowData.Should().ContainKey(columnName, $"Die Spalte '{columnName}' existiert nicht in der Zeile.");
             return new ColumnAssertion(rowData[columnName]);
         }
+
+        public DataRowAssertion HasValues(object expectedValues)
+        {
+            var expectedDict = expectedValues.GetType().GetProperties()
+                .ToDictionary(p => p.Name, p => p.GetValue(expectedValues));
+
+            foreach (var kvp in expectedDict)
+            {
+                rowData.Should().ContainKey(kvp.Key);
+                rowData[kvp.Key].Should().Be(kvp.Value, $"Spalte '{kvp.Key}' hat den falschen Wert.");
+            }
+
+            return this;
+        }
+
     }
 }
