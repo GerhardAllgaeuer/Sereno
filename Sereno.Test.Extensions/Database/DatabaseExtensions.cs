@@ -4,19 +4,19 @@ using System.Data;
 
 namespace Sereno.Test.Database
 {
-    public static class DatabaseAssertionsExtensions
+    public static class DatabaseExtensions
     {
-        public static DatabaseAssertions Should(this SqlConnection connection)
+        public static DatabaseTableAssertion Should(this SqlConnection connection)
         {
-            return new DatabaseAssertions(connection);
+            return new DatabaseTableAssertion(connection);
         }
 
-        public static DataRowAssertion DataRow(this SqlConnection connection, string table, object primaryKeyValue, string primaryKeyColumn = "vId")
+        public static DatabaseRowAssertion DataRow(this SqlConnection connection, string table, object primaryKeyValue, string primaryKeyColumn = "vId")
         {
-            return new DataRowAssertion(connection, table, primaryKeyColumn, primaryKeyValue);
+            return new DatabaseRowAssertion(connection, table, primaryKeyColumn, primaryKeyValue);
         }
 
-        public static DataRowsAssertion DataRows(this SqlConnection connection, string table, object? whereClause = null, string? orderBy = null)
+        public static DatabaseRowsAssertion DataRows(this SqlConnection connection, string table, object? whereClause = null, string? orderBy = null)
         {
             if (connection.State != System.Data.ConnectionState.Open)
             {
@@ -50,7 +50,7 @@ namespace Sereno.Test.Database
                              .Select(dict => new Dictionary<string, object>(dict))
                              .ToList();
 
-            return new DataRowsAssertion(rows);
+            return new DatabaseRowsAssertion(rows);
         }
     }
 }

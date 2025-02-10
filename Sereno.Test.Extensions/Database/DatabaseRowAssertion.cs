@@ -5,11 +5,11 @@ using Microsoft.Data.SqlClient;
 
 namespace Sereno.Test.Database
 {
-    public class DataRowAssertion
+    public class DatabaseRowAssertion
     {
         private readonly Dictionary<string, object> rowData;
 
-        public DataRowAssertion(SqlConnection connection, string table, string primaryKeyColumn, object primaryKeyValue)
+        public DatabaseRowAssertion(SqlConnection connection, string table, string primaryKeyColumn, object primaryKeyValue)
         {
             // Sicherstellen, dass die Verbindung offen ist
             if (connection.State != ConnectionState.Open)
@@ -39,13 +39,13 @@ namespace Sereno.Test.Database
         }
 
 
-        public ColumnAssertion Column(string columnName)
+        public DatabaseColumnAssertion Column(string columnName)
         {
             rowData.Should().ContainKey(columnName, $"Die Spalte '{columnName}' existiert nicht in der Zeile.");
-            return new ColumnAssertion(rowData[columnName]);
+            return new DatabaseColumnAssertion(rowData[columnName]);
         }
 
-        public DataRowAssertion HasValues(object expectedValues)
+        public DatabaseRowAssertion HasValues(object expectedValues)
         {
             var expectedDict = expectedValues.GetType().GetProperties()
                 .ToDictionary(p => p.Name, p => p.GetValue(expectedValues));

@@ -4,16 +4,16 @@ using FluentAssertions;
 
 namespace Sereno.Test.Database
 {
-    public class DatabaseAssertions
+    public class DatabaseTableAssertion
     {
         private readonly SqlConnection connection;
 
-        public DatabaseAssertions(SqlConnection connection)
+        public DatabaseTableAssertion(SqlConnection connection)
         {
             this.connection = connection;
         }
 
-        public DatabaseAssertions HaveTable(string tableName)
+        public DatabaseTableAssertion HaveTable(string tableName)
         {
             var result = connection.ExecuteScalar<int>(
                 "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = @TableName",
@@ -24,7 +24,7 @@ namespace Sereno.Test.Database
             return this;
         }
 
-        public DatabaseAssertions HaveColumnType(string tableName, string columnName, string expectedType)
+        public DatabaseTableAssertion HaveColumnType(string tableName, string columnName, string expectedType)
         {
             var actualType = connection.ExecuteScalar<string>(
                 @"SELECT DATA_TYPE + 

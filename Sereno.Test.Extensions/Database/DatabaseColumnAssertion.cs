@@ -2,11 +2,11 @@
 
 namespace Sereno.Test.Database
 {
-    public class ColumnAssertion
+    public class DatabaseColumnAssertion
     {
         private readonly object actualValue;
 
-        public ColumnAssertion(object value)
+        public DatabaseColumnAssertion(object value)
         {
             actualValue = value;
         }

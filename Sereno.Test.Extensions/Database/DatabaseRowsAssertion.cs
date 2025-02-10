@@ -4,18 +4,18 @@ using System.Linq;
 
 namespace Sereno.Test.Database
 {
-    public class DataRowsAssertion
+    public class DatabaseRowsAssertion
     {
         private readonly List<Dictionary<string, object>> rows;
 
-        public DataRowsAssertion(List<Dictionary<string, object>> rows)
+        public DatabaseRowsAssertion(List<Dictionary<string, object>> rows)
         {
             this.rows = rows;
         }
 
-        public DataRowsAssertionsWrapper Should()
+        public DatabaseRowsAssertionHelper Should()
         {
-            return new DataRowsAssertionsWrapper(rows);
+            return new DatabaseRowsAssertionHelper(rows);
         }
     }
 }
