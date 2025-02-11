@@ -1,34 +1,22 @@
 ﻿
-Insert into tstSimple
-(vId, vTitle, vDescription)
-values
-(newid(), 'Title 1', 'Beschreibung 1');
-
-commit;
-
-
 Delete tstSimple;
 
-commit;
+Insert into tstSimple(vId, vTitle, vDescription)
+values (newid(), 'asfb', 'asdf');
 
+Delete SerenoTlDb1TestLog.dbo.tstSimple;
 
-Update tstSimple
-set vTitle = 'Altered'
-where vId in (Select max(vId) from tstSimple);
+Update tstSimple set vTitle = vTitle + ' ' + convert(nvarchar(50), GETDATE());
 
-commit;
+Delete SerenoTlDb1TestLog.dbo.tstSimple;
 
+Delete tstSimple;
 
 Select *
 from tstSimple;
 
-
 Select *
 from SerenoTlDb1TestLog.dbo.tstSimple;
 
-Delete SerenoTlDb1TestLog.dbo.tstSimple;
 
 commit;
-
-
-

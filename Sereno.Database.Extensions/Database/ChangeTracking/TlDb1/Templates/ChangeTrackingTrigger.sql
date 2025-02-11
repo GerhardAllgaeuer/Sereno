@@ -39,28 +39,26 @@ BEGIN
 
 						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
 						(
-							  vId
-    						, vChangeType
-							, dChange
-							, vUserName 
-                            , vTitle
-                            , vDescription
-							, dCreate
-							, vCreateUser
-							, dModify
-							, vModifyUser
+							vId, 
+    						vChangeType, 
+							dChange, 
+							vUserName,  
+{{DataColumns}}
+							dCreate, 
+							vCreateUser,
+							dModify,
+							vModifyUser
 						)
 						SELECT 
-							  vId
-							, 'I'
-							, @ChangeTime
-							, @SessionUser
-                            , vTitle
-                            , vDescription
-							, @ChangeTime
-							, @SessionUser
-							, @ChangeTime
-							, @SessionUser
+							vId,
+							'I',
+							@ChangeTime,
+							@SessionUser,
+{{DataColumns}}
+							@ChangeTime,
+							@SessionUser,
+							@ChangeTime,
+							@SessionUser
 						FROM inserted
 						WHERE inserted.vId = @PrimaryKey
 
@@ -94,56 +92,52 @@ BEGIN
 
 						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
 						(
-							  vId
-    						, vChangeType
-							, dChange
-							, vUserName 
-                            , vTitle
-                            , vDescription
-							, dCreate
-							, vCreateUser
-							, dModify
-							, vModifyUser
+							vId,
+    						vChangeType,
+							dChange,
+							vUserName,
+{{DataColumns}}
+							dCreate,
+							vCreateUser,
+							dModify,
+							vModifyUser
 						)
 						SELECT 
-							  vId
-							, 'UO'
-							, @ChangeTime
-							, @SessionUser
-                            , vTitle
-                            , vDescription
-							, dCreate
-							, vCreateUser
-							, dModify
-							, vModifyUser
+							  vId,
+							'UO',
+							@ChangeTime,
+							@SessionUser,
+{{DataColumns}}
+							dCreate,
+							vCreateUser,
+							dModify,
+							vModifyUser
 						FROM deleted
 						WHERE deleted.vId = @PrimaryKey
 
 
 						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
 						(
-							  vId
-    						, vChangeType
-							, dChange
-							, vUserName 
-                            , vTitle
-                            , vDescription
-							, dCreate
-							, vCreateUser
-							, dModify
-							, vModifyUser
+							vId,
+    						vChangeType,
+							dChange,
+							vUserName,
+{{DataColumns}}
+							dCreate,
+							vCreateUser,
+							dModify,
+							vModifyUser
 						)
 						SELECT 
-							  vId
-							, 'U'
-							, @ChangeTime
-							, @SessionUser
-                            , vTitle
-                            , vDescription
-							, dCreate
-							, vCreateUser
-							, dModify
-							, vModifyUser
+							vId,
+							'U',
+							@ChangeTime,
+							@SessionUser,
+{{DataColumns}}
+							dCreate,
+							vCreateUser,
+							dModify,
+							vModifyUser
 						FROM {{TableName}}
 						WHERE vId = @PrimaryKey
 
@@ -174,28 +168,26 @@ BEGIN
 
 						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
 						(
-							  vId
-    						, vChangeType
-							, dChange
-							, vUserName
-                            , vTitle
-                            , vDescription
-							, dCreate
-							, vCreateUser
-							, dModify
-							, vModifyUser
+							vId,
+    						vChangeType,
+							dChange,
+							vUserName,
+{{DataColumns}}
+							dCreate,
+							vCreateUser,
+							dModify,
+							vModifyUser
 						)
 						SELECT 
-							  vId
-							, 'D'
-							, @ChangeTime
-							, @SessionUser
-                            , vTitle
-                            , vDescription
-							, dCreate
-							, vCreateUser
-							, dModify
-							, vModifyUser
+							vId,
+							'D',
+							@ChangeTime,
+							@SessionUser,
+{{DataColumns}}
+							dCreate,
+							vCreateUser,
+							dModify,
+							vModifyUser
 						FROM deleted
 						WHERE deleted.vId = @PrimaryKey
 

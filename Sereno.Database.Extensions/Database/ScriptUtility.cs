@@ -71,14 +71,23 @@ namespace Sereno.Database
 
                 process.Start();
 
+                process.WaitForExit();
+
                 string output = process.StandardOutput.ReadToEnd();
                 string error = process.StandardError.ReadToEnd();
 
-                process.WaitForExit();
-
+                // Leider kommt hier nichts
                 if (process.ExitCode != 0)
                 {
                     throw new Exception($"{error}");
+                }
+
+                // Drum so
+                if (output.Contains("incorrect") ||
+                    output.Contains("failed") ||
+                    output.Contains("syntax"))
+                {
+                    throw new Exception($"{output}");
                 }
             }
             catch (Exception ex)
