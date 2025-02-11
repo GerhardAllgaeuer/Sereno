@@ -37,7 +37,7 @@ BEGIN
 							vModifyUser = @SessionUser
 						WHERE {{TableName}}.vId = @PrimaryKey
 
-						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
+						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
 							vId, 
     						vChangeType, 
@@ -90,7 +90,7 @@ BEGIN
 							vModifyUser = @SessionUser
 						WHERE {{TableName}}.vId = @PrimaryKey
 
-						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
+						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
 							vId,
     						vChangeType,
@@ -116,7 +116,7 @@ BEGIN
 						WHERE deleted.vId = @PrimaryKey
 
 
-						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
+						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
 							vId,
     						vChangeType,
@@ -166,7 +166,7 @@ BEGIN
 					BEGIN
 						SELECT @ChangeTime = GetDate()
 
-						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
+						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
 							vId,
     						vChangeType,

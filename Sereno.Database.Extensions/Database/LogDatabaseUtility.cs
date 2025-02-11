@@ -286,7 +286,7 @@ namespace Sereno.Database
             return builder.ConnectionString;
         }
 
-        private static string GetLogDatabaseName(string connectionString)
+        public static string GetLogDatabaseName(string connectionString)
         {
             ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
 

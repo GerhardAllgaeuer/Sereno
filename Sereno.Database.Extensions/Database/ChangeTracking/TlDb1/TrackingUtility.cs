@@ -73,6 +73,9 @@ namespace Sereno.Database.ChangeTracking.TlDb1
             DirectoryInfo solutionDirectory = CodeUtility.GetSolutionDirectory();
             DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + @"\Sereno.Database.Extensions\Database\ChangeTracking\TlDb1\Templates");
 
+            string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(connectionString);
+
+
             string triggerTemplate = File.ReadAllText($@"{templateDirectory.FullName}\ChangeTrackingTrigger.sql");
 
             DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString);
@@ -87,14 +90,6 @@ namespace Sereno.Database.ChangeTracking.TlDb1
 
                     HashSet<string> defaultColumns = ["vId", "dCreate", "vCreateUser", "dModify", "vModifyUser"];
 
-                    string columnsWithType = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
-                    {
-                        Columns = columnsTable,
-                        BuilderType = SchemaColumnBuilderType.ColumnsWithDatatype,
-                        ExcludeColumns = defaultColumns,
-                        Spaces = 8,
-                    });
-
                     // ohne Id und ohne Create/Update Columns
                     string dataColumns = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
                     {
@@ -103,32 +98,11 @@ namespace Sereno.Database.ChangeTracking.TlDb1
                         ExcludeColumns = defaultColumns,
                     });
 
-                    string dataColumnsWithPd = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
-                    {
-                        Columns = columnsTable,
-                        Prefix = "pd",
-                        Spaces = 8,
-                        ExcludeColumns = defaultColumns,
-                    });
-
-                    string updateColumns = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
-                    {
-                        Columns = columnsTable,
-                        BuilderType = SchemaColumnBuilderType.Update,
-                        Prefix = "d",
-                        UpdatePrefix = "pd",
-                        Spaces = 8,
-                        ExcludeColumns = defaultColumns,
-                    });
-
                     Dictionary<string, string> replacements = new()
                     {
                         { "TableName", tableName! },
-
-                        { "ColumnsWithType", columnsWithType },
-                        { "DataColumnsWithPd", dataColumnsWithPd },
                         { "DataColumns", dataColumns },
-                        { "UpdateColumns", updateColumns },
+                        { "LogDatabaseName", logDatabaseName },
                     };
 
                     string sql = ReplaceVariables(triggerTemplate, replacements);
