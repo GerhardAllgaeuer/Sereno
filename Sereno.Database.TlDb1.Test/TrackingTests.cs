@@ -15,7 +15,9 @@ public sealed class TrackingTests : DatabaseTestBase
     public void Track_Insert_And_Update_Correctly()
     {
         DatabaseUtility.TruncateTables(connection, "tstSimple");
+        DatabaseUtility.TruncateTables(logConnection, "tstSimple");
 
+        // Vergleichszeit zum Testen
         DateTime insertTime = DateTime.Now;
 
         var newEntry = new SimpleTable
@@ -61,7 +63,7 @@ public sealed class TrackingTests : DatabaseTestBase
 
 
 
-
+        // Update mit anderem User
         Context appContext2 = ContextUtility.Create("autotest2@test.com");
         using (var context = AppDbContext.Create(connectionString, appContext2))
         {

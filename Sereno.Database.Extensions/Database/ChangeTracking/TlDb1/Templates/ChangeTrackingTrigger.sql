@@ -1,46 +1,216 @@
-﻿CREATE TRIGGER {{TableName}}_ti1 ON {{TableName}}
+﻿
+CREATE TRIGGER {{TableName}}_t1 ON {{TableName}} 
 AFTER INSERT, UPDATE, DELETE AS
+
+DECLARE @ChangeTime DATETIME2;
+DECLARE @PrimaryKey NVARCHAR(50);
+DECLARE @SessionUser NVARCHAR(500);
+
 BEGIN
-    -- Benutzer aus SESSION_CONTEXT auslesen und in NVARCHAR konvertieren
-    DECLARE @SessionUser NVARCHAR(500);
+
+    SET NOCOUNT ON
+
     SET @SessionUser = CONVERT(NVARCHAR(500), SESSION_CONTEXT(N'UserName'));
 
     -- Fallback auf SUSER_NAME(), falls SESSION_CONTEXT keinen Wert liefert
     IF @SessionUser IS NULL
         SET @SessionUser = SUSER_NAME();
 
+    -- INSERT
+    IF EXISTS (SELECT 1 FROM inserted) AND NOT EXISTS (SELECT 1 FROM deleted)
+		BEGIN
+			BEGIN
+				DECLARE cursorInserted CURSOR FOR
+					SELECT vId
+					FROM inserted
+
+				OPEN cursorInserted
+				FETCH NEXT FROM cursorInserted into @PrimaryKey
+				While @@fetch_status = 0
+					BEGIN
+						SELECT @ChangeTime = GetDate()
+
+						UPDATE {{TableName}}
+						SET dCreate = @ChangeTime,
+							vCreateUser = @SessionUser,
+							dModify = @ChangeTime,
+							vModifyUser = @SessionUser
+						WHERE {{TableName}}.vId = @PrimaryKey
+
+						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
+						(
+							  vId
+    						, vChangeType
+							, dChange
+							, vUserName 
+                            , vTitle
+                            , vDescription
+							, dCreate
+							, vCreateUser
+							, dModify
+							, vModifyUser
+						)
+						SELECT 
+							  vId
+							, 'I'
+							, @ChangeTime
+							, @SessionUser
+                            , vTitle
+                            , vDescription
+							, @ChangeTime
+							, @SessionUser
+							, @ChangeTime
+							, @SessionUser
+						FROM inserted
+						WHERE inserted.vId = @PrimaryKey
+
+
+						FETCH NEXT FROM cursorInserted INTO @PrimaryKey
+
+					END
+				CLOSE cursorInserted
+				DEALLOCATE cursorInserted
+			END
+		END
+
+	-- Update
+    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
+		BEGIN
+			BEGIN
+				DECLARE cursorInserted CURSOR FOR
+					SELECT vId
+					FROM inserted
+
+				OPEN cursorInserted
+				FETCH NEXT FROM cursorInserted into @PrimaryKey
+				While @@fetch_status = 0
+					BEGIN
+						SELECT @ChangeTime = GetDate()
+
+						UPDATE {{TableName}}
+						SET dModify = @ChangeTime,
+							vModifyUser = @SessionUser
+						WHERE {{TableName}}.vId = @PrimaryKey
+
+						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
+						(
+							  vId
+    						, vChangeType
+							, dChange
+							, vUserName 
+                            , vTitle
+                            , vDescription
+							, dCreate
+							, vCreateUser
+							, dModify
+							, vModifyUser
+						)
+						SELECT 
+							  vId
+							, 'UO'
+							, @ChangeTime
+							, @SessionUser
+                            , vTitle
+                            , vDescription
+							, dCreate
+							, vCreateUser
+							, dModify
+							, vModifyUser
+						FROM deleted
+						WHERE deleted.vId = @PrimaryKey
+
+
+						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
+						(
+							  vId
+    						, vChangeType
+							, dChange
+							, vUserName 
+                            , vTitle
+                            , vDescription
+							, dCreate
+							, vCreateUser
+							, dModify
+							, vModifyUser
+						)
+						SELECT 
+							  vId
+							, 'U'
+							, @ChangeTime
+							, @SessionUser
+                            , vTitle
+                            , vDescription
+							, dCreate
+							, vCreateUser
+							, dModify
+							, vModifyUser
+						FROM {{TableName}}
+						WHERE vId = @PrimaryKey
+
+
+						FETCH NEXT FROM cursorInserted INTO @PrimaryKey
+
+					END
+				CLOSE cursorInserted
+				DEALLOCATE cursorInserted
+			END
+			RETURN;
+		END
+
 
     -- DELETE
     IF EXISTS (SELECT 1 FROM deleted) AND NOT EXISTS (SELECT 1 FROM inserted)
-    BEGIN
-		RETURN;
-    END
+		BEGIN
+			BEGIN
+				DECLARE cursorDeleted CURSOR FOR
+					SELECT vId
+					FROM deleted
 
-    -- INSERT
-    IF EXISTS (SELECT 1 FROM inserted) AND NOT EXISTS (SELECT 1 FROM deleted)
-    BEGIN
-		UPDATE {{TableName}}
-		SET dCreate = GetDate(),
-			vCreateUser = @SessionUser,
-			dModify = GetDate(),
-			vModifyUser = @SessionUser
-		FROM inserted
-		WHERE {{TableName}}.vId = inserted.vId
-		AND NOT EXISTS (SELECT 1 FROM {{TableName}} WHERE {{TableName}}.vId = inserted.vId AND dCreate IS NOT NULL);
-        RETURN;
-    END
+				OPEN cursorDeleted
+				FETCH NEXT FROM cursorDeleted into @PrimaryKey
+				While @@fetch_status = 0
+					BEGIN
+						SELECT @ChangeTime = GetDate()
 
-    -- UPDATE
-    IF EXISTS (SELECT 1 FROM inserted) AND EXISTS (SELECT 1 FROM deleted)
-    BEGIN
-		UPDATE {{TableName}}
-		SET dModify = GetDate(),
-			vModifyUser = @SessionUser
-		FROM inserted
-		WHERE {{TableName}}.vId = inserted.vId;
+						INSERT INTO SerenoTlDb1TestLog.[dbo].{{TableName}}
+						(
+							  vId
+    						, vChangeType
+							, dChange
+							, vUserName
+                            , vTitle
+                            , vDescription
+							, dCreate
+							, vCreateUser
+							, dModify
+							, vModifyUser
+						)
+						SELECT 
+							  vId
+							, 'D'
+							, @ChangeTime
+							, @SessionUser
+                            , vTitle
+                            , vDescription
+							, dCreate
+							, vCreateUser
+							, dModify
+							, vModifyUser
+						FROM deleted
+						WHERE deleted.vId = @PrimaryKey
+
+						FETCH NEXT FROM cursorDeleted INTO @PrimaryKey
+
+					END
+				CLOSE cursorDeleted
+				DEALLOCATE cursorDeleted
+			END
+		END
 		RETURN;
-    END
-END;
+END
+
 GO
 
-commit
+ALTER TABLE [dbo].[{{TableName}}] ENABLE TRIGGER [{{TableName}}_t1]
+GO
+

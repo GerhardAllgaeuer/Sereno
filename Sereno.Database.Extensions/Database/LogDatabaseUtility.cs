@@ -220,7 +220,7 @@ namespace Sereno.Database
 
             // Füge die zusätzlichen Spalten hinzu
             sql += "    vChangeType nvarchar(10) NOT NULL,\n";
-            sql += "    dChange datetime NOT NULL,\n";
+            sql += "    dChange datetime2 NOT NULL,\n";
             sql += "    vUserName nvarchar(400),\n";
             sql += "    tTimestamp timestamp NOT NULL,\n";
 
