@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sereno.Database.ChangeTracking.TlDb1;
+using Sereno.Test.Database;
 using Sereno.TlDb1.DataAccess;
 using Sereno.Utilities;
 using System.Diagnostics.CodeAnalysis;
+using System.Xml.Linq;
 
 namespace Sereno.Database.TlDb1.Test
 {
@@ -57,11 +59,11 @@ namespace Sereno.Database.TlDb1.Test
                 var configuration = ConfigurationUtility.GetConfiguration();
                 string connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
 
+                DatabaseUtility.DropDatabase(connectionString);
+
                 Context appContext = ContextUtility.Create("autotest@test.com");
                 using var context = AppDbContext.Create(connectionString, appContext);
 
-                // Datenbank neu erstellen
-                context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
                 // Log Datenbank neu erstellen

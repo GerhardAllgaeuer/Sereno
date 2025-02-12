@@ -30,8 +30,6 @@ public sealed class LogDatabaseTests : DatabaseTestBase
         using var connection = new SqlConnection(logConnectionString);
         connection.Open();
         connection.Should().HaveColumnType("tstSimple", "vTitle", "nvarchar(500)");
-
-
     }
 
 

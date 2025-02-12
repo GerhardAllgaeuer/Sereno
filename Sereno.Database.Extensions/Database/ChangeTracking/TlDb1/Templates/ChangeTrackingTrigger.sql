@@ -4,6 +4,7 @@ AFTER INSERT, UPDATE, DELETE AS
 
 DECLARE @ChangeTime DATETIME2;
 DECLARE @PrimaryKey NVARCHAR(50);
+DECLARE @ChangeId NVARCHAR(50);
 DECLARE @SessionUser NVARCHAR(500);
 
 BEGIN
@@ -28,7 +29,8 @@ BEGIN
 				FETCH NEXT FROM cursorInserted into @PrimaryKey
 				While @@fetch_status = 0
 					BEGIN
-						SELECT @ChangeTime = GetDate()
+						SELECT @ChangeTime = GETDATE()
+						SELECT @ChangeId = NEWID()
 
 						UPDATE {{TableName}}
 						SET dCreate = @ChangeTime,
@@ -39,10 +41,11 @@ BEGIN
 
 						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
-							vId, 
-    						vChangeType, 
+    						vChangeId,
+							vChangeType, 
 							dChange, 
 							vUserName,  
+							vId, 
 {{DataColumns}}
 							dCreate, 
 							vCreateUser,
@@ -50,10 +53,11 @@ BEGIN
 							vModifyUser
 						)
 						SELECT 
-							vId,
+							@ChangeId,
 							'I',
 							@ChangeTime,
 							@SessionUser,
+							vId,
 {{DataColumns}}
 							@ChangeTime,
 							@SessionUser,
@@ -83,7 +87,8 @@ BEGIN
 				FETCH NEXT FROM cursorInserted into @PrimaryKey
 				While @@fetch_status = 0
 					BEGIN
-						SELECT @ChangeTime = GetDate()
+						SELECT @ChangeTime = GETDATE()
+						SELECT @ChangeId = NEWID()
 
 						UPDATE {{TableName}}
 						SET dModify = @ChangeTime,
@@ -92,10 +97,11 @@ BEGIN
 
 						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
-							vId,
+    						vChangeId,
     						vChangeType,
 							dChange,
 							vUserName,
+							vId,
 {{DataColumns}}
 							dCreate,
 							vCreateUser,
@@ -103,10 +109,11 @@ BEGIN
 							vModifyUser
 						)
 						SELECT 
-							  vId,
+							@ChangeId,
 							'UO',
 							@ChangeTime,
 							@SessionUser,
+							vId,
 {{DataColumns}}
 							dCreate,
 							vCreateUser,
@@ -118,10 +125,11 @@ BEGIN
 
 						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
-							vId,
+    						vChangeId,
     						vChangeType,
 							dChange,
 							vUserName,
+							vId,
 {{DataColumns}}
 							dCreate,
 							vCreateUser,
@@ -129,10 +137,11 @@ BEGIN
 							vModifyUser
 						)
 						SELECT 
-							vId,
+							@ChangeId,
 							'U',
 							@ChangeTime,
 							@SessionUser,
+							vId,
 {{DataColumns}}
 							dCreate,
 							vCreateUser,
@@ -164,14 +173,16 @@ BEGIN
 				FETCH NEXT FROM cursorDeleted into @PrimaryKey
 				While @@fetch_status = 0
 					BEGIN
-						SELECT @ChangeTime = GetDate()
+						SELECT @ChangeTime = GETDATE()
+						SELECT @ChangeId = NEWID()
 
 						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
-							vId,
+    						vChangeId,
     						vChangeType,
 							dChange,
 							vUserName,
+							vId,
 {{DataColumns}}
 							dCreate,
 							vCreateUser,
@@ -179,10 +190,11 @@ BEGIN
 							vModifyUser
 						)
 						SELECT 
-							vId,
+							@ChangeId,
 							'D',
 							@ChangeTime,
 							@SessionUser,
+							vId,
 {{DataColumns}}
 							dCreate,
 							vCreateUser,

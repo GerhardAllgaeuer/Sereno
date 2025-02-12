@@ -143,25 +143,12 @@ namespace Sereno.Database
         }
 
 
-
-
         public static void DeleteLogDatabase(string connectionString)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(connectionString);
 
             string logDatabaseName = GetLogDatabaseName(connectionString);
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using var command = connection.CreateCommand();
-                command.CommandText = $@"
-                    IF EXISTS (SELECT * FROM sys.databases WHERE name = @LogDatabaseName)
-                    BEGIN
-                        DROP DATABASE {logDatabaseName};
-                    END;";
-                command.Parameters.Add(new SqlParameter("@LogDatabaseName", logDatabaseName));
-                command.ExecuteNonQuery();
-            }
+            DatabaseUtility.DropDatabase(connectionString, logDatabaseName);
         }
 
         private static void EnsureLogDatabaseExists(string connectionString)
@@ -219,6 +206,7 @@ namespace Sereno.Database
             var sql = $"CREATE TABLE {tableName} (\n";
 
             // Füge die zusätzlichen Spalten hinzu
+            sql += "    vChangeId nvarchar(50) NOT NULL,\n";
             sql += "    vChangeType nvarchar(10) NOT NULL,\n";
             sql += "    dChange datetime2 NOT NULL,\n";
             sql += "    vUserName nvarchar(400),\n";
