@@ -35,15 +35,10 @@ public sealed class LogDatabaseTests : DatabaseTestBase
 
     private void ChangeLogDatabase()
     {
-        string logConnectionString = LogDatabaseUtility.GetLogDatabaseConnectionString(connectionString);
-        using (var connection = new SqlConnection(logConnectionString))
-        {
-            connection.Open();
-            using var command = connection.CreateCommand();
-            command.CommandText = $@"
-                    Alter table tstSimple alter column vTitle nvarchar(400);
-                ";
-            command.ExecuteNonQuery();
-        }
+        using var command = logConnection.CreateCommand();
+        command.CommandText = $@"
+                Alter table tstSimple alter column vTitle nvarchar(400);
+            ";
+        command.ExecuteNonQuery();
     }
 }

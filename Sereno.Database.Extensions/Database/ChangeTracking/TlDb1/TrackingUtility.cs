@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Sereno.Utilities;
 using System.Data;
 using System.Data.Common;
-using System.Net.NetworkInformation;
 
 namespace Sereno.Database.ChangeTracking.TlDb1
 {
@@ -36,7 +35,6 @@ namespace Sereno.Database.ChangeTracking.TlDb1
             command.Parameters.Add(new SqlParameter("@valueParam", context.UserName));
             await command.ExecuteNonQueryAsync();
         }
-
 
         /// <summary>
         /// Entities so konfigurieren, damit Trigger zugelassen werden

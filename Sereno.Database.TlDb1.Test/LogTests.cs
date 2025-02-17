@@ -102,7 +102,7 @@ public sealed class LogTests : DatabaseTestBase
     [TestMethod]
     [DoNotParallelize]
     [TestProperty("Auto", "")]
-    public void Log_Insert__Update_Delete_At_LogDatabase_Correctly()
+    public void Log_Insert_Update_Delete_At_LogDatabase_Correctly()
     {
         DatabaseUtility.TruncateTables(connection, "tstSimple");
         DatabaseUtility.TruncateTables(logConnection, "tstSimple");

@@ -27,7 +27,7 @@ BEGIN
 
 				OPEN cursorInserted
 				FETCH NEXT FROM cursorInserted into @PrimaryKey
-				While @@fetch_status = 0
+				WHILE @@fetch_status = 0
 					BEGIN
 						SELECT @ChangeTime = GETDATE()
 						SELECT @ChangeId = NEWID()
@@ -103,7 +103,7 @@ BEGIN
 
 				OPEN cursorInserted
 				FETCH NEXT FROM cursorInserted into @PrimaryKey
-				While @@fetch_status = 0
+				WHILE @@fetch_status = 0
 					BEGIN
 						SELECT @ChangeTime = GETDATE()
 						SELECT @ChangeId = NEWID()
@@ -207,7 +207,7 @@ BEGIN
 
 				OPEN cursorDeleted
 				FETCH NEXT FROM cursorDeleted into @PrimaryKey
-				While @@fetch_status = 0
+				WHILE @@fetch_status = 0
 					BEGIN
 						SELECT @ChangeTime = GETDATE()
 						SELECT @ChangeId = NEWID()
@@ -265,7 +265,7 @@ BEGIN
 				DEALLOCATE cursorDeleted
 			END
 		END
-		RETURN;
+	RETURN;
 END
 
 GO

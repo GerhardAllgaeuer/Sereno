@@ -29,6 +29,14 @@ namespace Sereno.Database
         }
 
 
+        public static string GetLogDatabaseName(string databaseName)
+        {
+            var logDatabaseName = $"{databaseName}Log";
+
+            return logDatabaseName;
+        }
+
+
         private static void UpdateLogSchema(string connectionString, string databaseName)
         {
             DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString, databaseName);
@@ -164,14 +172,6 @@ namespace Sereno.Database
         }
 
 
-        public static void DropLogDatabase(string connectionString)
-        {
-            ArgumentNullException.ThrowIfNullOrEmpty(connectionString);
-
-            string logDatabaseName = GetLogDatabaseNameFromConnectionString(connectionString);
-            DatabaseUtility.DropDatabase(connectionString, logDatabaseName);
-        }
-
         private static void EnsureLogDatabaseExists(string connectionString, string databaseName)
         {
             string logDatabaseName = GetLogDatabaseName(databaseName);
@@ -267,54 +267,5 @@ namespace Sereno.Database
             return sql;
         }
 
-        public static string GetLogDatabaseConnectionString(string connectionString)
-        {
-            string logDatabaseName = GetLogDatabaseNameFromConnectionString(connectionString);
-
-            if (string.IsNullOrWhiteSpace(connectionString))
-                throw new ArgumentException("ConnectionString darf nicht leer oder null sein.", nameof(connectionString));
-
-            if (string.IsNullOrWhiteSpace(logDatabaseName))
-                throw new ArgumentException("Der neue Datenbankname darf nicht leer oder null sein.", nameof(logDatabaseName));
-
-            // Verwende DbConnectionStringBuilder zum Parsen
-            var builder = new DbConnectionStringBuilder
-            {
-                ConnectionString = connectionString
-            };
-
-            // Überprüfe und aktualisiere den Datenbanknamen
-            if (builder.ContainsKey("Initial Catalog"))
-            {
-                builder["Initial Catalog"] = logDatabaseName;
-            }
-            else if (builder.ContainsKey("Database"))
-            {
-                builder["Database"] = logDatabaseName;
-            }
-            else
-            {
-                // Füge den Datenbanknamen hinzu, falls nicht vorhanden
-                builder.Add("Initial Catalog", logDatabaseName);
-            }
-
-            return builder.ConnectionString;
-        }
-
-        public static string GetLogDatabaseNameFromConnectionString(string connectionString)
-        {
-            ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
-
-            var logDatabaseName = $"{connectionInfo.Database}Log";
-
-            return logDatabaseName;
-        }
-
-        public static string GetLogDatabaseName(string databaseName)
-        {
-            var logDatabaseName = $"{databaseName}Log";
-
-            return logDatabaseName;
-        }
     }
 }

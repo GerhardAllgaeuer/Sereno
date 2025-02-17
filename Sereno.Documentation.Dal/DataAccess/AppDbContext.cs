@@ -42,7 +42,6 @@ namespace Sereno.Documentation.DataAccess
         }
 
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -51,8 +50,5 @@ namespace Sereno.Documentation.DataAccess
 
             EntityFrameworkUtility.SetDatabaseColumnPrefixes(modelBuilder);
         }
-
-
-
     }
 }
