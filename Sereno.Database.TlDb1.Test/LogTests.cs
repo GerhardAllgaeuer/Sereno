@@ -15,7 +15,7 @@ public sealed class LogTests : DatabaseTestBase
     public void Set_Create_And_Modify_Correctly()
     {
         DatabaseUtility.TruncateTables(connection, ["tstSimple"]);
-        DatabaseUtility.TruncateTables(logConnection, ["tstSimple"]);
+        DatabaseUtility.TruncateTables(logConnection, ["tstSimple", "logChange"]);
 
         // Vergleichszeit zum Testen
         DateTime insertTime = DateTime.Now;
@@ -105,7 +105,7 @@ public sealed class LogTests : DatabaseTestBase
     public void Log_Insert_Update_Delete_At_LogDatabase_Correctly()
     {
         DatabaseUtility.TruncateTables(connection, ["tstSimple"]);
-        DatabaseUtility.TruncateTables(logConnection, ["logChange", "tstSimple"]);
+        DatabaseUtility.TruncateTables(logConnection, ["tstSimple", "logChange"]);
 
         // Insert
         var newEntry = new SimpleTable

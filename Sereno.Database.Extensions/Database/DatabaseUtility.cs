@@ -54,7 +54,7 @@ namespace Sereno.Database
             }
         }
 
-        public static void TruncateTables(SqlConnection? connection, List<string> list, params string[] tables)
+        public static void TruncateTables(SqlConnection? connection, params string[] tables)
         {
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));

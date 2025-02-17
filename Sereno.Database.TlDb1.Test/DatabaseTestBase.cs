@@ -2,11 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sereno.Database.Logging.TlDb1;
-using Sereno.Test.Database;
 using Sereno.TlDb1.DataAccess;
 using Sereno.Utilities;
-using System.Diagnostics.CodeAnalysis;
-using System.Xml.Linq;
 
 namespace Sereno.Database.TlDb1.Test
 {
@@ -53,7 +50,9 @@ namespace Sereno.Database.TlDb1.Test
         [TestCleanup]
         public void Cleanup()
         {
-            connection?.Dispose(); // Verbindung sauber schließen
+            connection?.Dispose();
+            logConnection?.Dispose();
+            masterConnection?.Dispose();
         }
 
 
