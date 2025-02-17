@@ -4,8 +4,8 @@
 	vChangeType nvarchar(10) NOT NULL,
 	vPrimaryKey nvarchar(50) NOT NULL,
 	vTable nvarchar(50) NOT NULL,
-	vUserName nvarchar(400),
 	dChange datetime2 NOT NULL,
-	dLog datetime2,
+	vUserName nvarchar(400),
 	tTimestamp timestamp NOT NULL,
+	dLog datetime2,
 );

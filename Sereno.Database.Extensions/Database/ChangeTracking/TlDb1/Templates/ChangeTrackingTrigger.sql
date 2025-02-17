@@ -66,6 +66,24 @@ BEGIN
 						FROM inserted
 						WHERE inserted.vId = @PrimaryKey
 
+						INSERT INTO {{LogDatabaseName}}.[dbo].ctrLog
+						(
+							vChangeId,
+							vChangeType,
+							vPrimaryKey,
+							vTable,
+							vUserName,
+							dChange
+						)
+						VALUES
+						(
+							@ChangeId,
+							'I',
+							@PrimaryKey,
+							'{{TableName}}',
+							@SessionUser,
+							@ChangeTime
+						)
 
 						FETCH NEXT FROM cursorInserted INTO @PrimaryKey
 
@@ -150,6 +168,24 @@ BEGIN
 						FROM {{TableName}}
 						WHERE vId = @PrimaryKey
 
+						INSERT INTO {{LogDatabaseName}}.[dbo].ctrLog
+						(
+							vChangeId,
+							vChangeType,
+							vPrimaryKey,
+							vTable,
+							vUserName,
+							dChange
+						)
+						VALUES
+						(
+							@ChangeId,
+							'U',
+							@PrimaryKey,
+							'{{TableName}}',
+							@SessionUser,
+							@ChangeTime
+						)
 
 						FETCH NEXT FROM cursorInserted INTO @PrimaryKey
 
@@ -202,6 +238,25 @@ BEGIN
 							vModifyUser
 						FROM deleted
 						WHERE deleted.vId = @PrimaryKey
+
+						INSERT INTO {{LogDatabaseName}}.[dbo].ctrLog
+						(
+							vChangeId,
+							vChangeType,
+							vPrimaryKey,
+							vTable,
+							vUserName,
+							dChange
+						)
+						VALUES
+						(
+							@ChangeId,
+							'D',
+							@PrimaryKey,
+							'{{TableName}}',
+							@SessionUser,
+							@ChangeTime
+						)
 
 						FETCH NEXT FROM cursorDeleted INTO @PrimaryKey
 
