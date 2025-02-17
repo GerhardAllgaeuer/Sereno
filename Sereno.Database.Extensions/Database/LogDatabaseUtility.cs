@@ -6,23 +6,38 @@ namespace Sereno.Database
 {
     public static class LogDatabaseUtility
     {
-        public static void UpdateLogDatabase(string connectionString)
-        {
-            ArgumentNullException.ThrowIfNullOrEmpty(connectionString);
 
-            EnsureLogDatabaseExists(connectionString);
-            UpdateLogSchema(connectionString);
+        public static void DropDatabaseAndLogDatabase(string connectionString, string? databaseName)
+        {
+            if (!String.IsNullOrWhiteSpace(databaseName))
+            {
+                string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(databaseName);
+
+                DatabaseUtility.DropDatabase(connectionString, databaseName);
+                DatabaseUtility.DropDatabase(connectionString, logDatabaseName);
+            }
         }
 
 
-        private static void UpdateLogSchema(string connectionString)
+        public static void UpdateLogDatabase(string connectionString, string databaseName)
         {
-            DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString);
+            ArgumentNullException.ThrowIfNullOrEmpty(connectionString);
+            ArgumentNullException.ThrowIfNullOrEmpty(databaseName);
+
+            EnsureLogDatabaseExists(connectionString, databaseName);
+            UpdateLogSchema(connectionString, databaseName);
+        }
+
+
+        private static void UpdateLogSchema(string connectionString, string databaseName)
+        {
+            DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString, databaseName);
+            string logDatabaseName = GetLogDatabaseName(databaseName);
 
             if (mainTables != null)
             {
                 DataTable? logTables = null;
-                string logConnectionString = GetLogDatabaseConnectionString(connectionString);
+                string logConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, logDatabaseName);
                 using (var connection = new SqlConnection(logConnectionString))
                 {
                     connection.Open();
@@ -43,18 +58,24 @@ namespace Sereno.Database
 
                     if (!logTableDictionary.ContainsKey(tableName!))
                     {
-                        CreateLogTable(connectionString, logConnectionString, tableName!);
+                        CreateLogTable(connectionString, databaseName, tableName!);
                     }
                     else
                     {
-                        TableColumnsUpdate(connectionString, logConnectionString, tableName!);
+                        TableColumnsUpdate(connectionString, databaseName, tableName!);
                     }
                 }
             }
         }
 
-        private static void TableColumnsUpdate(string mainConnectionString, string logConnectionString, string tableName)
+        private static void TableColumnsUpdate(string masterConnectionString, string databaseName, string tableName)
         {
+            string mainConnectionString = ConnectionStringUtility.ChangeDatabaseName(masterConnectionString, databaseName);
+
+            string logDatabaseName = GetLogDatabaseName(databaseName);
+            string logConnectionString = ConnectionStringUtility.ChangeDatabaseName(masterConnectionString, logDatabaseName);
+
+
             // Hole das Schema der Tabelle aus der Hauptdatenbank
             using (var mainConnection = new SqlConnection(mainConnectionString))
             {
@@ -143,17 +164,17 @@ namespace Sereno.Database
         }
 
 
-        public static void DeleteLogDatabase(string connectionString)
+        public static void DropLogDatabase(string connectionString)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(connectionString);
 
-            string logDatabaseName = GetLogDatabaseName(connectionString);
+            string logDatabaseName = GetLogDatabaseNameFromConnectionString(connectionString);
             DatabaseUtility.DropDatabase(connectionString, logDatabaseName);
         }
 
-        private static void EnsureLogDatabaseExists(string connectionString)
+        private static void EnsureLogDatabaseExists(string connectionString, string databaseName)
         {
-            string logDatabaseName = GetLogDatabaseName(connectionString);
+            string logDatabaseName = GetLogDatabaseName(databaseName);
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -169,8 +190,14 @@ namespace Sereno.Database
         }
 
 
-        private static void CreateLogTable(string mainConnectionString, string logConnectionString, string tableName)
+        private static void CreateLogTable(string masterConnectionString, string databaseName, string tableName)
         {
+            string mainConnectionString = ConnectionStringUtility.ChangeDatabaseName(masterConnectionString, databaseName);
+
+            string logDatabaseName = GetLogDatabaseName(databaseName);
+            string logConnectionString = ConnectionStringUtility.ChangeDatabaseName(masterConnectionString, logDatabaseName);
+
+
             // Hole das Schema der Tabelle aus der Hauptdatenbank
             using (var mainConnection = new SqlConnection(mainConnectionString))
             {
@@ -242,7 +269,7 @@ namespace Sereno.Database
 
         public static string GetLogDatabaseConnectionString(string connectionString)
         {
-            string logDatabaseName = GetLogDatabaseName(connectionString);
+            string logDatabaseName = GetLogDatabaseNameFromConnectionString(connectionString);
 
             if (string.IsNullOrWhiteSpace(connectionString))
                 throw new ArgumentException("ConnectionString darf nicht leer oder null sein.", nameof(connectionString));
@@ -274,11 +301,18 @@ namespace Sereno.Database
             return builder.ConnectionString;
         }
 
-        public static string GetLogDatabaseName(string connectionString)
+        public static string GetLogDatabaseNameFromConnectionString(string connectionString)
         {
             ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
 
             var logDatabaseName = $"{connectionInfo.Database}Log";
+
+            return logDatabaseName;
+        }
+
+        public static string GetLogDatabaseName(string databaseName)
+        {
+            var logDatabaseName = $"{databaseName}Log";
 
             return logDatabaseName;
         }

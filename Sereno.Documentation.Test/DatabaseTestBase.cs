@@ -35,18 +35,19 @@ namespace Sereno.Documentation.Test
             {
                 var configuration = ConfigurationUtility.GetConfiguration();
                 string connectionString = configuration.GetConnectionString("Documentation_ConnectionString")!;
+                string masterConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, "master");
+                ConnectionStringInfo connectionStringInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
 
+                // Datenbanken löschen
+                LogDatabaseUtility.DropDatabaseAndLogDatabase(masterConnectionString, connectionStringInfo.Database);
+
+                // Datenbank erstellen
                 Context appContext = ContextUtility.Create("autotest@test.com");
                 using var context = AppDbContext.Create(connectionString, appContext);
-
-                // Datenbank neu erstellen
-                context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-                // Log Datenbank neu erstellen
-                LogDatabaseUtility.DeleteLogDatabase(connectionString);
-                LogDatabaseUtility.UpdateLogDatabase(connectionString);
-                TrackingUtility.CreateChangeTrackingTriggers(connectionString);
+                // Log Datenbank erstellen
+                TrackingUtility.EnableTrackingAndCreateLogDatabase(masterConnectionString, connectionStringInfo.Database);
             }
         }
     }

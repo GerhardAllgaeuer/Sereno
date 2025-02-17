@@ -68,7 +68,7 @@ public sealed class TrackingTests : DatabaseTestBase
         using (var context = AppDbContext.Create(connectionString, appContext2))
         {
             SimpleTable? entryFound = context.SimpleTables.Find(newEntry.Id);
-            entryFound!.Title = "Description 2";
+            entryFound!.Title = "Title 2";
             context.SaveChanges();
         }
 

@@ -17,9 +17,13 @@ namespace Sereno.Database.TlDb1.Test
 
         protected SqlConnection connection = new();
         protected string connectionString = "";
+        protected ConnectionStringInfo? connectionStringInfo = null;
 
         protected SqlConnection logConnection = new();
         protected string logConnectionString = "";
+
+        protected SqlConnection masterConnection = new();
+        protected string masterConnectionString = "";
 
         protected Context appContext = ContextUtility.Create("autotest@test.com");
 
@@ -29,13 +33,19 @@ namespace Sereno.Database.TlDb1.Test
         {
             var configuration = ConfigurationUtility.GetConfiguration();
             connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
-            logConnectionString = configuration.GetConnectionString("CreateTestLog_ConnectionString")!;
-
             connection = new SqlConnection(connectionString);
             connection.Open();
 
+            connectionStringInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
+
+            string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(connectionStringInfo.Database);
+            logConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, logDatabaseName);
             logConnection = new SqlConnection(logConnectionString);
             logConnection.Open();
+
+            masterConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, "master");
+            masterConnection = new SqlConnection(masterConnectionString);
+            masterConnection.Open();
         }
 
 
@@ -58,18 +68,19 @@ namespace Sereno.Database.TlDb1.Test
             {
                 var configuration = ConfigurationUtility.GetConfiguration();
                 string connectionString = configuration.GetConnectionString("CreateTest_ConnectionString")!;
+                string masterConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, "master");
+                ConnectionStringInfo connectionStringInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
 
-                DatabaseUtility.DropDatabase(connectionString);
+                // Datenbanken löschen
+                LogDatabaseUtility.DropDatabaseAndLogDatabase(masterConnectionString, connectionStringInfo.Database);
 
+                // Datenbank erstellen
                 Context appContext = ContextUtility.Create("autotest@test.com");
                 using var context = AppDbContext.Create(connectionString, appContext);
-
                 context.Database.EnsureCreated();
 
-                // Log Datenbank neu erstellen
-                LogDatabaseUtility.DeleteLogDatabase(connectionString);
-                LogDatabaseUtility.UpdateLogDatabase(connectionString);
-                TrackingUtility.CreateChangeTrackingTriggers(connectionString);
+                // Log Datenbank erstellen
+                TrackingUtility.EnableTrackingAndCreateLogDatabase(masterConnectionString, connectionStringInfo.Database);
             }
         }
     }

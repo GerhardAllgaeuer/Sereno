@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Sereno.Utilities;
 using System.Data;
 using System.Data.Common;
+using System.Net.NetworkInformation;
 
 namespace Sereno.Database.ChangeTracking.TlDb1
 {
@@ -64,21 +65,74 @@ namespace Sereno.Database.ChangeTracking.TlDb1
         }
 
 
-
         /// <summary>
-        /// Trigger für ChangeTracking erstellen (Default Values , dCreate, ...)
+        /// Verzeichnis, in dem die Templates liegen
         /// </summary>
-        public static void CreateChangeTrackingTriggers(string connectionString)
+        private static DirectoryInfo GetTemplateDirectory()
         {
             DirectoryInfo solutionDirectory = CodeUtility.GetSolutionDirectory();
             DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + @"\Sereno.Database.Extensions\Database\ChangeTracking\TlDb1\Templates");
 
-            string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(connectionString);
+            return templateDirectory;
+        }
+
+        /// <summary>
+        /// Inhalt eines Templates zurückliefern
+        /// </summary>
+        private static string GetTemplate(string template)
+        {
+            DirectoryInfo templateDirectory = GetTemplateDirectory();
+
+            string result = File.ReadAllText($@"{templateDirectory.FullName}\{template}");
+
+            return result;
+        }
 
 
-            string triggerTemplate = File.ReadAllText($@"{templateDirectory.FullName}\ChangeTrackingTrigger.sql");
+        /// <summary>
+        /// Tracking Schema und Trigger aktivieren / aktualisieren
+        /// </summary>
+        public static void EnableTrackingAndCreateLogDatabase(string connectionString, string databaseName)
+        {
+            LogDatabaseUtility.UpdateLogDatabase(connectionString, databaseName);
+            CreateLogTable(connectionString, databaseName);
+            CreateChangeTrackingTriggers(connectionString, databaseName);
+        }
 
-            DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString);
+        /// <summary>
+        /// Tabelle, in welche alle Änderungen gesamt geschrieben werden, Basis für die Sync Verarbeitung
+        /// </summary>
+        private static void CreateLogTable(string connectionString, string databaseName)
+        {
+            ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
+
+            string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(databaseName);
+            string sql = GetTemplate("LogTable.sql");
+
+            ScriptParameters scriptParameters = new()
+            {
+                ServerName = connectionInfo.Server!,
+                DatabaseName = logDatabaseName,
+                UserName = connectionInfo.User!,
+                Password = connectionInfo.Password!,
+                ScriptContent = sql,
+            };
+
+            ScriptUtility.ExecuteDatabaseScript(scriptParameters);
+        }
+
+
+
+
+        /// <summary>
+        /// Trigger für ChangeTracking erstellen (Default Values , dCreate, ...)
+        /// </summary>
+        private static void CreateChangeTrackingTriggers(string connectionString, string databaseName)
+        {
+            string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(databaseName);
+            string triggerTemplate = GetTemplate("ChangeTrackingTrigger.sql");
+
+            DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString, databaseName);
 
             if (mainTables != null)
             {
@@ -86,7 +140,7 @@ namespace Sereno.Database.ChangeTracking.TlDb1
                 {
                     string? tableName = tableRow["TABLE_NAME"].ToString();
 
-                    DataTable columnsTable = SchemaUtility.GetTableColuns(connectionString, tableName!);
+                    DataTable columnsTable = SchemaUtility.GetTableColumns(connectionString, databaseName, tableName!);
 
                     HashSet<string> defaultColumns = ["vId", "dCreate", "vCreateUser", "dModify", "vModifyUser"];
 
@@ -94,7 +148,7 @@ namespace Sereno.Database.ChangeTracking.TlDb1
                     string dataColumns = SchemaColumnBuilder.Build(new SchemaColumnBuilderParameters()
                     {
                         Columns = columnsTable,
-                        Spaces = 8,
+                        Spaces = 28,
                         ExcludeColumns = defaultColumns,
                     });
 
@@ -110,10 +164,10 @@ namespace Sereno.Database.ChangeTracking.TlDb1
                     ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
                     ScriptParameters scriptParameters = new()
                     {
-                        ServerName = connectionInfo.Server!,
-                        DatabaseName = connectionInfo.Database!,
-                        UserName = connectionInfo.User!,
-                        Password = connectionInfo.Password!,
+                        ServerName = connectionInfo.Server,
+                        DatabaseName = databaseName,
+                        UserName = connectionInfo.User,
+                        Password = connectionInfo.Password,
                         ScriptContent = sql,
                     };
 

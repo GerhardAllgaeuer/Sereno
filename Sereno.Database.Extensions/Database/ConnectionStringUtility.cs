@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Azure.Core;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -9,10 +10,11 @@ namespace Sereno.Database
 {
     public class ConnectionStringInfo
     {
-        public string? Server { get; set; }
-        public string? Database { get; set; }
-        public string? User { get; set; }
-        public string? Password { get; set; }
+        public string Server { get; set; } = string.Empty;
+
+        public string Database { get; set; } = string.Empty;
+        public string User { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
 
         public override string ToString()
         {
@@ -41,16 +43,44 @@ namespace Sereno.Database
             return result;
         }
 
-        private static string? GetValue(DbConnectionStringBuilder builder, string[] keys)
+
+        public static string ChangeDatabaseName(string connectionString, string newDatabaseName)
         {
+            var builder = new DbConnectionStringBuilder { ConnectionString = connectionString };
+
+            if (builder.ContainsKey("Database"))
+            {
+                builder["Database"] = newDatabaseName;
+            }
+            else if (builder.ContainsKey("Initial Catalog")) // Alternative Bezeichnung für Database
+            {
+                builder["Initial Catalog"] = newDatabaseName;
+            }
+            else
+            {
+                throw new ArgumentException("Der ConnectionString enthält keine 'Database' oder 'Initial Catalog' Angabe.");
+            }
+
+            return builder.ConnectionString;
+        }
+
+
+        private static string GetValue(DbConnectionStringBuilder builder, string[] keys)
+        {
+            string result = "";
+
             foreach (var key in keys)
             {
                 if (builder.TryGetValue(key, out var value))
                 {
-                    return value?.ToString();
+                    if (value != null)
+                    {
+                        result = value.ToString();
+                    }
                 }
             }
-            return null;
+
+            return result;
         }
     }
 }

@@ -8,8 +8,10 @@ namespace Sereno.Database
     public class SchemaUtility
     {
 
-        public static DataTable? GetDatabaseTables(string connectionString)
+        public static DataTable? GetDatabaseTables(string masterConnectionString, string databaseName)
         {
+            string connectionString = ConnectionStringUtility.ChangeDatabaseName(masterConnectionString, databaseName);
+
             DataTable? mainTables = null;
             using (var connection = new SqlConnection(connectionString))
             {
@@ -38,8 +40,10 @@ namespace Sereno.Database
         }
 
 
-        public static DataTable GetTableColuns(string connectionString, string tableName)
+        public static DataTable GetTableColumns(string masterConnectionString, string databaseName, string tableName)
         {
+            string connectionString = ConnectionStringUtility.ChangeDatabaseName(masterConnectionString, databaseName);
+
             DataTable? mainTables = null;
             using (var connection = new SqlConnection(connectionString))
             {
@@ -81,6 +85,7 @@ namespace Sereno.Database
                 "bit" => "bit",
                 "datetime" => "datetime",
                 "datetime2" => "datetime2",
+                "timestamp" => "timestamp",
                 _ => throw new NotSupportedException($"Der Datentyp '{dataType}' wird nicht unterstützt."),
             };
         }

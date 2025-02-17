@@ -10,6 +10,7 @@ namespace Sereno.Database
 {
     public class DatabaseUtility
     {
+
         /// <summary>
         /// Datenbank löschen
         /// </summary>
@@ -36,7 +37,6 @@ namespace Sereno.Database
                     }
 
                     connection.Open();
-                    connection.ChangeDatabase("master");
 
                     using var command = connection.CreateCommand();
                     command.CommandText = $@"
