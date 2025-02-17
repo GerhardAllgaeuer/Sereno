@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sereno.Database;
-using Sereno.Database.ChangeTracking.TlDb1;
+using Sereno.Database.Logging.TlDb1;
 using Sereno.TlDb1.DataAccess.Entities;
 
 namespace Sereno.TlDb1.DataAccess
@@ -30,7 +30,7 @@ namespace Sereno.TlDb1.DataAccess
 
         public override int SaveChanges()
         {
-            TrackingUtility.SetSessionContext(context, Database.GetDbConnection());
+            LoggingUtility.SetSessionContext(context, Database.GetDbConnection());
             SetChangeTrackingData();
 
             return base.SaveChanges();
@@ -38,7 +38,7 @@ namespace Sereno.TlDb1.DataAccess
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            await TrackingUtility.SetSessionContextAsync(context, Database.GetDbConnection());
+            await LoggingUtility.SetSessionContextAsync(context, Database.GetDbConnection());
             return await base.SaveChangesAsync(cancellationToken);
         }
 
@@ -48,7 +48,7 @@ namespace Sereno.TlDb1.DataAccess
         public void SetChangeTrackingData()
         {
             var entries = ChangeTracker.Entries()
-                .Where(e => e.Entity is ITracking &&
+                .Where(e => e.Entity is ILogging &&
                 (e.State == EntityState.Added || e.State == EntityState.Modified));
 
             foreach (var entry in entries)
@@ -71,8 +71,7 @@ namespace Sereno.TlDb1.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            TrackingUtility.EnableTriggersOnTables(modelBuilder);
-
+            EntityFrameworkUtility.EnableTriggersOnTables(modelBuilder);
             EntityFrameworkUtility.SetDatabaseColumnPrefixes(modelBuilder);
         }
 

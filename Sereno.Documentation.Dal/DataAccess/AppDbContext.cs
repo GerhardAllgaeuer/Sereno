@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sereno.Database;
-using Sereno.Database.ChangeTracking.TlDb1;
+using Sereno.Database.Logging.TlDb1;
 using Sereno.Documentation.DataAccess.Entities;
 
 namespace Sereno.Documentation.DataAccess
@@ -30,14 +30,14 @@ namespace Sereno.Documentation.DataAccess
 
         public override int SaveChanges()
         {
-            TrackingUtility.SetSessionContext(context, Database.GetDbConnection());
+            LoggingUtility.SetSessionContext(context, Database.GetDbConnection());
 
             return base.SaveChanges();
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            await TrackingUtility.SetSessionContextAsync(context, Database.GetDbConnection());
+            await LoggingUtility.SetSessionContextAsync(context, Database.GetDbConnection());
             return await base.SaveChangesAsync(cancellationToken);
         }
 
@@ -46,8 +46,7 @@ namespace Sereno.Documentation.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            TrackingUtility.EnableTriggersOnTables(modelBuilder);
-
+            EntityFrameworkUtility.EnableTriggersOnTables(modelBuilder);
             EntityFrameworkUtility.SetDatabaseColumnPrefixes(modelBuilder);
         }
     }

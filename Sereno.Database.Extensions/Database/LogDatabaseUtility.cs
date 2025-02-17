@@ -7,7 +7,7 @@ namespace Sereno.Database
     public static class LogDatabaseUtility
     {
 
-        public static void DropDatabaseAndLogDatabase(string connectionString, string? databaseName)
+        public static void DropDatabaseWithLogDatabase(string connectionString, string? databaseName)
         {
             if (!String.IsNullOrWhiteSpace(databaseName))
             {
@@ -19,7 +19,7 @@ namespace Sereno.Database
         }
 
 
-        public static void UpdateLogDatabase(string connectionString, string databaseName)
+        public static void CreateOrUpdateLogDatabase(string connectionString, string databaseName)
         {
             ArgumentNullException.ThrowIfNullOrEmpty(connectionString);
             ArgumentNullException.ThrowIfNullOrEmpty(databaseName);

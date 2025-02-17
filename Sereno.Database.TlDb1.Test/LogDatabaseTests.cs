@@ -25,7 +25,7 @@ public sealed class LogDatabaseTests : DatabaseTestBase
     {
         // Log Datenbank ändern und erneut abgleichen
         ChangeLogDatabase();
-        LogDatabaseUtility.UpdateLogDatabase(masterConnectionString, connectionStringInfo.Database);
+        LogDatabaseUtility.CreateOrUpdateLogDatabase(masterConnectionString, connectionStringInfo.Database);
 
         using var connection = new SqlConnection(logConnectionString);
         connection.Open();

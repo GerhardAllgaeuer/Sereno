@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sereno.Database;
-using Sereno.Database.ChangeTracking.TlDb1;
+using Sereno.Database.Logging.TlDb1;
 using Sereno.Documentation.DataAccess;
 using Sereno.Utilities;
 
@@ -39,7 +39,7 @@ namespace Sereno.Documentation.Test
                 ConnectionStringInfo connectionStringInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
 
                 // Datenbanken löschen
-                LogDatabaseUtility.DropDatabaseAndLogDatabase(masterConnectionString, connectionStringInfo.Database);
+                LogDatabaseUtility.DropDatabaseWithLogDatabase(masterConnectionString, connectionStringInfo.Database);
 
                 // Datenbank erstellen
                 Context appContext = ContextUtility.Create("autotest@test.com");
@@ -47,7 +47,7 @@ namespace Sereno.Documentation.Test
                 context.Database.EnsureCreated();
 
                 // Log Datenbank erstellen
-                TrackingUtility.EnableTrackingAndCreateLogDatabase(masterConnectionString, connectionStringInfo.Database);
+                LoggingUtility.EnableLogging(masterConnectionString, connectionStringInfo.Database);
             }
         }
     }

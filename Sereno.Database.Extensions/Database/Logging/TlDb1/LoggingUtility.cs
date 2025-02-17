@@ -4,63 +4,56 @@ using Sereno.Utilities;
 using System.Data;
 using System.Data.Common;
 
-namespace Sereno.Database.ChangeTracking.TlDb1
+namespace Sereno.Database.Logging.TlDb1
 {
-    public class TrackingUtility
+    public class LoggingUtility
     {
         public static void SetSessionContext(Context context, DbConnection connection)
         {
-            if (connection.State == System.Data.ConnectionState.Closed)
-            {
-                connection.Open();
-            }
-
-            using var command = connection.CreateCommand();
-            command.CommandText = "EXEC sp_set_session_context @key = @keyParam, @value = @valueParam";
-            command.Parameters.Add(new SqlParameter("@keyParam", "UserName"));
-            command.Parameters.Add(new SqlParameter("@valueParam", context.UserName));
-            command.ExecuteNonQuery();
+            SetSessionContextInternal(context, connection, false).GetAwaiter().GetResult();
         }
 
         public static async Task SetSessionContextAsync(Context context, DbConnection connection)
         {
+            await SetSessionContextInternal(context, connection, true);
+        }
+
+        private static async Task SetSessionContextInternal(Context context, DbConnection connection, bool isAsync)
+        {
             if (connection.State == System.Data.ConnectionState.Closed)
             {
-                connection.Open();
+                await OpenConnectionAsync(connection, isAsync);
             }
 
             using var command = connection.CreateCommand();
             command.CommandText = "EXEC sp_set_session_context @key = @keyParam, @value = @valueParam";
             command.Parameters.Add(new SqlParameter("@keyParam", "UserName"));
             command.Parameters.Add(new SqlParameter("@valueParam", context.UserName));
-            await command.ExecuteNonQueryAsync();
-        }
 
-        /// <summary>
-        /// Entities so konfigurieren, damit Trigger zugelassen werden
-        /// </summary>
-        public static void EnableTriggersOnTables(ModelBuilder modelBuilder)
-        {
-            // Für alle Entitäten im Modell durchlaufen
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            if (isAsync)
             {
-                // Setze die ID-Eigenschaft auf ValueGeneratedNever, wenn eine ID existiert
-                var primaryKey = entityType.FindPrimaryKey();
-                if (primaryKey != null)
-                {
-                    foreach (var keyProperty in primaryKey.Properties)
-                    {
-                        //modelBuilder.Entity(entityType.ClrType)
-                        //    .Property(keyProperty.Name)
-                        //    .ValueGeneratedNever();
-                    }
-                }
-
-                // Deaktiviere die OUTPUT-Klausel für alle Tabellen mit Triggern
-                modelBuilder.Entity(entityType.ClrType)
-                    .ToTable(tb => tb.UseSqlOutputClause(false));
+                await command.ExecuteNonQueryAsync();
+            }
+            else
+            {
+                command.ExecuteNonQuery();
             }
         }
+
+        private static async Task OpenConnectionAsync(DbConnection connection, bool isAsync)
+        {
+            if (isAsync)
+            {
+                await connection.OpenAsync();
+            }
+            else
+            {
+                connection.Open();
+            }
+        }
+
+
+
 
 
         /// <summary>
@@ -69,7 +62,7 @@ namespace Sereno.Database.ChangeTracking.TlDb1
         private static DirectoryInfo GetTemplateDirectory()
         {
             DirectoryInfo solutionDirectory = CodeUtility.GetSolutionDirectory();
-            DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + @"\Sereno.Database.Extensions\Database\ChangeTracking\TlDb1\Templates");
+            DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + @"\Sereno.Database.Extensions\Database\Logging\TlDb1\Templates");
 
             return templateDirectory;
         }
@@ -88,13 +81,13 @@ namespace Sereno.Database.ChangeTracking.TlDb1
 
 
         /// <summary>
-        /// Tracking Schema und Trigger aktivieren / aktualisieren
+        /// Log Datenbank und Trigger erstellen / aktualisieren
         /// </summary>
-        public static void EnableTrackingAndCreateLogDatabase(string connectionString, string databaseName)
+        public static void EnableLogging(string connectionString, string databaseName)
         {
-            LogDatabaseUtility.UpdateLogDatabase(connectionString, databaseName);
+            LogDatabaseUtility.CreateOrUpdateLogDatabase(connectionString, databaseName);
             CreateLogTable(connectionString, databaseName);
-            CreateChangeTrackingTriggers(connectionString, databaseName);
+            CreateLogTriggers(connectionString, databaseName);
         }
 
         /// <summary>
@@ -109,10 +102,10 @@ namespace Sereno.Database.ChangeTracking.TlDb1
 
             ScriptParameters scriptParameters = new()
             {
-                ServerName = connectionInfo.Server!,
+                ServerName = connectionInfo.Server,
                 DatabaseName = logDatabaseName,
-                UserName = connectionInfo.User!,
-                Password = connectionInfo.Password!,
+                UserName = connectionInfo.User,
+                Password = connectionInfo.Password,
                 ScriptContent = sql,
             };
 
@@ -123,12 +116,12 @@ namespace Sereno.Database.ChangeTracking.TlDb1
 
 
         /// <summary>
-        /// Trigger für ChangeTracking erstellen (Default Values , dCreate, ...)
+        /// Trigger fürs Logging erstellen (Default Values , dCreate, ...)
         /// </summary>
-        private static void CreateChangeTrackingTriggers(string connectionString, string databaseName)
+        private static void CreateLogTriggers(string connectionString, string databaseName)
         {
             string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(databaseName);
-            string triggerTemplate = GetTemplate("ChangeTrackingTrigger.sql");
+            string triggerTemplate = GetTemplate("LogTrigger.sql");
 
             DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString, databaseName);
 

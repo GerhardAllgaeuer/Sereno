@@ -1,10 +1,4 @@
-﻿using Azure.Core;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Common;
 
 namespace Sereno.Database
 {
@@ -34,10 +28,10 @@ namespace Sereno.Database
 
             var result = new ConnectionStringInfo
             {
-                Server = GetValue(builder, new[] { "Server", "Data Source", "Addr", "Address", "Network Address" }),
-                Database = GetValue(builder, new[] { "Initial Catalog", "Database" }),
-                User = GetValue(builder, new[] { "User ID", "UID", "Username" }),
-                Password = GetValue(builder, new[] { "Password", "PWD" })
+                Server = GetValue(builder, ["Server", "Data Source", "Addr", "Address", "Network Address"]),
+                Database = GetValue(builder, ["Initial Catalog", "Database"]),
+                User = GetValue(builder, ["User ID", "UID", "Username"]),
+                Password = GetValue(builder, ["Password", "PWD"])
             };
 
             return result;
@@ -67,20 +61,16 @@ namespace Sereno.Database
 
         private static string GetValue(DbConnectionStringBuilder builder, string[] keys)
         {
-            string result = "";
-
             foreach (var key in keys)
             {
-                if (builder.TryGetValue(key, out var value))
+                if (builder.TryGetValue(key, out var value) && value is not null)
                 {
-                    if (value != null)
-                    {
-                        result = value.ToString();
-                    }
+                    return value.ToString() ?? string.Empty;
                 }
             }
 
-            return result;
+            return string.Empty;
         }
+
     }
 }

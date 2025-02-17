@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Sereno.Database.ChangeTracking.TlDb1;
+using Sereno.Database.Logging.TlDb1;
 
 namespace Sereno.TlDb1.DataAccess.Entities
 {
     [Table("tstSimple")]
-    public class SimpleTable : ITracking
+    public class SimpleTable : ILogging
     {
 
         [Column(TypeName = "nvarchar(50)")]

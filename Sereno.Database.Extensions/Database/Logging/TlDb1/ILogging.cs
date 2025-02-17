@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Sereno.Database.ChangeTracking.TlDb1
+namespace Sereno.Database.Logging.TlDb1
 {
-    public interface ITracking
+    public interface ILogging
     {
         public DateTime? Create { get; set; }
 
