@@ -23,25 +23,19 @@ namespace Sereno.Test.Database
                 connection.Open();
             }
 
-            var whereConditions = "";
             var parameters = new DynamicParameters();
+
+            string query = $"SELECT * FROM [{table}]\n";
 
             if (whereClause != null)
             {
-                var props = whereClause.GetType().GetProperties();
-                whereConditions = "WHERE " + string.Join(" AND ", props.Select(p => $"[{p.Name}] = @{p.Name}"));
-                foreach (var prop in props)
-                {
-                    parameters.Add($"@{prop.Name}", prop.GetValue(whereClause));
-                }
+                query += $"WHERE {whereClause}\n";
             }
-
-            string query = $"SELECT * FROM [{table}] {whereConditions}";
 
             // Falls `orderBy` angegeben ist, ergänze die Query um `ORDER BY`
             if (!string.IsNullOrWhiteSpace(orderBy))
             {
-                query += $" ORDER BY {orderBy}";
+                query += $"ORDER BY {orderBy}\n";
             }
 
             var result = connection.Query<dynamic>(query, parameters).ToList();

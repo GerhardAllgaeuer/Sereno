@@ -17,7 +17,7 @@ namespace Sereno.Database.TlDb1.Test
 
         protected SqlConnection connection = new();
         protected string connectionString = "";
-        protected ConnectionStringInfo? connectionStringInfo = null;
+        protected ConnectionStringInfo connectionStringInfo = new();
 
         protected SqlConnection logConnection = new();
         protected string logConnectionString = "";

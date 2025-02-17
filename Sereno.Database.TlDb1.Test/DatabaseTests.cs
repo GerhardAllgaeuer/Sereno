@@ -54,7 +54,7 @@ public sealed class DatabaseTests : DatabaseTestBase
 
 
         // Zeilen prüfen
-        connection!.DataRows("tstSimple", null, "dModify")
+        connection.DataRows("tstSimple", null, "dModify")
             .Should().ContainValues(
             [
                 new { vTitle = "Title 1", vDescription = "Description 1" },
