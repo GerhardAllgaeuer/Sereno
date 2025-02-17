@@ -26,7 +26,7 @@ public sealed class DatabaseTests : DatabaseTestBase
     public void Inserting_Into_SimpleTable()
     {
         // Tabelle bereinigen
-        DatabaseUtility.TruncateTables(connection, "tstSimple");
+        DatabaseUtility.TruncateTables(connection, ["tstSimple"]);
 
         // EF Inserts
         using var context = AppDbContext.Create(connectionString, appContext);

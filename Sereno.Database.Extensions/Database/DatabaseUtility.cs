@@ -54,17 +54,15 @@ namespace Sereno.Database
             }
         }
 
-        public static void TruncateTables(SqlConnection? connection, params string[] tables)
+        public static void TruncateTables(SqlConnection? connection, List<string> list, params string[] tables)
         {
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));
 
-
-
             foreach (var table in tables)
             {
                 using var cmd = new SqlCommand(
-                    $"TRUNCATE TABLE [{table}]"
+                    $"DELETE [{table}]"
                     , connection);
 
                 cmd.ExecuteNonQuery();

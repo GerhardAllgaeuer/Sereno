@@ -1,6 +1,6 @@
-﻿CREATE TABLE ctrLog
+﻿CREATE TABLE logChange
 (
-	vChangeId nvarchar(50) NOT NULL,
+	vChangeId nvarchar(50) NOT NULL PRIMARY KEY,
 	vChangeType nvarchar(10) NOT NULL,
 	vPrimaryKey nvarchar(50) NOT NULL,
 	vTable nvarchar(50) NOT NULL,

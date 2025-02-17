@@ -14,8 +14,8 @@ public sealed class LogTests : DatabaseTestBase
     [TestProperty("Auto", "")]
     public void Set_Create_And_Modify_Correctly()
     {
-        DatabaseUtility.TruncateTables(connection, "tstSimple");
-        DatabaseUtility.TruncateTables(logConnection, "tstSimple");
+        DatabaseUtility.TruncateTables(connection, ["tstSimple"]);
+        DatabaseUtility.TruncateTables(logConnection, ["tstSimple"]);
 
         // Vergleichszeit zum Testen
         DateTime insertTime = DateTime.Now;
@@ -104,10 +104,8 @@ public sealed class LogTests : DatabaseTestBase
     [TestProperty("Auto", "")]
     public void Log_Insert_Update_Delete_At_LogDatabase_Correctly()
     {
-        DatabaseUtility.TruncateTables(connection, "tstSimple");
-        DatabaseUtility.TruncateTables(logConnection, "tstSimple");
-        DatabaseUtility.TruncateTables(logConnection, "ctrLog");
-
+        DatabaseUtility.TruncateTables(connection, ["tstSimple"]);
+        DatabaseUtility.TruncateTables(logConnection, ["logChange", "tstSimple"]);
 
         // Insert
         var newEntry = new SimpleTable
@@ -131,7 +129,7 @@ public sealed class LogTests : DatabaseTestBase
             ]);
 
         // Log History Eintrag muss vorhanden sein
-        logConnection.DataRows("ctrLog", null, "tTimestamp")
+        logConnection.DataRows("logChange", null, "tTimestamp")
             .Should().ContainValues(
             [
                 new { vChangeType = "I", vPrimaryKey = newEntry.Id, vTable = "tstSimple", vUserName = "autotest@test.com" },
@@ -161,7 +159,7 @@ public sealed class LogTests : DatabaseTestBase
             ]);
 
         // Log History Eintrag muss vorhanden sein
-        logConnection.DataRows("ctrLog", "vChangeType in ('U')", "tTimestamp")
+        logConnection.DataRows("logChange", "vChangeType in ('U')", "tTimestamp")
             .Should().ContainValues(
             [
                 new { vChangeType = "U", vPrimaryKey = newEntry.Id, vTable = "tstSimple", vUserName = "autotest2@test.com" },
@@ -191,7 +189,7 @@ public sealed class LogTests : DatabaseTestBase
             ]);
 
         // Log History Eintrag muss vorhanden sein
-        logConnection.DataRows("ctrLog", "vChangeType in ('D')", "tTimestamp")
+        logConnection.DataRows("logChange", "vChangeType in ('D')", "tTimestamp")
             .Should().ContainValues(
             [
                 new { vChangeType = "D", vPrimaryKey = newEntry.Id, vTable = "tstSimple", vUserName = "autotest2@test.com" },

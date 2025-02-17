@@ -54,63 +54,15 @@ namespace Sereno.Database.Logging.TlDb1
 
 
 
-
-
-        /// <summary>
-        /// Verzeichnis, in dem die Templates liegen
-        /// </summary>
-        private static DirectoryInfo GetTemplateDirectory()
-        {
-            DirectoryInfo solutionDirectory = CodeUtility.GetSolutionDirectory();
-            DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + @"\Sereno.Database.Extensions\Database\Logging\TlDb1\Templates");
-
-            return templateDirectory;
-        }
-
-        /// <summary>
-        /// Inhalt eines Templates zurückliefern
-        /// </summary>
-        private static string GetTemplate(string template)
-        {
-            DirectoryInfo templateDirectory = GetTemplateDirectory();
-
-            string result = File.ReadAllText($@"{templateDirectory.FullName}\{template}");
-
-            return result;
-        }
-
-
         /// <summary>
         /// Log Datenbank und Trigger erstellen / aktualisieren
         /// </summary>
         public static void EnableLogging(string connectionString, string databaseName)
         {
             LogDatabaseUtility.CreateOrUpdateLogDatabase(connectionString, databaseName);
-            CreateLogTable(connectionString, databaseName);
             CreateLogTriggers(connectionString, databaseName);
         }
 
-        /// <summary>
-        /// Tabelle, in welche alle Änderungen gesamt geschrieben werden, Basis für die Sync Verarbeitung
-        /// </summary>
-        private static void CreateLogTable(string connectionString, string databaseName)
-        {
-            ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
-
-            string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(databaseName);
-            string sql = GetTemplate("LogTable.sql");
-
-            ScriptParameters scriptParameters = new()
-            {
-                ServerName = connectionInfo.Server,
-                DatabaseName = logDatabaseName,
-                UserName = connectionInfo.User,
-                Password = connectionInfo.Password,
-                ScriptContent = sql,
-            };
-
-            ScriptUtility.ExecuteDatabaseScript(scriptParameters);
-        }
 
 
 
@@ -121,7 +73,7 @@ namespace Sereno.Database.Logging.TlDb1
         private static void CreateLogTriggers(string connectionString, string databaseName)
         {
             string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(databaseName);
-            string triggerTemplate = GetTemplate("LogTrigger.sql");
+            string triggerTemplate = LogDatabaseUtility.GetTemplate("LogTrigger.sql", "TlDb1");
 
             DataTable? mainTables = SchemaUtility.GetDatabaseTables(connectionString, databaseName);
 

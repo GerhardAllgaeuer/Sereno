@@ -38,6 +38,25 @@ BEGIN
 							dModify = @ChangeTime,
 							vModifyUser = @SessionUser
 						WHERE {{TableName}}.vId = @PrimaryKey
+						
+						INSERT INTO {{LogDatabaseName}}.[dbo].logChange
+						(
+							vChangeId,
+							vChangeType,
+							vPrimaryKey,
+							vTable,
+							vUserName,
+							dChange
+						)
+						VALUES
+						(
+							@ChangeId,
+							'I',
+							@PrimaryKey,
+							'{{TableName}}',
+							@SessionUser,
+							@ChangeTime
+						)
 
 						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
@@ -66,25 +85,6 @@ BEGIN
 						FROM inserted
 						WHERE inserted.vId = @PrimaryKey
 
-						INSERT INTO {{LogDatabaseName}}.[dbo].ctrLog
-						(
-							vChangeId,
-							vChangeType,
-							vPrimaryKey,
-							vTable,
-							vUserName,
-							dChange
-						)
-						VALUES
-						(
-							@ChangeId,
-							'I',
-							@PrimaryKey,
-							'{{TableName}}',
-							@SessionUser,
-							@ChangeTime
-						)
-
 						FETCH NEXT FROM cursorInserted INTO @PrimaryKey
 
 					END
@@ -112,6 +112,25 @@ BEGIN
 						SET dModify = @ChangeTime,
 							vModifyUser = @SessionUser
 						WHERE {{TableName}}.vId = @PrimaryKey
+						
+						INSERT INTO {{LogDatabaseName}}.[dbo].logChange
+						(
+							vChangeId,
+							vChangeType,
+							vPrimaryKey,
+							vTable,
+							vUserName,
+							dChange
+						)
+						VALUES
+						(
+							@ChangeId,
+							'U',
+							@PrimaryKey,
+							'{{TableName}}',
+							@SessionUser,
+							@ChangeTime
+						)
 
 						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
@@ -168,25 +187,6 @@ BEGIN
 						FROM {{TableName}}
 						WHERE vId = @PrimaryKey
 
-						INSERT INTO {{LogDatabaseName}}.[dbo].ctrLog
-						(
-							vChangeId,
-							vChangeType,
-							vPrimaryKey,
-							vTable,
-							vUserName,
-							dChange
-						)
-						VALUES
-						(
-							@ChangeId,
-							'U',
-							@PrimaryKey,
-							'{{TableName}}',
-							@SessionUser,
-							@ChangeTime
-						)
-
 						FETCH NEXT FROM cursorInserted INTO @PrimaryKey
 
 					END
@@ -211,6 +211,25 @@ BEGIN
 					BEGIN
 						SELECT @ChangeTime = GETDATE()
 						SELECT @ChangeId = NEWID()
+
+						INSERT INTO {{LogDatabaseName}}.[dbo].logChange
+						(
+							vChangeId,
+							vChangeType,
+							vPrimaryKey,
+							vTable,
+							vUserName,
+							dChange
+						)
+						VALUES
+						(
+							@ChangeId,
+							'D',
+							@PrimaryKey,
+							'{{TableName}}',
+							@SessionUser,
+							@ChangeTime
+						)
 
 						INSERT INTO {{LogDatabaseName}}.[dbo].{{TableName}}
 						(
@@ -238,25 +257,6 @@ BEGIN
 							vModifyUser
 						FROM deleted
 						WHERE deleted.vId = @PrimaryKey
-
-						INSERT INTO {{LogDatabaseName}}.[dbo].ctrLog
-						(
-							vChangeId,
-							vChangeType,
-							vPrimaryKey,
-							vTable,
-							vUserName,
-							dChange
-						)
-						VALUES
-						(
-							@ChangeId,
-							'D',
-							@PrimaryKey,
-							'{{TableName}}',
-							@SessionUser,
-							@ChangeTime
-						)
 
 						FETCH NEXT FROM cursorDeleted INTO @PrimaryKey
 

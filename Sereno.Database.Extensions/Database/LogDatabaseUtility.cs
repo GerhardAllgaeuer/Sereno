@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data.Common;
 using System.Data;
+using Sereno.Utilities;
 
 namespace Sereno.Database
 {
@@ -25,9 +26,64 @@ namespace Sereno.Database
             ArgumentNullException.ThrowIfNullOrEmpty(databaseName);
 
             EnsureLogDatabaseExists(connectionString, databaseName);
+            CreateLogChangeTable(connectionString, databaseName);
             UpdateLogSchema(connectionString, databaseName);
         }
 
+
+        /// <summary>
+        /// Tabelle, in welche alle Änderungen gesamt geschrieben werden, Basis für die Sync Verarbeitung
+        /// </summary>
+        private static void CreateLogChangeTable(string connectionString, string databaseName)
+        {
+            ConnectionStringInfo connectionInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
+
+            string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(databaseName);
+            string sql = GetTemplate("LogTable.sql");
+
+            ScriptParameters scriptParameters = new()
+            {
+                ServerName = connectionInfo.Server,
+                DatabaseName = logDatabaseName,
+                UserName = connectionInfo.User,
+                Password = connectionInfo.Password,
+                ScriptContent = sql,
+            };
+
+            ScriptUtility.ExecuteDatabaseScript(scriptParameters);
+        }
+
+        /// <summary>
+        /// Verzeichnis, in dem die Templates liegen
+        /// </summary>
+        public static DirectoryInfo GetTemplateDirectory(string subDirectory)
+        {
+            if (subDirectory == null)
+            {
+                subDirectory = "";
+            }
+            else
+            {
+                subDirectory += @"\";
+            }
+
+            DirectoryInfo solutionDirectory = CodeUtility.GetSolutionDirectory();
+            DirectoryInfo templateDirectory = new DirectoryInfo(solutionDirectory.FullName + $@"\Sereno.Database.Extensions\Database\Logging\{subDirectory}Templates");
+
+            return templateDirectory;
+        }
+
+        /// <summary>
+        /// Inhalt eines Templates zurückliefern
+        /// </summary>
+        public static string GetTemplate(string template, string subDirectory = "")
+        {
+            DirectoryInfo templateDirectory = GetTemplateDirectory(subDirectory);
+
+            string result = File.ReadAllText($@"{templateDirectory.FullName}\{template}");
+
+            return result;
+        }
 
         public static string GetLogDatabaseName(string databaseName)
         {
@@ -66,17 +122,17 @@ namespace Sereno.Database
 
                     if (!logTableDictionary.ContainsKey(tableName!))
                     {
-                        CreateLogTable(connectionString, databaseName, tableName!);
+                        CreateLogDataTable(connectionString, databaseName, tableName!);
                     }
                     else
                     {
-                        TableColumnsUpdate(connectionString, databaseName, tableName!);
+                        UpdateDataTableColumns(connectionString, databaseName, tableName!);
                     }
                 }
             }
         }
 
-        private static void TableColumnsUpdate(string masterConnectionString, string databaseName, string tableName)
+        private static void UpdateDataTableColumns(string masterConnectionString, string databaseName, string tableName)
         {
             string mainConnectionString = ConnectionStringUtility.ChangeDatabaseName(masterConnectionString, databaseName);
 
@@ -190,7 +246,7 @@ namespace Sereno.Database
         }
 
 
-        private static void CreateLogTable(string masterConnectionString, string databaseName, string tableName)
+        private static void CreateLogDataTable(string masterConnectionString, string databaseName, string tableName)
         {
             string mainConnectionString = ConnectionStringUtility.ChangeDatabaseName(masterConnectionString, databaseName);
 
@@ -261,8 +317,7 @@ namespace Sereno.Database
                 sql += ",\n";
             }
 
-            // Entferne das letzte Komma und schließe die Definition
-            sql = sql.TrimEnd(',', '\n') + "\n);";
+            sql += $"    constraint FK_{tableName}_vChangeId FOREIGN KEY ([vChangeId]) REFERENCES logChange ([vChangeId])\n);";
 
             return sql;
         }
