@@ -27,10 +27,10 @@ public sealed class LogTests : DatabaseTestBase
             Description = "Description 1",
         };
 
-        using (var context = AppDbContext.Create(connectionString, appContext))
+        using (var dbContext = TestDbContextFactory.Create(appContext))
         {
-            context.SimpleTables.Add(newEntry);
-            context.SaveChanges();
+            dbContext.SimpleTables.Add(newEntry);
+            dbContext.SaveChanges();
         }
 
         // Auslesen der Trigger geänderten Werte
@@ -66,12 +66,12 @@ public sealed class LogTests : DatabaseTestBase
 
         // Update mit anderem User
         Context appContext2 = ContextUtility.Create("autotest2@test.com");
-        using (var context = AppDbContext.Create(connectionString, appContext2))
+        using (var dbContext = TestDbContextFactory.Create(appContext2))
         {
-            SimpleTable? entryFound = context.SimpleTables.Find(newEntry.Id);
+            SimpleTable? entryFound = dbContext.SimpleTables.Find(newEntry.Id);
             entryFound!.Title = "Title 2";
             entryFound!.Description = "Description 2";
-            context.SaveChanges();
+            dbContext.SaveChanges();
         }
 
         // Auslesen der Trigger geänderten Werte
@@ -115,10 +115,10 @@ public sealed class LogTests : DatabaseTestBase
             Description = "Description 1",
         };
 
-        using (var context = AppDbContext.Create(connectionString, appContext))
+        using (var dbContext = TestDbContextFactory.Create(appContext))
         {
-            context.SimpleTables.Add(newEntry);
-            context.SaveChanges();
+            dbContext.SimpleTables.Add(newEntry);
+            dbContext.SaveChanges();
         }
 
         // Log Table Eintrag muss vorhanden sein
@@ -141,12 +141,12 @@ public sealed class LogTests : DatabaseTestBase
 
         // Update mit anderem User
         Context appContext2 = ContextUtility.Create("autotest2@test.com");
-        using (var context = AppDbContext.Create(connectionString, appContext2))
+        using (var dbContext = TestDbContextFactory.Create(appContext2))
         {
-            SimpleTable? entryFound = context.SimpleTables.Find(newEntry.Id);
+            SimpleTable? entryFound = dbContext.SimpleTables.Find(newEntry.Id);
             entryFound!.Title = "Title 2";
             entryFound!.Description = "Description 2";
-            context.SaveChanges();
+            dbContext.SaveChanges();
         }
 
 
@@ -170,13 +170,13 @@ public sealed class LogTests : DatabaseTestBase
 
 
         // Delete 
-        using (var context = AppDbContext.Create(connectionString, appContext2))
+        using (var dbContext = TestDbContextFactory.Create(appContext2))
         {
-            SimpleTable? entryFound = context.SimpleTables.Find(newEntry.Id);
+            SimpleTable? entryFound = dbContext.SimpleTables.Find(newEntry.Id);
             if (entryFound != null)
             {
-                context.SimpleTables.Remove(entryFound);
-                context.SaveChanges();
+                dbContext.SimpleTables.Remove(entryFound);
+                dbContext.SaveChanges();
             }
         }
 

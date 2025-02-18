@@ -10,26 +10,26 @@ public sealed class DatabaseTests : DatabaseTestBase
 {
     [TestMethod]
     [TestProperty("Auto", "")]
-    public void Read_Records_From_SimpleTable()
+    public void Read_From_SimpleTable()
     {
-        using var context = AppDbContext.Create(connectionString, appContext);
+        using var dbContext = TestDbContextFactory.Create(appContext);
 
-        List<SimpleTable> set = context.SimpleTables.ToList();
+        List<SimpleTable> set = dbContext.SimpleTables.ToList();
 
-        Assert.IsNotNull(context);
+        Assert.IsNotNull(dbContext);
     }
 
 
     [TestMethod]
     [DoNotParallelize]
     [TestProperty("Auto", "")]
-    public void Inserting_Into_SimpleTable()
+    public void Insert_Into_SimpleTable()
     {
         // Tabelle bereinigen
         DatabaseUtility.TruncateTables(connection, ["tstSimple"]);
 
         // EF Inserts
-        using var context = AppDbContext.Create(connectionString, appContext);
+        using var dbContext = TestDbContextFactory.Create(appContext);
 
         var newEntry1 = new SimpleTable
         {
@@ -38,8 +38,8 @@ public sealed class DatabaseTests : DatabaseTestBase
             Description = "Description 1",
         };
 
-        context.SimpleTables.Add(newEntry1);
-        context.SaveChanges();
+        dbContext.SimpleTables.Add(newEntry1);
+        dbContext.SaveChanges();
 
 
         var newEntry2 = new SimpleTable
@@ -49,8 +49,8 @@ public sealed class DatabaseTests : DatabaseTestBase
             Description = "Description 2",
         };
 
-        context.SimpleTables.Add(newEntry2);
-        context.SaveChanges();
+        dbContext.SimpleTables.Add(newEntry2);
+        dbContext.SaveChanges();
 
 
         // Zeilen prüfen

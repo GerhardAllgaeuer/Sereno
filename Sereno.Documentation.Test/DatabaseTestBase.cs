@@ -20,7 +20,7 @@ namespace Sereno.Documentation.Test
         public void SetupBase()
         {
             var configuration = ConfigurationUtility.GetConfiguration();
-            connectionString = configuration.GetConnectionString("Documentation_ConnectionString")!;
+            connectionString = configuration.GetConnectionString("TestDb_ConnectionString")!;
         }
 
 
@@ -34,7 +34,7 @@ namespace Sereno.Documentation.Test
             if (createDatabase)
             {
                 var configuration = ConfigurationUtility.GetConfiguration();
-                string connectionString = configuration.GetConnectionString("Documentation_ConnectionString")!;
+                string connectionString = configuration.GetConnectionString("TestDb_ConnectionString")!;
                 string masterConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, "master");
                 ConnectionStringInfo connectionStringInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
 
@@ -43,7 +43,7 @@ namespace Sereno.Documentation.Test
 
                 // Datenbank erstellen
                 Context appContext = ContextUtility.Create("autotest@test.com");
-                using var context = AppDbContext.Create(connectionString, appContext);
+                using var context = TestDbContextFactory.Create(appContext);
                 context.Database.EnsureCreated();
 
                 // Log Datenbank erstellen
