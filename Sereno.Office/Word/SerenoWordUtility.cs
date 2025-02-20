@@ -1,18 +1,10 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DocumentFormat.OpenXml.Wordprocessing;
-using Sereno.Utilities;
 
 namespace Sereno.Office.Word
 {
     public class SerenoWordUtility
     {
-
 
         /// <summary>
         /// Sereno-Kommandos in einem Word-Dokument verarbeiten

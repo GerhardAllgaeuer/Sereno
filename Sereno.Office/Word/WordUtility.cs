@@ -2,7 +2,6 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Sereno.Utilities;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 
@@ -10,6 +9,33 @@ namespace Sereno.Office.Word
 {
     public class WordUtility
     {
+
+        /// <summary>
+        /// Deutsche Styles werden nicht sauber in Deutsch übersetzt, wir helfen mit dem Dictionary nach
+        /// </summary>
+        static Dictionary<string, string> styleTranslations = new Dictionary<string, string>
+        {
+            { "berschrift1", "Überschrift 1" },
+            { "berschrift2", "Überschrift 2" },
+            { "berschrift3", "Überschrift 3" },
+            { "berschrift4", "Überschrift 4" },
+        };
+
+
+
+        /// <summary>
+        /// Word nimmt sich einen eklusiven Lock auf das File. Somit muss das File immer geschlossen sein. 
+        /// Hier umgehen wir das.
+        /// </summary>
+        public static WordprocessingDocument? OpenWordDocument(string filePath)
+        {
+            WordprocessingDocument? result = null;
+
+            using FileStream fileStream = new(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            result = WordprocessingDocument.Open(fileStream, false);
+
+            return result;
+        }
 
 
         /// <summary>
@@ -40,11 +66,14 @@ namespace Sereno.Office.Word
             var documentParagraphs = body.Elements<Paragraph>().ToList();
             string? previousStyleId = null;
             DocumentGroup currentGroup = new();
+            string? language = GetDocumentLanguage(document);
 
             for (int i = 0; i < documentParagraphs.Count; i++)
             {
                 Paragraph currentParagraph = documentParagraphs[i];
-                string? currentStyleId = currentParagraph.ParagraphProperties?.ParagraphStyleId?.Val?.Value;
+                string currentStyleId = currentParagraph.ParagraphProperties?.ParagraphStyleId?.Val?.Value ?? "";
+                string styleNameEn = GetStyleNameEn(document, currentStyleId) ?? "";
+                string styleName = GetStyleName(currentStyleId) ?? "";
 
                 // Überprüfen, ob der Absatz dem akutellen Stil entspricht
                 // Dann so lange Absätze sammeln, bis ein Absatz ohne den Stil 'Sereno' gefunden wird
@@ -59,6 +88,8 @@ namespace Sereno.Office.Word
                     currentGroup = new()
                     {
                         StyleId = currentStyleId,
+                        StyleName = styleName,
+                        StyleNameEn = styleNameEn,
                         PreviousGroup = previousGroup
                     };
 
@@ -90,7 +121,49 @@ namespace Sereno.Office.Word
         }
 
 
+        /// <summary>
+        /// Holt die Dokument-Sprache aus settings.xml
+        /// </summary>
+        public static string GetDocumentLanguage(WordprocessingDocument document)
+        {
+            var settings = document.MainDocumentPart?.DocumentSettingsPart?.Settings;
+            var languages = settings?.Elements<Languages>();
+            var langElement = languages?.FirstOrDefault();
 
+            return langElement?.Val?.Value ?? "de-DE"; // Standard: Englisch
+        }
+
+        /// <summary>
+        /// Holt den Stilnamen aus styles.xml oder StylesWithEffects.xml
+        /// </summary>
+        public static string? GetStyleNameEn(WordprocessingDocument document, string? styleId)
+        {
+            if (string.IsNullOrEmpty(styleId))
+                return null;
+
+            var styles = document.MainDocumentPart?.StyleDefinitionsPart?.Styles ??
+                         document.MainDocumentPart?.StylesWithEffectsPart?.Styles;
+
+            var style = styles?.Elements<Style>().FirstOrDefault(s => s.StyleId == styleId);
+            return style?.StyleName?.Val; // Gibt z. B. "Heading 1" zurück
+        }
+
+
+        /// <summary>
+        /// Mapped englische Stilnamen auf deutsche
+        /// </summary>
+        public static string? GetStyleName(string? styleid)
+        {
+            if (string.IsNullOrEmpty(styleid))
+                return null;
+
+            if (styleTranslations.TryGetValue(styleid, out var styleName))
+            {
+                return styleName;
+            }
+
+            return styleid;
+        }
 
         /// <summary>
         /// Dokument öffnen

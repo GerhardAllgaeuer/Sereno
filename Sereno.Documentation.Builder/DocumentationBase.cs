@@ -2,14 +2,7 @@
 using DocumentFormat.OpenXml.Wordprocessing;
 using Sereno.Office.Tables;
 using Sereno.Office.Word;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.Marshalling.IIUnknownCacheStrategy;
 
 namespace Sereno.Documentation
 {
