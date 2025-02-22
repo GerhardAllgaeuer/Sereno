@@ -18,7 +18,7 @@ namespace Sereno.Office.Word
                 ParagraphStyleFilter = "Sereno",
             };
 
-            List<DocumentGroup> groups = WordUtility.GetDocumentGroups(document, options);
+            List<DocumentGroup> groups = DocumentGroupUtility.GetDocumentGroups(document, options);
 
             if (document == null ||
                 document.MainDocumentPart == null ||

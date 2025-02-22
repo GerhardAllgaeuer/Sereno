@@ -1,9 +1,49 @@
-﻿using Sereno.Utilities;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Sereno.Utilities;
 
 namespace Sereno.Office.Word.SimpleStructure
 {
     public class ParagraphGroupUtility
     {
+
+
+        /// <summary>
+        /// Deutsche Styles werden nicht sauber in Deutsch übersetzt, wir helfen mit dem Dictionary nach
+        /// </summary>
+        private static readonly Dictionary<string, string> styleTranslations = new()
+        {
+            { "berschrift1", "Überschrift 1" },
+            { "berschrift2", "Überschrift 2" },
+            { "berschrift3", "Überschrift 3" },
+            { "berschrift4", "Überschrift 4" },
+        };
+
+
+
+        /// <summary>
+        /// Paragraph Gruppen Objekt erstellen
+        /// </summary>
+        public static ParagraphGroup ProcessParagraph(Paragraph paragraph, WordprocessingDocument document, DocumentGroupOptions options)
+        {
+            string currentStyleId = paragraph.ParagraphProperties?.ParagraphStyleId?.Val?.Value ?? "";
+            string styleNameEn = GetStyleNameEn(document, currentStyleId) ?? "";
+            string styleName = GetStyleName(currentStyleId) ?? "";
+
+
+            ParagraphGroup result = new()
+            {
+                StyleId = currentStyleId,
+                StyleName = styleName,
+                StyleNameEn = styleNameEn,
+            };
+
+            result.Paragraphs.Add(paragraph);
+
+            return result;
+        }
+
+
         /// <summary>
         /// Text aus den Paragraphen als Plain Text zurückgeben
         /// </summary>
@@ -13,15 +53,12 @@ namespace Sereno.Office.Word.SimpleStructure
         }
 
 
-        /// <summary>
-        /// Text aus den Paragraphen als Plain Text zurückgeben
-        /// </summary>
         public static void FilterParagraphs(List<DocumentGroup> groups, DocumentGroupOptions options)
         {
             // Stil-Filter anwenden
-            if (!String.IsNullOrWhiteSpace(options.ParagraphStyleFilter))
+            if (!string.IsNullOrWhiteSpace(options.ParagraphStyleFilter))
             {
-                groups.RemoveAll(obj => !StringUtility.MatchesWildCardPattern(obj.StyleId, options.ParagraphStyleFilter));
+                groups.RemoveAll(obj => obj is ParagraphGroup pg && !StringUtility.MatchesWildCardPattern(pg.StyleId, options.ParagraphStyleFilter));
             }
         }
 
@@ -75,6 +112,80 @@ namespace Sereno.Office.Word.SimpleStructure
             {
                 groups.Remove(group);
             }
+        }
+
+
+
+
+        /// <summary>
+        /// Liefert alle Dokument-Stile
+        /// </summary>
+        public static List<(string StyleId, string StyleName)> GetStylesFromDocument(WordprocessingDocument document)
+        {
+            List<(string StyleId, string StyleName)> styles = new List<(string StyleId, string StyleName)>();
+
+            if (document != null &&
+                document.MainDocumentPart != null &&
+                document.MainDocumentPart.StyleDefinitionsPart != null &&
+                document.MainDocumentPart.StyleDefinitionsPart.Styles != null)
+            {
+                StylesPart stylesPart = document.MainDocumentPart.StyleDefinitionsPart;
+                foreach (Style style in stylesPart.Styles.Elements<Style>())
+                {
+                    if (style != null &&
+                        style.Type != null)
+                    {
+                        if (style.Type == StyleValues.Paragraph)
+                        {
+                            string? styleId = styleId = style.StyleId;
+                            string? styleName = style.StyleName?.Val?.Value;
+
+                            if (styleId != null && styleName != null)
+                            {
+                                styles.Add((styleId, styleName));
+                                styles.Add((styleId, styleName));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return styles;
+        }
+
+
+
+
+        /// <summary>
+        /// Holt den Stilnamen aus styles.xml oder StylesWithEffects.xml
+        /// </summary>
+        public static string? GetStyleNameEn(WordprocessingDocument document, string? styleId)
+        {
+            if (string.IsNullOrEmpty(styleId))
+                return null;
+
+            var styles = document.MainDocumentPart?.StyleDefinitionsPart?.Styles ??
+                         document.MainDocumentPart?.StylesWithEffectsPart?.Styles;
+
+            var style = styles?.Elements<Style>().FirstOrDefault(s => s.StyleId == styleId);
+            return style?.StyleName?.Val; // Gibt z. B. "Heading 1" zurück
+        }
+
+
+        /// <summary>
+        /// Mapped englische Stilnamen auf deutsche
+        /// </summary>
+        public static string? GetStyleName(string? styleid)
+        {
+            if (string.IsNullOrEmpty(styleid))
+                return null;
+
+            if (styleTranslations.TryGetValue(styleid, out var styleName))
+            {
+                return styleName;
+            }
+
+            return styleid;
         }
     }
 }

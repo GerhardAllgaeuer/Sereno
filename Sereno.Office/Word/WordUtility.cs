@@ -13,16 +13,6 @@ namespace Sereno.Office.Word
     public class WordUtility
     {
 
-        /// <summary>
-        /// Deutsche Styles werden nicht sauber in Deutsch übersetzt, wir helfen mit dem Dictionary nach
-        /// </summary>
-        static Dictionary<string, string> styleTranslations = new Dictionary<string, string>
-        {
-            { "berschrift1", "Überschrift 1" },
-            { "berschrift2", "Überschrift 2" },
-            { "berschrift3", "Überschrift 3" },
-            { "berschrift4", "Überschrift 4" },
-        };
 
 
 
@@ -43,153 +33,6 @@ namespace Sereno.Office.Word
 
 
         /// <summary>
-        /// Gruppen von Absätzen in einem Word-Dokument ermitteln
-        /// </summary>
-        public static List<DocumentGroup> GetDocumentGroups(WordprocessingDocument document, DocumentGroupOptions? options = null)
-        {
-            if (options == null)
-            {
-                options = new DocumentGroupOptions();
-            }
-
-            List<DocumentGroup> groups = [];
-
-            if (document == null ||
-                document.MainDocumentPart == null ||
-                document.MainDocumentPart.Document == null ||
-                document.MainDocumentPart.Document.Body == null)
-            {
-                return groups;
-            }
-
-            var body = document.MainDocumentPart.Document.Body;
-
-            List<OpenXmlElement> elements = body.Elements().Where(e => e is Paragraph ||
-                                                      e is Table)
-                                          .ToList();
-
-            DocumentGroup? currentGroup = null;
-            DocumentGroup? previousGroup = null;
-
-            foreach (var element in elements)
-            {
-                if (element is Paragraph paragraph)
-                {
-                    currentGroup = ProcessParagraph(paragraph, document, options);
-                }
-                else if (element is Table table)
-                {
-                    currentGroup = ProcessTable(table);
-                }
-
-                if (currentGroup != null)
-                {
-                    groups.Add(currentGroup);
-                    currentGroup.PreviousGroup = previousGroup;
-                }
-
-                if (previousGroup != null)
-                {
-                    previousGroup.NextGroup = currentGroup;
-                }
-
-
-                previousGroup = currentGroup;
-            }
-
-
-            ParagraphGroupUtility.CompressParagraphsByStyle(groups);
-            ParagraphGroupUtility.ExtractParagraphGroupText(groups);
-
-            ParagraphGroupUtility.FilterParagraphs(groups, options);
-
-
-
-            return groups;
-        }
-
-
-
-
-
-
-
-        private static ParagraphGroup ProcessParagraph(Paragraph paragraph, WordprocessingDocument document, DocumentGroupOptions options)
-        {
-            string currentStyleId = paragraph.ParagraphProperties?.ParagraphStyleId?.Val?.Value ?? "";
-            string styleNameEn = GetStyleNameEn(document, currentStyleId) ?? "";
-            string styleName = GetStyleName(currentStyleId) ?? "";
-
-
-            ParagraphGroup result = new()
-            {
-                StyleId = currentStyleId,
-                StyleName = styleName,
-                StyleNameEn = styleNameEn,
-            };
-
-            result.Paragraphs.Add(paragraph);
-
-            return result;
-        }
-
-        private static TableGroup ProcessTable(Table table)
-        {
-            TableGroup result = new()
-            {
-                Table = table,
-            };
-
-            return result;
-        }
-
-
-
-        /// <summary>
-        /// Holt die Dokument-Sprache aus settings.xml
-        /// </summary>
-        public static string GetDocumentLanguage(WordprocessingDocument document)
-        {
-            var settings = document.MainDocumentPart?.DocumentSettingsPart?.Settings;
-            var languages = settings?.Elements<Languages>();
-            var langElement = languages?.FirstOrDefault();
-
-            return langElement?.Val?.Value ?? "de-DE"; // Standard: Englisch
-        }
-
-        /// <summary>
-        /// Holt den Stilnamen aus styles.xml oder StylesWithEffects.xml
-        /// </summary>
-        public static string? GetStyleNameEn(WordprocessingDocument document, string? styleId)
-        {
-            if (string.IsNullOrEmpty(styleId))
-                return null;
-
-            var styles = document.MainDocumentPart?.StyleDefinitionsPart?.Styles ??
-                         document.MainDocumentPart?.StylesWithEffectsPart?.Styles;
-
-            var style = styles?.Elements<Style>().FirstOrDefault(s => s.StyleId == styleId);
-            return style?.StyleName?.Val; // Gibt z. B. "Heading 1" zurück
-        }
-
-
-        /// <summary>
-        /// Mapped englische Stilnamen auf deutsche
-        /// </summary>
-        public static string? GetStyleName(string? styleid)
-        {
-            if (string.IsNullOrEmpty(styleid))
-                return null;
-
-            if (styleTranslations.TryGetValue(styleid, out var styleName))
-            {
-                return styleName;
-            }
-
-            return styleid;
-        }
-
-        /// <summary>
         /// Dokument öffnen
         /// </summary>
         public static void OpenDocument(string filePath)
@@ -205,42 +48,6 @@ namespace Sereno.Office.Word
         }
 
 
-
-        /// <summary>
-        /// Liefert alle Dokument-Stile
-        /// </summary>
-        public static List<(string StyleId, string StyleName)> GetStylesFromDocument(WordprocessingDocument document)
-        {
-            List<(string StyleId, string StyleName)> styles = new List<(string StyleId, string StyleName)>();
-
-            if (document != null &&
-                document.MainDocumentPart != null &&
-                document.MainDocumentPart.StyleDefinitionsPart != null &&
-                document.MainDocumentPart.StyleDefinitionsPart.Styles != null)
-            {
-                StylesPart stylesPart = document.MainDocumentPart.StyleDefinitionsPart;
-                foreach (Style style in stylesPart.Styles.Elements<Style>())
-                {
-                    if (style != null &&
-                        style.Type != null)
-                    {
-                        if (style.Type == StyleValues.Paragraph)
-                        {
-                            string? styleId = styleId = style.StyleId;
-                            string? styleName = style.StyleName?.Val?.Value;
-
-                            if (styleId != null && styleName != null)
-                            {
-                                styles.Add((styleId, styleName));
-                                styles.Add((styleId, styleName));
-                            }
-                        }
-                    }
-                }
-            }
-
-            return styles;
-        }
 
 
         /// <summary>
@@ -350,7 +157,7 @@ namespace Sereno.Office.Word
         /// </summary>
         private static List<ColumnOption> CreateColumnOptionsFromDataTable(DataTable dataTable)
         {
-            List<ColumnOption> columnOptions = new List<ColumnOption>();
+            List<ColumnOption> columnOptions = [];
 
 
             foreach (DataColumn column in dataTable.Columns)

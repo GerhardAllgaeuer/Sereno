@@ -17,7 +17,7 @@ namespace Sereno.Office.Test
             {
                 if (document != null)
                 {
-                    List<ParagraphGroup> paragraphs = WordUtility.GetDocumentGroups(document)
+                    List<ParagraphGroup> paragraphs = DocumentGroupUtility.GetDocumentGroups(document)
                                                                 .OfType<ParagraphGroup>()
                                                                 .Where(x => !String.IsNullOrWhiteSpace(x.InnerText))
                                                                 .ToList();
@@ -31,7 +31,6 @@ namespace Sereno.Office.Test
                         new { StyleId = "", StyleName = "", StyleNameEn = "", InnerText = "Standard" },
                         new { StyleId = "", StyleName = "", StyleNameEn = "", InnerText = "https://test.com" },
                     };
-
 
                     paragraphs.Should().BeEquivalentTo(expectedGroups);
                 }
