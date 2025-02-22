@@ -1,9 +1,12 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Sereno.Office.Word.SimpleStructure;
 using Sereno.Utilities;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace Sereno.Office.Word
 {
@@ -23,6 +26,7 @@ namespace Sereno.Office.Word
 
 
 
+
         /// <summary>
         /// Word nimmt sich einen eklusiven Lock auf das File. Somit muss das File immer geschlossen sein. 
         /// Hier umgehen wir das.
@@ -39,19 +43,15 @@ namespace Sereno.Office.Word
 
 
         /// <summary>
-        /// Text aus den Paragraphen als Plain Text zurückgeben
-        /// </summary>
-        public static string GetGroupText(DocumentGroup group)
-        {
-            return StringUtility.CleanAndJoinStringList(group.Paragraphs.Select(p => p.InnerText).ToList(), Environment.NewLine);
-        }
-
-
-        /// <summary>
         /// Gruppen von Absätzen in einem Word-Dokument ermitteln
         /// </summary>
-        public static List<DocumentGroup> GetDocumentGroups(WordprocessingDocument document, DocumentGroupOptions options)
+        public static List<DocumentGroup> GetDocumentGroups(WordprocessingDocument document, DocumentGroupOptions? options = null)
         {
+            if (options == null)
+            {
+                options = new DocumentGroupOptions();
+            }
+
             List<DocumentGroup> groups = [];
 
             if (document == null ||
@@ -63,62 +63,86 @@ namespace Sereno.Office.Word
             }
 
             var body = document.MainDocumentPart.Document.Body;
-            var documentParagraphs = body.Elements<Paragraph>().ToList();
-            string? previousStyleId = null;
-            DocumentGroup currentGroup = new();
-            string? language = GetDocumentLanguage(document);
 
-            for (int i = 0; i < documentParagraphs.Count; i++)
+            List<OpenXmlElement> elements = body.Elements().Where(e => e is Paragraph ||
+                                                      e is Table)
+                                          .ToList();
+
+            DocumentGroup? currentGroup = null;
+            DocumentGroup? previousGroup = null;
+
+            foreach (var element in elements)
             {
-                Paragraph currentParagraph = documentParagraphs[i];
-                string currentStyleId = currentParagraph.ParagraphProperties?.ParagraphStyleId?.Val?.Value ?? "";
-                string styleNameEn = GetStyleNameEn(document, currentStyleId) ?? "";
-                string styleName = GetStyleName(currentStyleId) ?? "";
-
-                // Überprüfen, ob der Absatz dem akutellen Stil entspricht
-                // Dann so lange Absätze sammeln, bis ein Absatz ohne den Stil 'Sereno' gefunden wird
-
-                if (currentStyleId != previousStyleId)
+                if (element is Paragraph paragraph)
                 {
-                    // Vorherige Gruppe speichern
-                    DocumentGroup previousGroup = currentGroup;
+                    currentGroup = ProcessParagraph(paragraph, document, options);
+                }
+                else if (element is Table table)
+                {
+                    currentGroup = ProcessTable(table);
+                }
 
-                    // Neue Gruppe erstellen
-                    // Absatz verketten, vorherige Gruppe
-                    currentGroup = new()
-                    {
-                        StyleId = currentStyleId,
-                        StyleName = styleName,
-                        StyleNameEn = styleNameEn,
-                        PreviousGroup = previousGroup
-                    };
-
+                if (currentGroup != null)
+                {
                     groups.Add(currentGroup);
+                    currentGroup.PreviousGroup = previousGroup;
+                }
 
-                    // Absätze verketten, anschließende Gruppe
+                if (previousGroup != null)
+                {
                     previousGroup.NextGroup = currentGroup;
                 }
 
-                currentGroup.Paragraphs.Add(currentParagraph);
 
-                previousStyleId = currentStyleId;
+                previousGroup = currentGroup;
             }
 
-            if (!String.IsNullOrWhiteSpace(options.ParagraphStyleFilter))
-            {
-                groups = groups.Where(obj => StringUtility.MatchesWildCardPattern(obj.StyleId, options.ParagraphStyleFilter)).ToList();
-            }
 
-            if (options.ExtractInnerText)
-            {
-                foreach (DocumentGroup group in groups)
-                {
-                    group.InnerText = GetGroupText(group);
-                }
-            }   
+            ParagraphGroupUtility.CompressParagraphsByStyle(groups);
+            ParagraphGroupUtility.ExtractParagraphGroupText(groups);
+
+            ParagraphGroupUtility.FilterParagraphs(groups, options);
+
+
 
             return groups;
         }
+
+
+
+
+
+
+
+        private static ParagraphGroup ProcessParagraph(Paragraph paragraph, WordprocessingDocument document, DocumentGroupOptions options)
+        {
+            string currentStyleId = paragraph.ParagraphProperties?.ParagraphStyleId?.Val?.Value ?? "";
+            string styleNameEn = GetStyleNameEn(document, currentStyleId) ?? "";
+            string styleName = GetStyleName(currentStyleId) ?? "";
+
+
+            ParagraphGroup result = new()
+            {
+                StyleId = currentStyleId,
+                StyleName = styleName,
+                StyleNameEn = styleNameEn,
+            };
+
+            result.Paragraphs.Add(paragraph);
+
+            return result;
+        }
+
+        private static TableGroup ProcessTable(Table table)
+        {
+            TableGroup result = new()
+            {
+                Table = table,
+            };
+
+            return result;
+        }
+
 
 
         /// <summary>
@@ -311,7 +335,7 @@ namespace Sereno.Office.Word
 
         private static void FormatParagraph(Paragraph paragraph, TextFormatOptions? options)
         {
-            if(options?.Style != null)
+            if (options?.Style != null)
             {
                 ParagraphProperties paragraphProperties = new ParagraphProperties(
                                        new ParagraphStyleId() { Val = options.Style });

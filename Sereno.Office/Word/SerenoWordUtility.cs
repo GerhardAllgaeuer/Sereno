@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
+using Sereno.Office.Word.SimpleStructure;
 
 namespace Sereno.Office.Word
 {
@@ -15,7 +16,6 @@ namespace Sereno.Office.Word
             DocumentGroupOptions options = new()
             {
                 ParagraphStyleFilter = "Sereno",
-                ExtractInnerText = true,
             };
 
             List<DocumentGroup> groups = WordUtility.GetDocumentGroups(document, options);
@@ -27,12 +27,6 @@ namespace Sereno.Office.Word
             {
                 return;
             }
-
-            foreach (DocumentGroup group in groups)
-            {
-                action(group?.NextGroup?.Paragraphs.FirstOrDefault(), group!.InnerText); // Rufe die Aktion auf
-            }
-
         }
     }
 }

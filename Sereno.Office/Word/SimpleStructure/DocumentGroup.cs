@@ -1,6 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 
-namespace Sereno.Office.Word
+namespace Sereno.Office.Word.SimpleStructure
 {
 
     /// <summary>
@@ -8,11 +8,6 @@ namespace Sereno.Office.Word
     /// </summary>
     public class DocumentGroup
     {
-        /// <summary>
-        /// Liste von Absätzen
-        /// </summary>
-        public List<Paragraph> Paragraphs { get; set; } = [];
-
         /// <summary>
         /// Stil-ID
         /// </summary>
@@ -46,25 +41,28 @@ namespace Sereno.Office.Word
         public string InnerText { get; set; } = "";
 
 
+        /// <summary>
+        /// Beschreibung der Gruppe
+        /// </summary>
         public override string ToString()
         {
             string result = "";
-            if (!String.IsNullOrWhiteSpace(this.InnerText))
+            if (!string.IsNullOrWhiteSpace(InnerText))
             {
-                if (this.InnerText.Length > 20)
-                    result = this.InnerText[..17] + "...";
+                if (InnerText.Length > 20)
+                    result = InnerText[..17] + "...";
                 else
-                    result = this.InnerText;
+                    result = InnerText;
             }
 
-            if (!String.IsNullOrWhiteSpace(this.StyleName))
+            if (!string.IsNullOrWhiteSpace(StyleName))
             {
-                if (!String.IsNullOrWhiteSpace(result))
+                if (!string.IsNullOrWhiteSpace(result))
                 {
                     result += " - ";
                 }
 
-                result += this.StyleName;
+                result += StyleName;
             }
             return result;
         }
