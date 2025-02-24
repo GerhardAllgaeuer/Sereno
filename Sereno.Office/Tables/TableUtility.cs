@@ -11,8 +11,6 @@ namespace Sereno.Office.Tables
     public class TableUtility
     {
 
-
-
         /// <summary>
         /// Konvertieren einer Objektliste in ein DataSet
         /// </summary>

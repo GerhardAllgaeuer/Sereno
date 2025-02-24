@@ -14,11 +14,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Sereno.Documentation.Dal\Sereno.Documentation.Dal.csproj" />
+    <ProjectReference Include="..\Sereno.Office\Sereno.Office.csproj" />
+    <ProjectReference Include="..\Sereno.Test.Extensions\Sereno.Test.Extensions.csproj" />
     <ProjectReference Include="..\Sereno.Utilities\Sereno.Utilities.csproj" />
   </ItemGroup>
 

@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sereno.Office\Sereno.Office.csproj" />
+    <ProjectReference Include="..\Sereno.Test.Extensions\Sereno.Test.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

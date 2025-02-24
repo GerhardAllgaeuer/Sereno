@@ -13,7 +13,6 @@ namespace Sereno.Office.Tables
     public class TableInfo
     {
 
-
         /// <summary>
         /// Name der Tabelle
         /// </summary>

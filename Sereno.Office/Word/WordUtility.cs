@@ -14,16 +14,13 @@ namespace Sereno.Office.Word
     {
 
 
-
-
-
         /// <summary>
         /// Word nimmt sich einen eklusiven Lock auf das File. Somit muss das File immer geschlossen sein. 
         /// Hier umgehen wir das.
         /// </summary>
-        public static WordprocessingDocument? OpenWordDocument(string filePath)
+        public static WordprocessingDocument OpenWordDocument(string filePath)
         {
-            WordprocessingDocument? result = null;
+            WordprocessingDocument result;
 
             using FileStream fileStream = new(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             result = WordprocessingDocument.Open(fileStream, false);

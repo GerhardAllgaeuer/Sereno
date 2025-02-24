@@ -1,9 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Sereno.Documentation.DataAccess;
-using Sereno.Documentation.DataAccess.Entities;
+﻿using Sereno.Documentation.DataAccess.Entities;
 using Sereno.Documentation.Test;
-using Sereno.Utilities;
 
 namespace Sereno.Documentation
 {
