@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
 namespace Sereno.Office.Tables
 {
@@ -23,5 +19,6 @@ namespace Sereno.Office.Tables
         /// Liste mit den Spalten der Tabelle
         /// </summary>
         public List<TableColumn> Columns { get; set; } = new List<TableColumn>();
+
     }
 }

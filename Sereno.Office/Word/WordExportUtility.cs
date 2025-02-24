@@ -60,6 +60,10 @@ namespace Sereno.Office.Word
                 text = fieldCharElement.InnerText.Replace("\r", "").Replace("\n", "");
             }
 
+            if (element is TableProperties tableProperties)
+            {
+            }
+
             // Zeile in die CSV schreiben
             writer.WriteLine($"\"{indentation}{type}\";\"{text}\"");
 
