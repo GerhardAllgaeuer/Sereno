@@ -18,6 +18,26 @@ namespace Sereno.Utilities
         }
 
 
+
+        /// <summary>
+        /// Anonymisieren in der Form von M*******
+        /// </summary>
+        public static string AnonymizeString(string original)
+        {
+            string anonymized = "";
+
+            if (!string.IsNullOrWhiteSpace(original))
+            {
+                char anonymizedFirst = original[0];  // Nur den ersten Buchstaben des Vornamens behalten
+                anonymized = new string('*', original.Length); // Den Rest maskieren
+
+                anonymized = $"{anonymizedFirst} {anonymized}";
+            }
+
+            return anonymized;
+        }
+
+
         public static string RemoveLastCharacter(string value, string character)
         {
             if (string.IsNullOrEmpty(value))
