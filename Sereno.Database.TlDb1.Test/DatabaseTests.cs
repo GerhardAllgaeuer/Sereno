@@ -24,7 +24,7 @@ public sealed class DatabaseTests : DatabaseTestBase
     public void Insert_Into_SimpleTable()
     {
         // Tabelle bereinigen
-        DatabaseUtility.TruncateTables(connection, ["tstSimple"]);
+        DatabaseUtility.TruncateTables(this.Connection, ["tstSimple"]);
 
         // EF Inserts
         using var dbContext = TestDbContextFactory.Create(appContext);
@@ -52,7 +52,7 @@ public sealed class DatabaseTests : DatabaseTestBase
 
 
         // Zeilen prüfen
-        connection.DataRows("tstSimple", null, "dModify")
+        this.Connection.DataRows("tstSimple", null, "dModify")
             .Should().ContainValues(
             [
                 new { vTitle = "Title 1", vDescription = "Description 1" },

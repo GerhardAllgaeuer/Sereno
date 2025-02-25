@@ -29,7 +29,7 @@ namespace Sereno.Documentation
 
 
         [TestMethod]
-        public void Read_Stuctrue()
+        public void Read_Structure()
         {
             string rootDirectory = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary";
 

@@ -13,8 +13,8 @@ public sealed class LogTests : DatabaseTestBase
     [DoNotParallelize]
     public void Set_Create_And_Modify_Correctly()
     {
-        DatabaseUtility.TruncateTables(connection, ["tstSimple"]);
-        DatabaseUtility.TruncateTables(logConnection, ["tstSimple", "logChange"]);
+        DatabaseUtility.TruncateTables(this.Connection, ["tstSimple"]);
+        DatabaseUtility.TruncateTables(this.LogConnection, ["tstSimple", "logChange"]);
 
         // Vergleichszeit zum Testen
         DateTime insertTime = DateTime.Now;
@@ -33,10 +33,10 @@ public sealed class LogTests : DatabaseTestBase
         }
 
         // Auslesen der Trigger geänderten Werte
-        DateTime create = connection.DataRow("tstSimple", newEntry.Id)
+        DateTime create = this.Connection.DataRow("tstSimple", newEntry.Id)
             .Column<DateTime>("dCreate");
 
-        DateTime modify = connection.DataRow("tstSimple", newEntry.Id)
+        DateTime modify = this.Connection.DataRow("tstSimple", newEntry.Id)
             .Column<DateTime>("dModify");
 
 
@@ -49,10 +49,10 @@ public sealed class LogTests : DatabaseTestBase
 
 
 
-        object createUser = connection.DataRow("tstSimple", newEntry.Id)
+        object createUser = this.Connection.DataRow("tstSimple", newEntry.Id)
             .Column("vCreateUser");
 
-        object modifyUser = connection.DataRow("tstSimple", newEntry.Id)
+        object modifyUser = this.Connection.DataRow("tstSimple", newEntry.Id)
             .Column("vModifyUser");
 
         // Benutzer, muss der sein, der über den App Context gesetzt wurde
@@ -74,16 +74,16 @@ public sealed class LogTests : DatabaseTestBase
         }
 
         // Auslesen der Trigger geänderten Werte
-        create = connection.DataRow("tstSimple", newEntry.Id)
+        create = this.Connection.DataRow("tstSimple", newEntry.Id)
             .Column<DateTime>("dCreate");
 
-        modify = connection.DataRow("tstSimple", newEntry.Id)
+        modify = this.Connection.DataRow("tstSimple", newEntry.Id)
             .Column<DateTime>("dModify");
 
-        createUser = connection.DataRow("tstSimple", newEntry.Id)
+        createUser = this.Connection.DataRow("tstSimple", newEntry.Id)
             .Column("vCreateUser");
 
-        modifyUser = connection.DataRow("tstSimple", newEntry.Id)
+        modifyUser = this.Connection.DataRow("tstSimple", newEntry.Id)
             .Column("vModifyUser");
 
         // Create Werte sollen unverändert sein
@@ -102,8 +102,8 @@ public sealed class LogTests : DatabaseTestBase
     [DoNotParallelize]
     public void Log_Insert_Update_Delete_At_LogDatabase_Correctly()
     {
-        DatabaseUtility.TruncateTables(connection, ["tstSimple"]);
-        DatabaseUtility.TruncateTables(logConnection, ["tstSimple", "logChange"]);
+        DatabaseUtility.TruncateTables(this.Connection, ["tstSimple"]);
+        DatabaseUtility.TruncateTables(this.LogConnection, ["tstSimple", "logChange"]);
 
         // Insert
         var newEntry = new SimpleTable
@@ -120,14 +120,14 @@ public sealed class LogTests : DatabaseTestBase
         }
 
         // Log Table Eintrag muss vorhanden sein
-        logConnection.DataRows("tstSimple", null, "tTimestamp")
+        this.LogConnection.DataRows("tstSimple", null, "tTimestamp")
             .Should().ContainValues(
             [
                 new { vChangeType = "I", vUserName = "autotest@test.com", vId = newEntry.Id, vTitle = "Title 1", vDescription = "Description 1" },
             ]);
 
         // Log History Eintrag muss vorhanden sein
-        logConnection.DataRows("logChange", null, "tTimestamp")
+        this.LogConnection.DataRows("logChange", null, "tTimestamp")
             .Should().ContainValues(
             [
                 new { vChangeType = "I", vPrimaryKey = newEntry.Id, vTable = "tstSimple", vUserName = "autotest@test.com" },
@@ -149,7 +149,7 @@ public sealed class LogTests : DatabaseTestBase
 
 
         // Log Table Eintrag muss vorhanden sein
-        logConnection.DataRows("tstSimple", "vChangeType in ('U', 'UO')", "tTimestamp")
+        this.LogConnection.DataRows("tstSimple", "vChangeType in ('U', 'UO')", "tTimestamp")
             .Should().ContainValues(
             [
                 new { vChangeType = "UO", vUserName = "autotest2@test.com", vId = newEntry.Id, vTitle = "Title 1", vDescription = "Description 1", vModifyUser = "autotest@test.com" },
@@ -157,7 +157,7 @@ public sealed class LogTests : DatabaseTestBase
             ]);
 
         // Log History Eintrag muss vorhanden sein
-        logConnection.DataRows("logChange", "vChangeType in ('U')", "tTimestamp")
+        this.LogConnection.DataRows("logChange", "vChangeType in ('U')", "tTimestamp")
             .Should().ContainValues(
             [
                 new { vChangeType = "U", vPrimaryKey = newEntry.Id, vTable = "tstSimple", vUserName = "autotest2@test.com" },
@@ -180,14 +180,14 @@ public sealed class LogTests : DatabaseTestBase
 
 
         // Log Table Eintrag muss vorhanden sein
-        logConnection.DataRows("tstSimple", "vChangeType in ('D')", "tTimestamp")
+        this.LogConnection.DataRows("tstSimple", "vChangeType in ('D')", "tTimestamp")
             .Should().ContainValues(
             [
                 new { vChangeType = "D", vUserName = "autotest2@test.com", vId = newEntry.Id, vTitle = "Title 2", vDescription = "Description 2", vModifyUser = "autotest2@test.com" },
             ]);
 
         // Log History Eintrag muss vorhanden sein
-        logConnection.DataRows("logChange", "vChangeType in ('D')", "tTimestamp")
+        this.LogConnection.DataRows("logChange", "vChangeType in ('D')", "tTimestamp")
             .Should().ContainValues(
             [
                 new { vChangeType = "D", vPrimaryKey = newEntry.Id, vTable = "tstSimple", vUserName = "autotest2@test.com" },

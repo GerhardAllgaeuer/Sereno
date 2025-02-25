@@ -12,15 +12,15 @@ namespace Sereno.Database.TlDb1.Test
     {
         static bool createDatabase = true;
 
-        protected SqlConnection connection = new();
-        protected string connectionString = "";
+        protected SqlConnection Connection { get; private set; } = new();
+        protected string ConnectionString { get; private set; } = "";
         protected ConnectionStringInfo connectionStringInfo = new();
 
-        protected SqlConnection logConnection = new();
-        protected string logConnectionString = "";
+        protected SqlConnection LogConnection { get; private set; } = new();
+        protected string LogConnectionString { get; private set; } = "";
 
-        protected SqlConnection masterConnection = new();
-        protected string masterConnectionString = "";
+        protected SqlConnection MasterConnection { get; private set; } = new();
+        protected string MasterConnectionString { get; private set; } = "";
 
         protected Context appContext = ContextUtility.Create("autotest@test.com");
 
@@ -29,20 +29,20 @@ namespace Sereno.Database.TlDb1.Test
         public void SetupBase()
         {
             var configuration = ConfigurationUtility.GetConfiguration();
-            connectionString = configuration.GetConnectionString("TestDb_ConnectionString")!;
-            connection = new SqlConnection(connectionString);
-            connection.Open();
+            ConnectionString = configuration.GetConnectionString("TestDb_ConnectionString")!;
+            Connection = new SqlConnection(ConnectionString);
+            Connection.Open();
 
-            connectionStringInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
+            connectionStringInfo = ConnectionStringUtility.ParseConnectionString(ConnectionString);
 
             string logDatabaseName = LogDatabaseUtility.GetLogDatabaseName(connectionStringInfo.Database);
-            logConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, logDatabaseName);
-            logConnection = new SqlConnection(logConnectionString);
-            logConnection.Open();
+            this.LogConnectionString = ConnectionStringUtility.ChangeDatabaseName(ConnectionString, logDatabaseName);
+            this.LogConnection = new SqlConnection(this.LogConnectionString);
+            this.LogConnection.Open();
 
-            masterConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, "master");
-            masterConnection = new SqlConnection(masterConnectionString);
-            masterConnection.Open();
+            this.MasterConnectionString = ConnectionStringUtility.ChangeDatabaseName(ConnectionString, "master");
+            this.MasterConnection = new SqlConnection(this.MasterConnectionString);
+            this.MasterConnection.Open();
         }
 
 
@@ -50,9 +50,9 @@ namespace Sereno.Database.TlDb1.Test
         [TestCleanup]
         public void Cleanup()
         {
-            connection?.Dispose();
-            logConnection?.Dispose();
-            masterConnection?.Dispose();
+            this.Connection?.Dispose();
+            this.LogConnection?.Dispose();
+            this.MasterConnection?.Dispose();
         }
 
 

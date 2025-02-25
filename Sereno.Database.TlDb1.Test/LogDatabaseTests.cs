@@ -12,7 +12,7 @@ public sealed class LogDatabaseTests : DatabaseTestBase
     [TestMethod]
     public void LogDatabaseExistance()
     {
-        using var connection = new SqlConnection(logConnectionString);
+        using var connection = new SqlConnection(this.LogConnectionString);
         connection.Open();
         connection.Should().HaveTable("tstSimple");
     }
@@ -23,9 +23,9 @@ public sealed class LogDatabaseTests : DatabaseTestBase
     {
         // Log Datenbank ändern und erneut abgleichen
         ChangeLogDatabase();
-        LogDatabaseUtility.CreateOrUpdateLogDatabase(masterConnectionString, connectionStringInfo.Database);
+        LogDatabaseUtility.CreateOrUpdateLogDatabase(this.MasterConnectionString, connectionStringInfo.Database);
 
-        using var connection = new SqlConnection(logConnectionString);
+        using var connection = new SqlConnection(this.LogConnectionString);
         connection.Open();
         connection.Should().HaveColumnType("tstSimple", "vTitle", "nvarchar(500)");
     }
@@ -33,7 +33,7 @@ public sealed class LogDatabaseTests : DatabaseTestBase
 
     private void ChangeLogDatabase()
     {
-        using var command = logConnection.CreateCommand();
+        using var command = this.LogConnection.CreateCommand();
         command.CommandText = $@"
                 Alter table tstSimple alter column vTitle nvarchar(400);
             ";
