@@ -92,7 +92,7 @@ namespace Sereno.Office.Test
                 {
                     HasHeader = true,
                     Columns = new[]
-    {
+                    {
                         new { ColumnName = "Column 1" },
                         new { ColumnName = "Column 2" },
                     },

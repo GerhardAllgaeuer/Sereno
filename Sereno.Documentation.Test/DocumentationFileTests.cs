@@ -1,4 +1,5 @@
-﻿using Sereno.Documentation.FileAccess;
+﻿using FluentAssertions;
+using Sereno.Documentation.FileAccess;
 using Sereno.Test;
 
 namespace Sereno.Documentation
@@ -14,14 +15,27 @@ namespace Sereno.Documentation
 
             DocumentationFile documentation = DocumentationFileReader.Read(filePath);
 
+            var expectedInfo = new
+            {
+                Author = "mitarbeiter1@test.com",
+                InfoReceivers = "alle",
+                NextCheck = new DateTime(2024, 11, 1),
+                Type = "Anleitung",
+            };
+
+            documentation.Should().BeEquivalentTo(expectedInfo);
         }
 
+
+
         [TestMethod]
-        public void ReadStuctrue()
+        public void Read_Stuctrue()
         {
             string rootDirectory = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary";
 
             List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
+
+            files.Count.Should().Be(3);
         }
     }
 }
