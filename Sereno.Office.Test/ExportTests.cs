@@ -1,7 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
-using FluentAssertions;
 using Sereno.Office.Word;
-using Sereno.Office.Word.SimpleStructure;
+using Sereno.Test;
 
 namespace Sereno.Office.Test
 {
@@ -11,8 +10,8 @@ namespace Sereno.Office.Test
         [TestMethod]
         public void Export_Document()
         {
-            string wordFilePath = @"D:\Projekte\Privat\Sereno\Sereno.Office.Test\Templates\Test_0001.docx";
-            string exportFilePath = @"D:\Data\Sereno.Office\Test_0001.csv";
+            string wordFilePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string exportFilePath = $@"{TestUtility.GetDataDirectory()}\Sereno.Office\Test_0001.csv";
 
             using (WordprocessingDocument? document = WordUtility.OpenWordDocument(wordFilePath))
             {

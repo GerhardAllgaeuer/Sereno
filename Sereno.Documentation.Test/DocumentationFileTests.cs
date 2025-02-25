@@ -37,5 +37,14 @@ namespace Sereno.Documentation
 
             files.Count.Should().Be(3);
         }
+
+        [TestMethod]
+        [TestProperty("Dev", "")]
+        public void Read_Production_Structure()
+        {
+            string rootDirectory = $@"D:\daten\age\Nextcloud Gyro\Dokumentation";
+
+            List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
+        }
     }
 }

@@ -27,5 +27,12 @@
 
         }
 
+        /// <summary>
+        /// Datenverzeichnis auslesen
+        /// </summary>
+        public static DirectoryInfo GetDataDirectory()
+        {
+            return new DirectoryInfo(@"D:\Data");
+        }
     }
 }

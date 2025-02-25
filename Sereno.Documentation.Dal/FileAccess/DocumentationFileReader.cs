@@ -10,12 +10,9 @@ namespace Sereno.Documentation.FileAccess
 
 
 
-        public static DocumentationFile Read(string filePath)
+        public static DocumentationFile? Read(string filePath)
         {
-            DocumentationFile result = new DocumentationFile()
-            {
-                File = new FileInfo(filePath),
-            };
+            DocumentationFile? result = null;
 
             using WordprocessingDocument document = WordUtility.OpenWordDocument(filePath);
 
@@ -23,16 +20,26 @@ namespace Sereno.Documentation.FileAccess
 
             ParagraphGroup? title = GetTitle(groups);
             TableGroup? documentDataTable = GetDocumentDataTable(groups);
-            if (documentDataTable != null)
-            {
-                TableInfoOptions tableInfoOptions = new TableInfoOptions()
-                {
-                    DetermineHeaderRow = false, 
-                    HasHeaderRow = false,
-                };
-                TableInfo tableInfo = TableGroupUtility.GetTableInfo(documentDataTable, tableInfoOptions);
 
-                MapWordTableToDocumentation(tableInfo.Data, result);
+            if (title != null &&
+                documentDataTable != null)
+            {
+                result = new()
+                {
+                    File = new FileInfo(filePath),
+                };
+
+                if (documentDataTable != null)
+                {
+                    TableInfoOptions tableInfoOptions = new TableInfoOptions()
+                    {
+                        DetermineHeaderRow = false,
+                        HasHeaderRow = false,
+                    };
+                    TableInfo tableInfo = TableGroupUtility.GetTableInfo(documentDataTable, tableInfoOptions);
+
+                    MapWordTableToDocumentation(tableInfo.Data, result);
+                }
             }
 
             return result;

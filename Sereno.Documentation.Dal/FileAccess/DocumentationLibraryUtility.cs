@@ -1,4 +1,6 @@
-﻿namespace Sereno.Documentation.FileAccess
+﻿using System.Diagnostics;
+
+namespace Sereno.Documentation.FileAccess
 {
     public class DocumentationLibraryUtility
     {
@@ -19,25 +21,43 @@
         }
 
 
+        private static bool IncludeFile(string file)
+        {
+            bool result = true;
+
+            if (!file.EndsWith(".docx"))
+                result = false;
+
+            return result;
+        }
+
+
         private static void ProcessDirectory(string rootdirectory, string directory, List<DocumentationFile> processedFiles)
         {
             foreach (string file in Directory.GetFiles(directory))
             {
-                try
+                if (IncludeFile(file))
                 {
-                    DocumentationFile docFile = DocumentationFileReader.Read(file);
-
-                    docFile.RelativePath = file.Replace(rootdirectory, "");
-                    if (docFile.RelativePath.StartsWith(@"\"))
+                    try
                     {
-                        docFile.RelativePath = docFile.RelativePath.Substring(1);
-                    }
+                        DocumentationFile? docFile = DocumentationFileReader.Read(file);
+                        if (docFile != null)
+                        {
+                            docFile.RelativePath = file.Replace(rootdirectory, "");
+                            if (docFile.RelativePath.StartsWith('\\'))
+                            {
+                                docFile.RelativePath = docFile.RelativePath.Substring(1);
+                            }
 
-                    processedFiles.Add(docFile);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error processing file {file}: {ex.Message}");
+                            processedFiles.Add(docFile);
+
+                            Debug.WriteLine(docFile.RelativePath);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error processing file {file}: {ex.Message}");
+                    }
                 }
             }
 
