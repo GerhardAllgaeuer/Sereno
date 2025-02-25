@@ -39,25 +39,20 @@ namespace Sereno.Office.Test
 
 
         [TestMethod]
-        public void Read_Tables()
+        public void Read_Table_Without_Header()
         {
             string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
-                List<TableGroup> tables = DocumentGroupUtility.GetDocumentGroups(document)
-                                                            .OfType<TableGroup>()
-                                                            .ToList();
+                var table = DocumentGroupUtility.GetDocumentGroups(document)
+                                              .OfType<TableGroup>()
+                                              .First();
 
-                // Tabelle ohne Header
-                TableGroup table0 = tables[0];
-                TableInfoOptions options0 = new TableInfoOptions()
-                {
-                     DetermineHeaderRow = true,
-                };
-                TableInfo tableInfo0 = TableGroupUtility.GetTableInfo(table0, options0);
+                var options = new TableInfoOptions { DetermineHeaderRow = true };
+                var tableInfo = TableGroupUtility.GetTableInfo(table, options);
 
-                var expectedInfo0 = new
+                tableInfo.Should().BeEquivalentTo(new
                 {
                     HasHeader = false,
                     Columns = new[]
@@ -65,30 +60,34 @@ namespace Sereno.Office.Test
                         new { ColumnName = "Column 0" },
                         new { ColumnName = "Column 1" },
                     },
-                };
+                });
 
-                tableInfo0.Should().BeEquivalentTo(expectedInfo0);
-
-
-                var expectedData0 = new[]
+                var expectedData = new[]
                 {
                     new { Column1 = "Zeile 1, Spalte 1", Column2 = "Zeile 1, Spalte 2" },
                     new { Column1 = "Zeile 2, Spalte 1", Column2 = "Zeile 2, Spalte 2" }
                 };
 
-                tableInfo0.Data.ShouldBeEquivalentTo(expectedData0);
+                tableInfo.Data.ShouldBeEquivalentTo(expectedData);
+            }
+        }
 
+        [TestMethod]
+        public void Read_Table_With_Header_Auto_Detect()
+        {
+            string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
 
+            using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
+            {
+                var table = DocumentGroupUtility.GetDocumentGroups(document)
+                                              .OfType<TableGroup>()
+                                              .Skip(1)
+                                              .First();
 
-                // Tabelle mit Header
-                TableGroup table1 = tables[1];
-                TableInfoOptions options1 = new TableInfoOptions()
-                {
-                    DetermineHeaderRow = true,
-                }; 
-                TableInfo tableInfo1 = TableGroupUtility.GetTableInfo(table1, options1);
+                var options = new TableInfoOptions { DetermineHeaderRow = true };
+                var tableInfo = TableGroupUtility.GetTableInfo(table, options);
 
-                var expectedInfo1 = new
+                tableInfo.Should().BeEquivalentTo(new
                 {
                     HasHeader = true,
                     Columns = new[]
@@ -96,50 +95,54 @@ namespace Sereno.Office.Test
                         new { ColumnName = "Column 1" },
                         new { ColumnName = "Column 2" },
                     },
-                };
+                });
 
-                tableInfo1.Should().BeEquivalentTo(tableInfo1);
-
-
-                var expectedData1 = new[]
+                var expectedData = new[]
                 {
                     new { Column1 = "Zeile 1, Spalte 1", Column2 = "Zeile 1, Spalte 2" },
                     new { Column1 = "Zeile 2, Spalte 1", Column2 = "Zeile 2, Spalte 2" }
                 };
 
-                tableInfo0.Data.ShouldBeEquivalentTo(expectedData1);
+                tableInfo.Data.ShouldBeEquivalentTo(expectedData);
+            }
+        }
 
+        [TestMethod]
+        public void Read_Table_With_Header_Manual_Setting()
+        {
+            string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
 
+            using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
+            {
+                var table = DocumentGroupUtility.GetDocumentGroups(document)
+                                              .OfType<TableGroup>()
+                                              .Skip(1)
+                                              .First();
 
-                // Tabelle mit Header, ohne automatische Erkennung
-                TableGroup table2 = tables[1];
-                TableInfoOptions options2 = new TableInfoOptions()
-                {
+                var options = new TableInfoOptions 
+                { 
                     DetermineHeaderRow = false,
-                    HasHeaderRow = true,
+                    HasHeaderRow = true
                 };
-                TableInfo tableInfo2 = TableGroupUtility.GetTableInfo(table2, options2);
+                var tableInfo = TableGroupUtility.GetTableInfo(table, options);
 
-                var expectedInfo2 = new
+                tableInfo.Should().BeEquivalentTo(new
                 {
                     HasHeader = true,
                     Columns = new[]
-    {
-                        new { ColumnName = "Column 2" },
+                    {
+                        new { ColumnName = "Column 1" },
                         new { ColumnName = "Column 2" },
                     },
-                };
+                });
 
-                tableInfo2.Should().BeEquivalentTo(tableInfo2);
-
-
-                var expectedData2 = new[]
+                var expectedData = new[]
                 {
                     new { Column1 = "Zeile 1, Spalte 1", Column2 = "Zeile 1, Spalte 2" },
                     new { Column1 = "Zeile 2, Spalte 1", Column2 = "Zeile 2, Spalte 2" }
                 };
 
-                tableInfo0.Data.ShouldBeEquivalentTo(expectedData2);
+                tableInfo.Data.ShouldBeEquivalentTo(expectedData);
             }
         }
     }
