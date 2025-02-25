@@ -13,7 +13,7 @@ namespace Sereno.Documentation
         {
             string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\Documents\Documentation_0001.docx";
 
-            DocumentationFile documentation = DocumentationFileReader.Read(filePath);
+            DocumentationFile? documentation = DocumentationFileReader.Read(filePath);
 
             var expectedInfo = new
             {

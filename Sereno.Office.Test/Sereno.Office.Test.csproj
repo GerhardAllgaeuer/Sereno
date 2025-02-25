@@ -17,11 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.2.0" />
     <PackageReference Include="FluentAssertions" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sereno.Office\Sereno.Office.csproj" />
+    <ProjectReference Include="..\Sereno.Office.Standard\Sereno.Office.csproj" />
     <ProjectReference Include="..\Sereno.Test.Extensions\Sereno.Test.Extensions.csproj" />
   </ItemGroup>
 

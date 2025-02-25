@@ -15,10 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sereno.Identity.Dto", "Sere
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sereno.Identity.Dal", "Sereno.Identity.Dal\Sereno.Identity.Dal.csproj", "{F3AE163C-BBEB-4AE6-94A2-C95346610367}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sereno.Office", "Sereno.Office\Sereno.Office.csproj", "{406261E5-D077-4B54-B51A-1658A0C7315A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sereno.Utilities", "Sereno.Utilities\Sereno.Utilities.csproj", "{69378DB8-597D-4590-98B9-9811FF897DDE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sereno.Utilities.Markdown", "Sereno.Utilities.Markdown\Sereno.Utilities.Markdown.csproj", "{2C0CC24B-BDD0-4B21-B6F3-9243551B6238}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Office.Windows", "Sereno.Office.Windows\Sereno.Office.Windows.csproj", "{6D36D7C0-99FB-405D-91CB-76419F781161}"
@@ -42,6 +38,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Test.Extensions", "Sereno.Test.Extensions\Sereno.Test.Extensions.csproj", "{5EF6CB5C-7762-40E6-AE3A-D9C1876D1CBA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Office.Test", "Sereno.Office.Test\Sereno.Office.Test.csproj", "{CA6AECF6-1815-476C-A0A6-932C7DF8583C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Office", "Sereno.Office.Standard\Sereno.Office.csproj", "{E0363291-6AB9-4670-81B6-934C37BFA27B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Utilities", "Sereno.Utilities.Standard\Sereno.Utilities.csproj", "{E6F574D1-92FC-4ECF-A86B-DEEAD42BB060}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,14 +75,6 @@ Global
 		{F3AE163C-BBEB-4AE6-94A2-C95346610367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3AE163C-BBEB-4AE6-94A2-C95346610367}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3AE163C-BBEB-4AE6-94A2-C95346610367}.Release|Any CPU.Build.0 = Release|Any CPU
-		{406261E5-D077-4B54-B51A-1658A0C7315A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{406261E5-D077-4B54-B51A-1658A0C7315A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{406261E5-D077-4B54-B51A-1658A0C7315A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{406261E5-D077-4B54-B51A-1658A0C7315A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{69378DB8-597D-4590-98B9-9811FF897DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{69378DB8-597D-4590-98B9-9811FF897DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{69378DB8-597D-4590-98B9-9811FF897DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{69378DB8-597D-4590-98B9-9811FF897DDE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C0CC24B-BDD0-4B21-B6F3-9243551B6238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C0CC24B-BDD0-4B21-B6F3-9243551B6238}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C0CC24B-BDD0-4B21-B6F3-9243551B6238}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -131,6 +123,14 @@ Global
 		{CA6AECF6-1815-476C-A0A6-932C7DF8583C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA6AECF6-1815-476C-A0A6-932C7DF8583C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA6AECF6-1815-476C-A0A6-932C7DF8583C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0363291-6AB9-4670-81B6-934C37BFA27B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0363291-6AB9-4670-81B6-934C37BFA27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0363291-6AB9-4670-81B6-934C37BFA27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0363291-6AB9-4670-81B6-934C37BFA27B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6F574D1-92FC-4ECF-A86B-DEEAD42BB060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6F574D1-92FC-4ECF-A86B-DEEAD42BB060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6F574D1-92FC-4ECF-A86B-DEEAD42BB060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6F574D1-92FC-4ECF-A86B-DEEAD42BB060}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

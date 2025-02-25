@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sereno.Database.Extensions\Sereno.Database.Extensions.csproj" />
-    <ProjectReference Include="..\Sereno.Office\Sereno.Office.csproj" />
+    <ProjectReference Include="..\Sereno.Office.Standard\Sereno.Office.csproj" />
   </ItemGroup>
 
   <ItemGroup>
