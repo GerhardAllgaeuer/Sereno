@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sereno.Utilities.Standard\Sereno.Utilities.csproj" />
+    <ProjectReference Include="..\Sereno.Utilities\Sereno.Utilities.csproj" />
   </ItemGroup>
 
 </Project>

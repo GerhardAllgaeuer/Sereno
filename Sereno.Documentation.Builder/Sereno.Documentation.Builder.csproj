@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sereno.Office.Standard\Sereno.Office.csproj" />
     <ProjectReference Include="..\Sereno.Office.Windows\Sereno.Office.Windows.csproj" />
+    <ProjectReference Include="..\Sereno.Office\Sereno.Office.csproj" />
     <ProjectReference Include="..\Sereno.Utilities.Markdown\Sereno.Utilities.Markdown.csproj" />
   </ItemGroup>
 

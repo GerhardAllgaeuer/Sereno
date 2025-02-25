@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MsWord = Microsoft.Office.Interop.Word;
 using System.Text.RegularExpressions;
+using Sereno.Utilities;
 
 namespace Sereno.Office.Windows.Word
 {
     public class WordApplicationUtility
     {
+        public static void TestStandardIntegration()
+        {
+            Context context = ContextUtility.Create("aljkds");
+        }
+
         public static void CloseWordDocument(string fileNameOrPath)
         {
             MsWord.Application wordApp;

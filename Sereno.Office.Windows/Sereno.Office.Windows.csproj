@@ -51,5 +51,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sereno.Utilities\Sereno.Utilities.csproj">
+      <Project>{5f90ba6b-18e7-f9c1-c860-34d04c1a0c7b}</Project>
+      <Name>Sereno.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
