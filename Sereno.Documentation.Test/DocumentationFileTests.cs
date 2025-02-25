@@ -1,7 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using Sereno.Documentation.FileAccess;
-using Sereno.Office.Word;
-using Sereno.Office.Word.SimpleStructure;
+﻿using Sereno.Documentation.FileAccess;
 using Sereno.Test;
 
 namespace Sereno.Documentation
@@ -17,6 +14,14 @@ namespace Sereno.Documentation
 
             DocumentationFile documentation = DocumentationFileReader.Read(filePath);
 
+        }
+
+        [TestMethod]
+        public void ReadStuctrue()
+        {
+            string rootDirectory = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary";
+
+            List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
         }
     }
 }

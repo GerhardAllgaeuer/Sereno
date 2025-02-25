@@ -1,7 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using Sereno.Office.Word;
 using Sereno.Office.Word.SimpleStructure;
-using DocumentFormat.OpenXml.Wordprocessing;
 using System.Data;
 
 namespace Sereno.Documentation.FileAccess
@@ -9,14 +8,6 @@ namespace Sereno.Documentation.FileAccess
     public class DocumentationFileReader
     {
 
-        private static readonly Dictionary<string, Action<DocumentationFile, string>> PropertySetters = new()
-        {
-            { "Verantwortlich", (obj, value) => obj.Verantwortlich = value },
-            { "Verantwortlichkeit", (obj, value) => obj.Verantwortlich = value },
-            { "Information", (obj, value) => obj.Information = value },
-            { "Nächste Prüfung", (obj, value) => obj.NächstePrüfung = DateTime.TryParse(value, out var date) ? date : default },
-            { "Typ", (obj, value) => obj.Typ = value }
-        };
 
 
         public static DocumentationFile Read(string filePath)
@@ -34,23 +25,48 @@ namespace Sereno.Documentation.FileAccess
             TableGroup? documentDataTable = GetDocumentDataTable(groups);
             if (documentDataTable != null)
             {
-                TableInfo tableInfo = TableGroupUtility.GetTableInfo(documentDataTable);
-                MapTableToObject(tableInfo.Data, result);
+                TableInfoOptions tableInfoOptions = new TableInfoOptions()
+                {
+                    DetermineHeaderRow = false, 
+                    HasHeaderRow = false,
+                };
+                TableInfo tableInfo = TableGroupUtility.GetTableInfo(documentDataTable, tableInfoOptions);
+
+                MapWordTableToDocumentation(tableInfo.Data, result);
             }
 
             return result;
         }
 
-        public static void MapTableToObject(DataTable table, DocumentationFile file)
+        public static void MapWordTableToDocumentation(DataTable table, DocumentationFile file)
         {
             foreach (DataRow row in table.Rows)
             {
                 string key = row[0]?.ToString()?.Trim() ?? "";
                 string value = row[1]?.ToString()?.Trim() ?? "";
 
-                if (PropertySetters.TryGetValue(key, out var setter))
+                try
                 {
-                    setter(file, value);
+                    switch (key)
+                    {
+                        case "Verantwortlich":
+                        case "Verantwortlichkeit":
+                            if (string.IsNullOrEmpty(file.Author)) file.Author = value;
+                            break;
+                        case "Information":
+                            if (string.IsNullOrEmpty(file.InfoReceivers)) file.InfoReceivers = value;
+                            break;
+                        case "Nächste Prüfung":
+                            if (!file.NextCheck.HasValue && DateTime.TryParse(value, out var date)) file.NextCheck = date;
+                            break;
+                        case "Typ":
+                            if (string.IsNullOrEmpty(file.Type)) file.Type = value;
+                            break;
+                    }
+                }
+                catch
+                {
+                    throw new Exception($"Error mapping {key} in {file.File.Name}");
                 }
             }
         }
@@ -84,6 +100,5 @@ namespace Sereno.Documentation.FileAccess
 
             return null;
         }
-
     }
 }

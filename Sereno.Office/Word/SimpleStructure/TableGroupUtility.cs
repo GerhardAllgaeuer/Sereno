@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
 using System.Data;
 using System.IO.Pipes;
+using System.Runtime.CompilerServices;
 
 namespace Sereno.Office.Word.SimpleStructure
 {
@@ -22,35 +23,57 @@ namespace Sereno.Office.Word.SimpleStructure
 
 
 
+        private static bool SetHeaderRowInfo(Table wordTable, TableInfoOptions options, TableInfo tableInfo)
+        {
+            bool result = false;
+
+            if (options.DetermineHeaderRow)
+            {
+                TableLook? look = wordTable.GetFirstChild<TableProperties>()?.GetFirstChild<TableLook>();
+                if (look != null)
+                {
+                    if (look.FirstRow != null &&
+                        look.FirstRow.HasValue &&
+                        look.FirstRow.Value == true)
+                    {
+                        tableInfo.HasHeader = true;
+                    }
+                }
+            }
+            else
+            {
+                tableInfo.HasHeader = options.HasHeaderRow;
+            }
+
+            return result;
+        }
+
+
+
         /// <summary>
         /// Daten als DataTable auslesen
         /// </summary>
-        public static TableInfo GetTableInfo(TableGroup tableGroup)
+        public static TableInfo GetTableInfo(TableGroup tableGroup, TableInfoOptions? options = null)
         {
+            if (options == null)
+            {
+                options = new TableInfoOptions();
+            }
+
             TableInfo result = new()
             {
                 Data = new(),
             };
 
+
             DataTable dataTable = result.Data;
             Table wordTable = tableGroup.Table;
 
 
+            SetHeaderRowInfo(wordTable, options, result);
+
+
             var rows = wordTable.Elements<TableRow>().ToList();
-            var firstRow = rows[0];
-
-            TableLook? look = wordTable.GetFirstChild<TableProperties>()?.GetFirstChild<TableLook>();
-            result.HasHeader = false;
-            if (look != null)
-            {
-                if (look.FirstRow != null &&
-                    look.FirstRow.HasValue &&
-                    look.FirstRow.Value == true)
-                {
-                    result.HasHeader = true;
-                }
-            }
-
             var firstRowCells = rows[0].Elements<TableCell>().ToList();
             int columnCount = firstRowCells.Count;
 

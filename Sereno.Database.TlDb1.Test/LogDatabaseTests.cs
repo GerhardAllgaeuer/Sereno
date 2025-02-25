@@ -10,7 +10,6 @@ public sealed class LogDatabaseTests : DatabaseTestBase
 
 
     [TestMethod]
-    [TestProperty("Auto", "")]
     public void LogDatabaseExistance()
     {
         using var connection = new SqlConnection(logConnectionString);
@@ -20,7 +19,6 @@ public sealed class LogDatabaseTests : DatabaseTestBase
 
 
     [TestMethod]
-    [TestProperty("Auto", "")]
     public void LogDatabaseChange()
     {
         // Log Datenbank ändern und erneut abgleichen

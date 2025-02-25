@@ -4,10 +4,17 @@
     {
         public required FileInfo File { get; set; }
 
-        public string Verantwortlich { get; set; } = string.Empty;
-        public string Information { get; set; } = string.Empty;
-        public DateTime NächstePrüfung { get; set; }
-        public string Typ { get; set; } = string.Empty;
+        public string RelativePath { get; set; } = string.Empty;
+        public string Author { get; set; } = string.Empty;
+        public string InfoReceivers { get; set; } = string.Empty;
+        public DateTime? NextCheck { get; set; }
+        public string Type { get; set; } = string.Empty;
+
+
+        public override string ToString()
+        {
+            return this.RelativePath;
+        }
 
 
 

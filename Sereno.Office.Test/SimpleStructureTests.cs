@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.ExtendedProperties;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using FluentAssertions;
 using Sereno.Office.Word;
 using Sereno.Office.Word.SimpleStructure;
@@ -52,7 +51,11 @@ namespace Sereno.Office.Test
 
                 // Tabelle ohne Header
                 TableGroup table0 = tables[0];
-                TableInfo tableInfo0 = TableGroupUtility.GetTableInfo(table0);
+                TableInfoOptions options0 = new TableInfoOptions()
+                {
+                     DetermineHeaderRow = true,
+                };
+                TableInfo tableInfo0 = TableGroupUtility.GetTableInfo(table0, options0);
 
                 var expectedInfo0 = new
                 {
@@ -75,9 +78,15 @@ namespace Sereno.Office.Test
 
                 tableInfo0.Data.ShouldBeEquivalentTo(expectedData0);
 
+
+
                 // Tabelle mit Header
                 TableGroup table1 = tables[1];
-                TableInfo tableInfo1 = TableGroupUtility.GetTableInfo(table1);
+                TableInfoOptions options1 = new TableInfoOptions()
+                {
+                    DetermineHeaderRow = true,
+                }; 
+                TableInfo tableInfo1 = TableGroupUtility.GetTableInfo(table1, options1);
 
                 var expectedInfo1 = new
                 {
@@ -93,13 +102,44 @@ namespace Sereno.Office.Test
 
 
                 var expectedData1 = new[]
-{
+                {
                     new { Column1 = "Zeile 1, Spalte 1", Column2 = "Zeile 1, Spalte 2" },
                     new { Column1 = "Zeile 2, Spalte 1", Column2 = "Zeile 2, Spalte 2" }
                 };
 
                 tableInfo0.Data.ShouldBeEquivalentTo(expectedData1);
 
+
+
+                // Tabelle mit Header, ohne automatische Erkennung
+                TableGroup table2 = tables[1];
+                TableInfoOptions options2 = new TableInfoOptions()
+                {
+                    DetermineHeaderRow = false,
+                    HasHeaderRow = true,
+                };
+                TableInfo tableInfo2 = TableGroupUtility.GetTableInfo(table2, options2);
+
+                var expectedInfo2 = new
+                {
+                    HasHeader = true,
+                    Columns = new[]
+    {
+                        new { ColumnName = "Column 2" },
+                        new { ColumnName = "Column 2" },
+                    },
+                };
+
+                tableInfo2.Should().BeEquivalentTo(tableInfo2);
+
+
+                var expectedData2 = new[]
+                {
+                    new { Column1 = "Zeile 1, Spalte 1", Column2 = "Zeile 1, Spalte 2" },
+                    new { Column1 = "Zeile 2, Spalte 1", Column2 = "Zeile 2, Spalte 2" }
+                };
+
+                tableInfo0.Data.ShouldBeEquivalentTo(expectedData2);
             }
         }
     }

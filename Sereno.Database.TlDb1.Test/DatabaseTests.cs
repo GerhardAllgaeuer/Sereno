@@ -9,7 +9,6 @@ namespace Sereno.Database.TlDb1.Test;
 public sealed class DatabaseTests : DatabaseTestBase
 {
     [TestMethod]
-    [TestProperty("Auto", "")]
     public void Read_From_SimpleTable()
     {
         using var dbContext = TestDbContextFactory.Create(appContext);
@@ -22,7 +21,6 @@ public sealed class DatabaseTests : DatabaseTestBase
 
     [TestMethod]
     [DoNotParallelize]
-    [TestProperty("Auto", "")]
     public void Insert_Into_SimpleTable()
     {
         // Tabelle bereinigen
