@@ -18,12 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sereno.Database.Extensions\Sereno.Database.Extensions.csproj" />
-    <ProjectReference Include="..\Sereno.Office\Sereno.Office.csproj" />
+    <Folder Include="DataAccess\Triggers\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataAccess\Triggers\" />
+    <ProjectReference Include="..\Sereno.Database.Extensions\Sereno.Database.Extensions.csproj" />
+    <ProjectReference Include="..\Sereno.Office.Word\Sereno.Office.Word.csproj" />
   </ItemGroup>
 
 </Project>
