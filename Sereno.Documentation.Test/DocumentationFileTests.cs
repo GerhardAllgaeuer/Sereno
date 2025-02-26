@@ -42,9 +42,16 @@ namespace Sereno.Documentation
         [TestProperty("Dev", "")]
         public void Read_Production_Structure()
         {
-            string rootDirectory = $@"D:\daten\age\Nextcloud Gyro\Dokumentation";
+            string rootDirectory = $@"\\conad01\info\EDV\Dokumentation";
+            string exportPath = $@"{TestUtility.GetDataDirectory()}\Sereno.Office\Documents.xlsx";
+            string templatePath = $@"{TestUtility.GetProjectRoot()}\\Sereno.Documentation.Dal\FileAccess\DocumentsTemplate.xlsx";
 
             List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
+
+            DocumentationLibraryUtility.WriteToExcel(files, templatePath, exportPath);
+            
+
+
         }
     }
 }

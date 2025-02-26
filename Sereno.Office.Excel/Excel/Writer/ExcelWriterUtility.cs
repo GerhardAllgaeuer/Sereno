@@ -135,7 +135,7 @@ namespace Sereno.Office.Excel.Writer
 
                     var table = range.CreateTable();
 
-                    table.FirstRow().Style.Fill.BackgroundColor = XLColor.FromHtml("#70AD47");
+                    table.FirstRow().Style.Fill.BackgroundColor = XLColor.FromHtml(options.TableColor);
 
                     foreach (var dataRow in table.DataRange.RowsUsed())
                     {

@@ -2,7 +2,7 @@
 using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using Sereno.Office.Tables;
+using Sereno.Utilities.TableConverter;
 using Sereno.Office.Windows.Word;
 using Sereno.Office.Word;
 using System.Diagnostics;

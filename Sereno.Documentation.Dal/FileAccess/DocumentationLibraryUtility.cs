@@ -1,4 +1,8 @@
-﻿using System.Diagnostics;
+﻿using Sereno.Office.Excel.Excel.Writer;
+using Sereno.Office.Excel.Writer;
+using Sereno.Utilities.TableConverter;
+using System.Data;
+using System.Diagnostics;
 
 namespace Sereno.Documentation.FileAccess
 {
@@ -19,6 +23,33 @@ namespace Sereno.Documentation.FileAccess
             ProcessDirectory(directory, directory, result);
             return result;
         }
+
+
+        public static void WriteToExcel(List<DocumentationFile> files, string template, string path)
+        {
+            MappingInfo tableInfo = new MappingInfo()
+            {
+                Columns =
+                [
+                    new MappingColumn() { ColumnName = nameof(DocumentationFile.RelativePath), SourceProperty = nameof(DocumentationFile.RelativePath) },
+                    new MappingColumn() { ColumnName = nameof(DocumentationFile.Author), SourceProperty = nameof(DocumentationFile.Author) },
+                ]
+            };
+
+            DataTable? table = TableConverterUtility.DataTableFromObjectList(files, tableInfo);
+
+
+            File.Delete(path);
+            File.Copy(template, path);
+            DataSet dataSet = TableConverterUtility.DataSetFromObjectList<DocumentationFile>(files, tableInfo);
+            DataSetInsertOptions options = new DataSetInsertOptions()
+            {
+                StartRow = 4,
+                TableColor = TableColors.Blue,
+            };
+            ExcelWriterUtility.InsertDataSetInExcel(path, dataSet, options);
+        }
+
 
 
         private static bool IncludeFile(string file)

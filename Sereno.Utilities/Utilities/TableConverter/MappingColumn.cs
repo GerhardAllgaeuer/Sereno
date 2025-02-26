@@ -1,10 +1,10 @@
-﻿namespace Sereno.Office.Tables
+﻿namespace Sereno.Utilities.TableConverter
 {
 
     /// <summary>
     /// Definition einer Tabellenspalte für Excel, Word, usw.
     /// </summary>
-    public class TableColumn
+    public class MappingColumn
     {
 
         /// <summary>

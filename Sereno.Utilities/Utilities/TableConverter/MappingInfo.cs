@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 
-namespace Sereno.Office.Tables
+namespace Sereno.Utilities.TableConverter
 {
 
     /// <summary>
     /// Definition einer Tabelle für Excel, Word, usw.
     /// </summary>
-    public class TableInfo
+    public class MappingInfo
     {
 
         /// <summary>
@@ -19,7 +18,7 @@ namespace Sereno.Office.Tables
         /// <summary>
         /// Liste mit den Spalten der Tabelle
         /// </summary>
-        public List<TableColumn> Columns { get; set; } = new List<TableColumn>();
+        public List<MappingColumn> Columns { get; set; } = new List<MappingColumn>();
 
     }
 }

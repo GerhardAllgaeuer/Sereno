@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Sereno.Office.Excel.Excel.Writer;
+using System.Collections.Generic;
 using static Sereno.Office.Excel.Writer.ExcelWriterUtility;
 
 namespace Sereno.Office.Excel.Writer
@@ -114,6 +115,12 @@ namespace Sereno.Office.Excel.Writer
         /// Aufhören bei Zeile (Debug)
         /// </summary>
         public int? StopAt { get; set;}
+
+
+        /// <summary>
+        /// Farbe für die Tabelle
+        /// </summary>
+        public string TableColor { get; set; } = TableColors.Green;
 
 
     }

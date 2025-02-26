@@ -1,6 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using Sereno.Office.Tables;
+using Sereno.Utilities.TableConverter;
 using Sereno.Office.Word;
 using System.IO;
 
@@ -133,16 +133,16 @@ namespace Sereno.Documentation
         protected virtual System.Data.DataTable? GetProjectFolders(List<SourceInfo> sourceInfos)
         {
 
-            Office.Tables.TableInfo tableInfo = new()
+            MappingInfo tableInfo = new()
             {
                 Columns =
                 [
-                    new TableColumn() { ColumnName = "Ordner", SourceProperty = nameof(SourceInfo.Location) },
-                    new TableColumn() { ColumnName = "Beschreibung", SourceProperty = nameof(SourceInfo.Description) },
+                    new MappingColumn() { ColumnName = "Ordner", SourceProperty = nameof(SourceInfo.Location) },
+                    new MappingColumn() { ColumnName = "Beschreibung", SourceProperty = nameof(SourceInfo.Description) },
                 ]
             };
 
-            System.Data.DataTable? table = TableUtility.GetDataSetFromObjectList(sourceInfos, tableInfo);
+            System.Data.DataTable? table = TableConverterUtility.DataTableFromObjectList(sourceInfos, tableInfo);
 
             return table;
         }

@@ -1,21 +1,32 @@
-﻿using Sereno.Utilities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 
-namespace Sereno.Office.Tables
+namespace Sereno.Utilities.TableConverter
 {
 
     /// <summary>
     /// Utility-Klasse für Tabellen
     /// </summary>
-    public class TableUtility
+    public class TableConverterUtility
     {
+
 
         /// <summary>
         /// Konvertieren einer Objektliste in ein DataSet
         /// </summary>
-        public static DataTable GetDataSetFromObjectList<T>(List<T> objectList, TableInfo tableInfo)
+        public static DataSet DataSetFromObjectList<T>(List<T> objectList, MappingInfo tableInfo)
+        {
+            DataSet result = new DataSet();
+            DataTable table = DataTableFromObjectList<T>(objectList, tableInfo);
+
+            return table.DataSet;
+        }
+
+        /// <summary>
+        /// Konvertieren einer Objektliste in eine DataTable
+        /// </summary>
+        public static DataTable DataTableFromObjectList<T>(List<T> objectList, MappingInfo tableInfo)
         {
             DataTable result = null;
 
@@ -30,7 +41,7 @@ namespace Sereno.Office.Tables
                 DataSet dataSet = new DataSet("DataSet");
                 dataSet.Tables.Add(result);
 
-                foreach (TableColumn column in tableInfo.Columns)
+                foreach (MappingColumn column in tableInfo.Columns)
                 {
                     // Ermittle den Propertytyp basierend auf dem Mapping
 
@@ -58,7 +69,7 @@ namespace Sereno.Office.Tables
                     {
                         // Füge die Daten aus den Objekten in die Tabelle ein, basierend auf dem Mapping
                         var row = result.NewRow();
-                        foreach (TableColumn column in tableInfo.Columns)
+                        foreach (MappingColumn column in tableInfo.Columns)
                         {
                             if (!string.IsNullOrWhiteSpace(column.ColumnName))
                             {
