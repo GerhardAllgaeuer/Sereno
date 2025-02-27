@@ -46,6 +46,13 @@ namespace Sereno.Documentation
 
             using var workbook = new XLWorkbook(exportPath);
             workbook.Table().HaveRowCount(3);
+
+            workbook.Table().Column("Author").ContainsValues(
+                [
+                    "mitarbeiter1@test.com",
+                    "",
+                    "mitarbeiter1@test.com",
+                ]);
         }
 
 
