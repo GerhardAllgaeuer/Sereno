@@ -461,7 +461,35 @@ namespace Sereno.Office.Excel.Writer
         }
 
 
+        public static void FormatExistingExcel(string filePathName, DataSetInsertOptions options)
+        {
+            using (var workbook = new XLWorkbook(filePathName))
+            {
 
+                var worksheet = workbook.Worksheet(1);
+                int startRowInExcel = 2;
+
+                if (options != null)
+                {
+                    if (!String.IsNullOrEmpty(options.ExcelWorkSheetName))
+                        worksheet = workbook.Worksheet(options.ExcelWorkSheetName);
+
+                    startRowInExcel = options.StartRow;
+                }
+
+
+
+                for (int rowIndex = startRowInExcel; rowIndex <= worksheet.LastRowUsed().RowNumber(); rowIndex++)
+                {
+                    var row = worksheet.Row(rowIndex);
+
+                    if (options?.FormatRow != null)
+                        options.FormatRow(row, options);
+                }
+
+                workbook.SaveAs(filePathName);
+            }
+        }
 
 
         /// <summary>

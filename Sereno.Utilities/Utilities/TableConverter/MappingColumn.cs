@@ -18,5 +18,11 @@
         /// </summary>
         public string SourceProperty { get; set; }
 
+
+        /// <summary>
+        /// Booleans in einen String mit x umwandeln
+        /// </summary>
+        public bool ConvertBoolToX { get; set; }
+
     }
 }

@@ -31,8 +31,10 @@ namespace Sereno.Documentation.FileAccess
             {
                 Columns =
                 [
-                    new MappingColumn() { ColumnName = nameof(DocumentationFile.RelativePath), SourceProperty = nameof(DocumentationFile.RelativePath) },
+                    new MappingColumn() { ColumnName = nameof(DocumentationFile.Title), SourceProperty = nameof(DocumentationFile.Title) },
                     new MappingColumn() { ColumnName = nameof(DocumentationFile.Author), SourceProperty = nameof(DocumentationFile.Author) },
+                    new MappingColumn() { ColumnName = nameof(DocumentationFile.RelativePath), SourceProperty = nameof(DocumentationFile.RelativePath) },
+                    new MappingColumn() { ColumnName = nameof(DocumentationFile.Path), SourceProperty = nameof(DocumentationFile.Path) },
                 ]
             };
 

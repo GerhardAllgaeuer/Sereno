@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Sereno.Documentation.FileAccess;
 using Sereno.Test;
+using Sereno.Utilities.DirectorySync;
 
 namespace Sereno.Documentation
 {
@@ -32,11 +33,16 @@ namespace Sereno.Documentation
         public void Read_Structure()
         {
             string rootDirectory = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary";
+            string exportPath = $@"{TestUtility.GetDataDirectory()}\Sereno.Office\TestDocuments.xlsx";
+            string templatePath = $@"{TestUtility.GetProjectRoot()}\\Sereno.Documentation.Dal\FileAccess\DocumentsTemplate.xlsx";
 
             List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
 
             files.Count.Should().Be(3);
+
+            DocumentationLibraryUtility.WriteToExcel(files, templatePath, exportPath);
         }
+
 
         [TestMethod]
         [TestProperty("Dev", "")]
@@ -49,8 +55,30 @@ namespace Sereno.Documentation
             List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
 
             DocumentationLibraryUtility.WriteToExcel(files, templatePath, exportPath);
-            
+        }
 
+        [TestMethod]
+        [TestProperty("Dev", "")]
+        public void Sync_Sereno_Code()
+        {
+            string sourceDirectory = $@"D:\Projekte\Privat\Sereno\Sereno.Office.Excel";
+            string targetDirectory = $@"D:\Projekte\Connexia\Connexia.root\Sereno.Office.Excel";
+
+            CopySource(sourceDirectory, targetDirectory);
+
+
+            sourceDirectory = $@"D:\Projekte\Privat\Sereno\Sereno.Utilities";
+            targetDirectory = $@"D:\Projekte\Connexia\Connexia.root\Sereno.Utilities";
+
+            CopySource(sourceDirectory, targetDirectory);
+
+        }
+
+        private void CopySource(string sourceDirectory, string targetDirectory)
+        {
+            DirectorySyncUtility.SyncDirectories(sourceDirectory, targetDirectory);
+            DirectorySyncUtility.RemoveBinAndObjDirectory(targetDirectory);
+            DirectorySyncUtility.RemoveGitFiles(targetDirectory);
 
         }
     }

@@ -18,34 +18,39 @@ namespace Sereno.Documentation.FileAccess
 
             List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
 
-            ParagraphGroup? title = GetTitle(groups);
-            TableGroup? documentDataTable = GetDocumentDataTable(groups);
-
-            if (title != null &&
-                documentDataTable != null)
+            result = new()
             {
-                result = new()
+                File = new FileInfo(filePath),
+            };
+
+            // Titel
+            ParagraphGroup? title = GetTitle(groups);
+
+            if (title != null)
+            {
+                result.Title = title.InnerText;
+            }
+
+            // Dokumentations Daten
+            TableGroup? documentDataTable = GetDocumentDataTable(groups);
+            if (documentDataTable != null)
+            {
+                result.HasDocumentationData = true;
+
+                TableInfoOptions tableInfoOptions = new TableInfoOptions()
                 {
-                    File = new FileInfo(filePath),
+                    DetermineHeaderRow = false,
+                    HasHeaderRow = false,
                 };
+                TableInfo tableInfo = TableGroupUtility.GetTableInfo(documentDataTable, tableInfoOptions);
 
-                if (documentDataTable != null)
-                {
-                    TableInfoOptions tableInfoOptions = new TableInfoOptions()
-                    {
-                        DetermineHeaderRow = false,
-                        HasHeaderRow = false,
-                    };
-                    TableInfo tableInfo = TableGroupUtility.GetTableInfo(documentDataTable, tableInfoOptions);
-
-                    MapWordTableToDocumentation(tableInfo.Data, result);
-                }
+                MapDocumentationData(tableInfo.Data, result);
             }
 
             return result;
         }
 
-        public static void MapWordTableToDocumentation(DataTable table, DocumentationFile file)
+        public static void MapDocumentationData(DataTable table, DocumentationFile file)
         {
             foreach (DataRow row in table.Rows)
             {
