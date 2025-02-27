@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using ClosedXML.Excel;
+using FluentAssertions;
 using Sereno.Documentation.FileAccess;
 using Sereno.Test;
+using Sereno.Test.Excel;
 using Sereno.Utilities.DirectorySync;
 
 namespace Sereno.Documentation
@@ -30,7 +32,7 @@ namespace Sereno.Documentation
 
 
         [TestMethod]
-        public void Read_Structure()
+        public void Read_And_Export_Structure()
         {
             string rootDirectory = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary";
             string exportPath = $@"{TestUtility.GetDataDirectory()}\Sereno.Office\TestDocuments.xlsx";
@@ -41,6 +43,9 @@ namespace Sereno.Documentation
             files.Count.Should().Be(3);
 
             DocumentationLibraryUtility.WriteToExcel(files, templatePath, exportPath);
+
+            using var workbook = new XLWorkbook(exportPath);
+            workbook.Table().HaveRowCount(3);
         }
 
 
