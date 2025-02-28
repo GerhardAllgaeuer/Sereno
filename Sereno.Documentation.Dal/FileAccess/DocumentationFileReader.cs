@@ -10,17 +10,17 @@ namespace Sereno.Documentation.FileAccess
 
 
 
-        public static DocumentationFile? Read(string filePath)
+        public static DocumentationFile? Read(DocumentationReaderOptions options)
         {
             DocumentationFile? result = null;
 
-            using WordprocessingDocument document = WordUtility.OpenWordDocument(filePath);
+            using WordprocessingDocument document = WordUtility.OpenWordDocument(options.FilePath);
 
             List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
 
             result = new()
             {
-                File = new FileInfo(filePath),
+                File = new FileInfo(options.FilePath),
             };
 
             // Titel

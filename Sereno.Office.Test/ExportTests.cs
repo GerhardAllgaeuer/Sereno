@@ -8,7 +8,7 @@ namespace Sereno.Office.Test
     public sealed class ExportTests
     {
         [TestMethod]
-        public void Export_Document()
+        public void Export_Word_Document_To_Csv()
         {
             string wordFilePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
             string exportFilePath = $@"{TestUtility.GetDataDirectory()}\Sereno.Office\Test_0001.csv";

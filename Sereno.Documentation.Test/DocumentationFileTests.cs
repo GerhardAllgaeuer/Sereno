@@ -12,11 +12,11 @@ namespace Sereno.Documentation
     {
 
         [TestMethod]
-        public void Read_Word_File()
+        public void Read_Header_Information()
         {
             string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\Documents\Documentation_0001.docx";
 
-            DocumentationFile? documentation = DocumentationFileReader.Read(filePath);
+            DocumentationFile? documentation = DocumentationFileReader.Read(new DocumentationReaderOptions() { FilePath = filePath });
 
             var expectedInfo = new
             {
@@ -32,7 +32,7 @@ namespace Sereno.Documentation
 
 
         [TestMethod]
-        public void Read_And_Export_Structure()
+        public void Read_And_Export_Library()
         {
             string rootDirectory = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary";
             string exportPath = $@"{TestUtility.GetDataDirectory()}\Sereno.Office\TestDocuments.xlsx";

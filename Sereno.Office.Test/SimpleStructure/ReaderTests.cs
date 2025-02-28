@@ -6,10 +6,10 @@ using Sereno.Test;
 using Sereno.Test.Database;
 using System.Data;
 
-namespace Sereno.Office.Test
+namespace Sereno.Office.Test.SimpleStructure
 {
     [TestClass]
-    public sealed class SimpleStructureTests
+    public sealed class ReaderTests
     {
         [TestMethod]
         public void Read_All_Paragraphs()
@@ -20,7 +20,7 @@ namespace Sereno.Office.Test
             {
                 List<ParagraphGroup> paragraphs = DocumentGroupUtility.GetDocumentGroups(document)
                                                             .OfType<ParagraphGroup>()
-                                                            .Where(x => !String.IsNullOrWhiteSpace(x.InnerText))
+                                                            .Where(x => !string.IsNullOrWhiteSpace(x.InnerText))
                                                             .ToList();
 
                 var expectedGroups = new[]

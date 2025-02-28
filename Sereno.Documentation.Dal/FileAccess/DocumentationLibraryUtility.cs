@@ -73,7 +73,7 @@ namespace Sereno.Documentation.FileAccess
                 {
                     try
                     {
-                        DocumentationFile? docFile = DocumentationFileReader.Read(file);
+                        DocumentationFile? docFile = DocumentationFileReader.Read(new DocumentationReaderOptions() { FilePath = file });
                         if (docFile != null)
                         {
                             docFile.RelativePath = file.Replace(rootdirectory, "");
