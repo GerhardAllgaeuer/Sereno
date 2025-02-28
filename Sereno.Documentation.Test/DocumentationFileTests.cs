@@ -79,10 +79,19 @@ namespace Sereno.Documentation
             CopySource(sourceDirectory, targetDirectory);
 
 
+            sourceDirectory = $@"D:\Projekte\Privat\Sereno\Sereno.Office.Word";
+            targetDirectory = $@"D:\Projekte\Connexia\Connexia.root\Sereno.Office.Word";
+
+            CopySource(sourceDirectory, targetDirectory);
+
+
+
             sourceDirectory = $@"D:\Projekte\Privat\Sereno\Sereno.Utilities";
             targetDirectory = $@"D:\Projekte\Connexia\Connexia.root\Sereno.Utilities";
 
             CopySource(sourceDirectory, targetDirectory);
+
+
 
         }
 
