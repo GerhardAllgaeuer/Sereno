@@ -32,5 +32,26 @@ namespace Sereno.Office.Test.SimpleStructure
                 htmlExport.Export(options);
             }
         }
+
+
+        [TestMethod]
+        public void Export_Html_To_Show_Styles()
+        {
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0002.docx";
+
+            using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
+            {
+                List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
+
+                ExportOptions options = new()
+                {
+                    ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\Document0002"),
+                    Groups = groups,
+                };
+
+                HtmlExport htmlExport = new();
+                htmlExport.Export(options);
+            }
+        }
     }
 }

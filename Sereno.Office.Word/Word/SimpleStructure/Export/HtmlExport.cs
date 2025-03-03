@@ -2,6 +2,7 @@
 using Sereno.Office.Word.SimpleStructure;
 using Sereno.Utilities;
 using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Sereno.Office.Word.Word.SimpleStructure.Export
@@ -26,6 +27,10 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
             // css kopieren
             FileInfo cssTemplate = new FileInfo($@"{templateDirectory.FullName}\styles.css");
             FileInfo cssTarget = new FileInfo($@"{this.Options.ExportDirectory}\{cssTemplate.Name}");
+
+            if (!this.Options.ExportDirectory.Exists)
+                this.Options.ExportDirectory.Create();
+
             File.Copy(cssTemplate.FullName, cssTarget.FullName, true);
 
             htmlContent = htmlContent.Replace("{{Content}}", content);
@@ -61,6 +66,15 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
                 {
                     AddToContent("<h3>{{Content}}</h3>", paragraph.InnerText);
                 }
+                else if (paragraph.StyleNameEn == "List Paragraph")
+                {
+                    AddToContent("<h3>{{Content}}</h3>", paragraph.InnerText);
+                }
+                else
+                {
+                    AddToContent("<p>{{Content}}</p>", paragraph.InnerText);
+                }
+
             }
         }
 
