@@ -4,6 +4,7 @@ using Sereno.Office.Word;
 using Sereno.Office.Word.SimpleStructure;
 using Sereno.Test;
 using Sereno.Test.Database;
+using Sereno.Utilities;
 using System.Data;
 
 namespace Sereno.Office.Test.SimpleStructure
@@ -14,7 +15,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Read_All_Paragraphs()
         {
-            string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -41,7 +42,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Read_Table_Without_Header()
         {
-            string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -75,7 +76,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Read_Table_With_Header_Auto_Detect()
         {
-            string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -110,7 +111,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Read_Table_With_Header_Manual_Setting()
         {
-            string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {

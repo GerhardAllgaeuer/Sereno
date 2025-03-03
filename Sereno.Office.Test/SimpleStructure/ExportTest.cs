@@ -4,6 +4,7 @@ using Sereno.Office.Word;
 using Sereno.Office.Word.SimpleStructure;
 using Sereno.Office.Word.Word.SimpleStructure.Export;
 using Sereno.Test;
+using Sereno.Utilities;
 using System.Data;
 
 namespace Sereno.Office.Test.SimpleStructure
@@ -15,7 +16,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Export_Html()
         {
-            string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {

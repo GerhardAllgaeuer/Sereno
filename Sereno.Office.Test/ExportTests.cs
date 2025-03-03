@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using Sereno.Office.Word;
 using Sereno.Test;
+using Sereno.Utilities;
 
 namespace Sereno.Office.Test
 {
@@ -10,8 +11,8 @@ namespace Sereno.Office.Test
         [TestMethod]
         public void Export_Word_Document_To_Csv()
         {
-            string wordFilePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
-            string exportFilePath = $@"{TestUtility.GetDataDirectory()}\Sereno.Office\Test_0001.csv";
+            string wordFilePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string exportFilePath = $@"{CodeUtility.GetDataDirectory()}\Sereno.Office\Test_0001.csv";
 
             using (WordprocessingDocument? document = WordUtility.OpenWordDocument(wordFilePath))
             {

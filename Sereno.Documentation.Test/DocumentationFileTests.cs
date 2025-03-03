@@ -3,6 +3,7 @@ using FluentAssertions;
 using Sereno.Documentation.FileAccess;
 using Sereno.Test;
 using Sereno.Test.Excel;
+using Sereno.Utilities;
 using Sereno.Utilities.DirectorySync;
 
 namespace Sereno.Documentation
@@ -14,7 +15,7 @@ namespace Sereno.Documentation
         [TestMethod]
         public void Read_Header_Information()
         {
-            string filePath = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\Documents\Documentation_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Documentation.Test\Documents\Documentation_0001.docx";
 
             DocumentationFile? documentation = DocumentationFileReader.Read(new DocumentationReaderOptions() { FilePath = filePath });
 
@@ -34,9 +35,9 @@ namespace Sereno.Documentation
         [TestMethod]
         public void Read_And_Export_Library()
         {
-            string rootDirectory = $@"{TestUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary";
-            string exportPath = $@"{TestUtility.GetDataDirectory()}\Sereno.Office\TestDocuments.xlsx";
-            string templatePath = $@"{TestUtility.GetProjectRoot()}\\Sereno.Documentation.Dal\FileAccess\DocumentsTemplate.xlsx";
+            string rootDirectory = $@"{CodeUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary";
+            string exportPath = $@"{CodeUtility.GetDataDirectory()}\Sereno.Office\TestDocuments.xlsx";
+            string templatePath = $@"{CodeUtility.GetProjectRoot()}\\Sereno.Documentation.Dal\FileAccess\DocumentsTemplate.xlsx";
 
             List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
 
@@ -61,8 +62,8 @@ namespace Sereno.Documentation
         public void Read_Production_Structure()
         {
             string rootDirectory = $@"\\conad01\info\EDV\Dokumentation";
-            string exportPath = $@"{TestUtility.GetDataDirectory()}\Sereno.Office\Documents.xlsx";
-            string templatePath = $@"{TestUtility.GetProjectRoot()}\\Sereno.Documentation.Dal\FileAccess\DocumentsTemplate.xlsx";
+            string exportPath = $@"{CodeUtility.GetDataDirectory()}\Sereno.Office\Documents.xlsx";
+            string templatePath = $@"{CodeUtility.GetProjectRoot()}\\Sereno.Documentation.Dal\FileAccess\DocumentsTemplate.xlsx";
 
             List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
 
