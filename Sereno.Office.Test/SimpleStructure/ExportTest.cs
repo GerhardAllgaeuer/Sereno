@@ -14,9 +14,9 @@ namespace Sereno.Office.Test.SimpleStructure
     {
 
         [TestMethod]
-        public void Export_Html()
+        public void Export_Html_With_All_Types()
         {
-            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\All_Types.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -24,7 +24,7 @@ namespace Sereno.Office.Test.SimpleStructure
 
                 ExportOptions options = new()
                 {
-                    ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\Document0001"),
+                    ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\All_Types"),
                     Groups = groups,
                 };
 
@@ -37,7 +37,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Export_Html_To_Show_Styles()
         {
-            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0002.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Long_Document.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -45,7 +45,7 @@ namespace Sereno.Office.Test.SimpleStructure
 
                 ExportOptions options = new()
                 {
-                    ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\Document0002"),
+                    ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\Long_Document"),
                     Groups = groups,
                 };
 

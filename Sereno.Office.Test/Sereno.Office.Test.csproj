@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Templates\~%24l_Types.docx" />
     <None Remove="Templates\~%24st_0001.docx" />
     <None Remove="Templates\~%24st_0002.docx" />
     <None Remove="Templates\~%24st_Paragraphs.docx" />
