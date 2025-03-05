@@ -96,6 +96,11 @@ ul, ol {
     padding-left: 20px;
 }
 
+/* Neue Regel für verschachtelte Listen */
+ul ul {
+    margin-bottom: 0;  /* Entfernt den zusätzlichen Abstand am Ende der verschachtelten Liste */
+}
+
 /* Footer */
 .footer {
     font-size: 14px;

@@ -28,8 +28,24 @@ namespace Sereno.Office.Test.SimpleStructure
                     new { StyleNameEn = "List Paragraph" },
                     new { StyleNameEn = "List Paragraph" },
                 };
-
                 paragraphs.Should().BeEquivalentTo(expectedGroups);
+
+
+                // Anzahl Elemente prüfen
+                int firstChildrenCount = paragraphs[0].ListParagraphs[0].Children.Count;
+                firstChildrenCount.Should().Be(3, $"Auflistung 0 muss 3 Elemente besitzen");
+
+                // Ebene 3 prüfen
+                int level3Count = paragraphs[0].ListParagraphs[2].Children[0].Children.Count;
+                level3Count.Should().Be(1, $"Auflistung auf Ebene 3 muss 1 Element besitzen");
+
+
+                // Nummerierung prüfen
+                bool isfirstNumbered = paragraphs[0].ListParagraphs[0].IsNumbered;
+                isfirstNumbered.Should().Be(false, $"Auflistung 0 ist nicht nummeriert.");
+
+                bool isfirstChildNumbered = paragraphs[0].ListParagraphs[0].Children[0].IsNumbered;
+                isfirstChildNumbered.Should().Be(true, $"Unterelemente der Auflistung 0 müssen nummeriert sein.");
             }
         }
 

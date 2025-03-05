@@ -75,7 +75,7 @@ namespace Sereno.Office.Word.SimpleStructure
             }
 
 
-            ListParagraphGroupUtility.CompressListParagraphs(groups);
+            ListParagraphGroupUtility.CompressListParagraphs(groups, document);
             ParagraphGroupUtility.CompressParagraphsByStyle(groups);
             ParagraphGroupUtility.ExtractParagraphGroupText(groups);
 

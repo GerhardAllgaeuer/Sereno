@@ -89,11 +89,14 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
         {
             if (listParagraphs.Count > 0)
             {
-                AddToContent("<ul>", "", identation);
+                // Prüfe, ob es sich um eine nummerierte Liste handelt
+                bool isNumbered = listParagraphs[0].IsNumbered;
+                string listTag = isNumbered ? "ol" : "ul";
+                
+                AddToContent($"<{listTag}>", "", identation);
 
                 foreach (ListParagraph listParagraph in listParagraphs)
                 {
-
                     if (listParagraph.Children.Count == 0)
                     {
                         AddToContent("<li>{{Content}}</li>", listParagraph.InnerText, identation + 1);
@@ -107,7 +110,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
                     }
                 }
 
-                AddToContent("</ul>", "", identation);
+                AddToContent($"</{listTag}>", "", identation);
             }
         }
 
