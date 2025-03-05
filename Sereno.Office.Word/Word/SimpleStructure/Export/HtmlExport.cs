@@ -1,7 +1,9 @@
 ﻿using DocumentFormat.OpenXml.Office2016.Drawing.Command;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Sereno.Office.Word.SimpleStructure;
 using Sereno.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
@@ -46,42 +48,78 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
 
         protected override void ProcessGroup(DocumentGroup group)
         {
-            if (group is ParagraphGroup paragraph)
+            int identation = 1;
+
+            if (group is ParagraphGroup paragraphGroup)
             {
-                if (paragraph.StyleNameEn == "Title")
+                if (paragraphGroup.StyleNameEn == "Title")
                 {
-                    string title = System.Net.WebUtility.HtmlEncode(paragraph.InnerText);
+                    string title = System.Net.WebUtility.HtmlEncode(paragraphGroup.InnerText);
                     htmlContent = htmlContent.Replace("{{Title}}", title);
                 }
 
-                else if (paragraph.StyleNameEn == "heading 1")
+                else if (paragraphGroup.StyleNameEn == "heading 1")
                 {
-                    AddToContent("<h1>{{Content}}</h1>", paragraph.InnerText);
+                    AddToContent("<h1>{{Content}}</h1>", paragraphGroup.InnerText, identation);
                 }
-                else if (paragraph.StyleNameEn == "heading 2")
+                else if (paragraphGroup.StyleNameEn == "heading 2")
                 {
-                    AddToContent("<h2>{{Content}}</h2>", paragraph.InnerText);
+                    AddToContent("<h2>{{Content}}</h2>", paragraphGroup.InnerText, identation);
                 }
-                else if (paragraph.StyleNameEn == "heading 3")
+                else if (paragraphGroup.StyleNameEn == "heading 3")
                 {
-                    AddToContent("<h3>{{Content}}</h3>", paragraph.InnerText);
+                    AddToContent("<h3>{{Content}}</h3>", paragraphGroup.InnerText, identation);
                 }
-                else if (paragraph.StyleNameEn == "List Paragraph")
+                else if (paragraphGroup.StyleNameEn == "List Paragraph")
                 {
-                    AddToContent("<h3>{{Content}}</h3>", paragraph.InnerText);
+                    AddToContent("<h3>{{Content}}</h3>", paragraphGroup.InnerText, identation);
                 }
                 else
                 {
-                    AddToContent("<p>{{Content}}</p>", paragraph.InnerText);
+                    AddToContent("<p>{{Content}}</p>", paragraphGroup.InnerText, identation);
                 }
-
+            }
+            else if (group is ListParagraphGroup listParagraphGroup)
+            {
+                AddListParagraphsToContent(listParagraphGroup.ListParagraphs, identation);
             }
         }
 
-        private void AddToContent(string template, string replacementText)
+        private void AddListParagraphsToContent(List<ListParagraph> listParagraphs, int identation)
+        {
+            if (listParagraphs.Count > 0)
+            {
+                AddToContent("<ul>", "", identation);
+
+                foreach (ListParagraph listParagraph in listParagraphs)
+                {
+
+                    if (listParagraph.Children.Count == 0)
+                    {
+                        AddToContent("<li>{{Content}}</li>", listParagraph.InnerText, identation + 1);
+                    }
+                    else
+                    {
+                        AddToContent("<li>{{Content}}", listParagraph.InnerText, identation + 1, false);
+                        content += Environment.NewLine;
+                        AddListParagraphsToContent(listParagraph.Children, identation + 2);
+                        AddToContent("</li>", "", identation + 1);
+                    }
+                }
+
+                AddToContent("</ul>", "", identation);
+            }
+        }
+
+
+        private void AddToContent(string template, string replacementText, int identation, bool withNewLine = true)
         {
             string text = template.Replace("{{Content}}", System.Net.WebUtility.HtmlEncode(replacementText));
-            text += Environment.NewLine;
+
+            text = "".PadLeft(identation * 4) + text;
+
+            if (withNewLine)
+                text += Environment.NewLine;
 
             content += text;
         }

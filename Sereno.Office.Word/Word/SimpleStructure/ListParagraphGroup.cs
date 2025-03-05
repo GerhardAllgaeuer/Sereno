@@ -1,5 +1,6 @@
 ﻿
 using DocumentFormat.OpenXml.Wordprocessing;
+using Sereno.Office.Word.Word.SimpleStructure;
 using System.Collections.Generic;
 
 namespace Sereno.Office.Word.SimpleStructure
@@ -28,6 +29,11 @@ namespace Sereno.Office.Word.SimpleStructure
         /// </summary>
         public List<Paragraph> Paragraphs { get; set; } = new List<Paragraph>();
 
+
+        /// <summary>
+        /// Hierarchsiche Klasse mit Listen-Elementen
+        /// </summary>
+        public List<ListParagraph> ListParagraphs { get; set; } = new List<ListParagraph>();
 
 
         /// <summary>
