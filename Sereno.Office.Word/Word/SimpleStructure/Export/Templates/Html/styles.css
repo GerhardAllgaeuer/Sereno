@@ -120,13 +120,13 @@ table {
 }
 
 th, td {
-    padding: 4px 2px 1px 8px;
-    border: 1px solid #444;
+    padding: 4px 0px 0px 8px;
+    border: 1px solid #ddd;
     text-align: left;
 }
 
 th {
-    background-color: rgba(154, 144, 132, 0.25); /* 25% vom Titel-Farbton */
+    background-color: rgba(154, 144, 132, 0.10); /* 25% vom Titel-Farbton */
     color: #333;
     font-weight: 600;
 }
