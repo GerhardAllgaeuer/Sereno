@@ -1,11 +1,8 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
-using FluentAssertions;
 using Sereno.Office.Word;
 using Sereno.Office.Word.SimpleStructure;
 using Sereno.Office.Word.Word.SimpleStructure.Export;
-using Sereno.Test;
 using Sereno.Utilities;
-using System.Data;
 
 namespace Sereno.Office.Test.SimpleStructure
 {
@@ -18,19 +15,17 @@ namespace Sereno.Office.Test.SimpleStructure
         {
             string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\All_Types.docx";
 
-            using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
+            using WordprocessingDocument document = WordUtility.OpenWordDocument(filePath);
+            List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
+
+            ExportOptions options = new()
             {
-                List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
+                ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\All_Types"),
+                Groups = groups,
+            };
 
-                ExportOptions options = new()
-                {
-                    ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\All_Types"),
-                    Groups = groups,
-                };
-
-                HtmlExport htmlExport = new();
-                htmlExport.Export(options);
-            }
+            HtmlExport htmlExport = new();
+            htmlExport.Export(options);
         }
 
 
@@ -39,19 +34,17 @@ namespace Sereno.Office.Test.SimpleStructure
         {
             string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\Long_Document.docx";
 
-            using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
+            using WordprocessingDocument document = WordUtility.OpenWordDocument(filePath);
+            List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
+
+            ExportOptions options = new()
             {
-                List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
+                ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\Long_Document"),
+                Groups = groups,
+            };
 
-                ExportOptions options = new()
-                {
-                    ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\Long_Document"),
-                    Groups = groups,
-                };
-
-                HtmlExport htmlExport = new();
-                htmlExport.Export(options);
-            }
+            HtmlExport htmlExport = new();
+            htmlExport.Export(options);
         }
     }
 }

@@ -96,10 +96,10 @@ ul, ol {
     padding-left: 20px;
 }
 
-/* Neue Regel für verschachtelte Listen */
-ul ul {
-    margin-bottom: 0;  /* Entfernt den zusätzlichen Abstand am Ende der verschachtelten Liste */
-}
+    /* Neue Regel für verschachtelte Listen */
+    ul ul {
+        margin-bottom: 0; /* Entfernt den zusätzlichen Abstand am Ende der verschachtelten Liste */
+    }
 
 /* Footer */
 .footer {
@@ -109,4 +109,24 @@ ul ul {
     margin-top: 20px;
     padding-top: 10px;
     border-top: 1px solid #ddd;
+}
+
+/* Tabellen-Stile */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 0.9em; /* 80% der normalen Schriftgröße */
+}
+
+th, td {
+    padding: 4px 2px 1px 8px;
+    border: 1px solid #444;
+    text-align: left;
+}
+
+th {
+    background-color: rgba(154, 144, 132, 0.25); /* 25% vom Titel-Farbton */
+    color: #333;
+    font-weight: 600;
 }

@@ -1,10 +1,7 @@
-﻿using DocumentFormat.OpenXml.Office2016.Drawing.Command;
-using DocumentFormat.OpenXml.Wordprocessing;
-using Sereno.Office.Word.SimpleStructure;
+﻿using Sereno.Office.Word.SimpleStructure;
 using Sereno.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 
 namespace Sereno.Office.Word.Word.SimpleStructure.Export
@@ -83,6 +80,10 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
             {
                 AddListParagraphsToContent(listParagraphGroup.ListParagraphs, identation);
             }
+            else if (group is TableGroup tableGroup)
+            {
+                AddTableToContent(tableGroup.TableInfo, identation);
+            }
         }
 
         private void AddListParagraphsToContent(List<ListParagraph> listParagraphs, int identation)
@@ -114,6 +115,54 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
             }
         }
 
+        private void AddTableToContent(TableInfo tableInfo, int identation)
+        {
+            AddToContent("<table>", "", identation);
+
+            // Spaltenbreiten definieren
+            AddToContent("<colgroup>", "", identation + 1);
+            foreach (ColumnInfo column in tableInfo.Columns)
+            {
+                // Umrechnung von cm in Pixel (ungefähr 37.8 Pixel pro cm)
+                int widthInPixels = (int)(column.ColumnWidth * 37.8);
+                AddToContent($"<col style=\"width: {widthInPixels}px\">", "", identation + 2);
+            }
+            AddToContent("</colgroup>", "", identation + 1);
+
+            // Header-Zeile erstellen, falls vorhanden
+            if (tableInfo.HasHeader)
+            {
+                AddToContent("<thead>", "", identation + 1);
+                AddToContent("<tr>", "", identation + 2);
+                
+                foreach (ColumnInfo column in tableInfo.Columns)
+                {
+                    AddToContent("<th>{{Content}}</th>", column.ColumnName, identation + 3);
+                }
+                
+                AddToContent("</tr>", "", identation + 2);
+                AddToContent("</thead>", "", identation + 1);
+            }
+
+            // Tabellen-Body erstellen
+            AddToContent("<tbody>", "", identation + 1);
+            
+            for (int row = 0; row < tableInfo.Data.Rows.Count; row++)
+            {
+                AddToContent("<tr>", "", identation + 2);
+                
+                for (int col = 0; col < tableInfo.Columns.Count; col++)
+                {
+                    string cellValue = tableInfo.Data.Rows[row][col]?.ToString() ?? "";
+                    AddToContent("<td>{{Content}}</td>", cellValue, identation + 3);
+                }
+                
+                AddToContent("</tr>", "", identation + 2);
+            }
+            
+            AddToContent("</tbody>", "", identation + 1);
+            AddToContent("</table>", "", identation);
+        }
 
         private void AddToContent(string template, string replacementText, int identation, bool withNewLine = true)
         {
