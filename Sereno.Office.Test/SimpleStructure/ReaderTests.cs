@@ -15,7 +15,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Read_List_Paragraphs()
         {
-            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\List_Paragraphs.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\List_Paragraphs.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -54,7 +54,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Read_All_Paragraphs()
         {
-            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\All_Types.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -81,7 +81,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Read_Table_Without_Header()
         {
-            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\All_Types.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -115,7 +115,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Read_Table_With_Header_Auto_Detect()
         {
-            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\All_Types.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -150,7 +150,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Read_Table_With_Header_Manual_Setting()
         {
-            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\All_Types.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {

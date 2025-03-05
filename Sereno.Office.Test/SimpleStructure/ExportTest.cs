@@ -16,7 +16,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Export_Html_With_All_Types()
         {
-            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\All_Types.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\All_Types.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
@@ -37,7 +37,7 @@ namespace Sereno.Office.Test.SimpleStructure
         [TestMethod]
         public void Export_Html_To_Show_Styles()
         {
-            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Long_Document.docx";
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\Long_Document.docx";
 
             using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
             {
