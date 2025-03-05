@@ -7,5 +7,7 @@ namespace Sereno.Office.Word.SimpleStructure
     {
         public Table Table { get; set; } = new Table();
 
+        public TableInfo TableInfo { get; set; }
+
     }
 }

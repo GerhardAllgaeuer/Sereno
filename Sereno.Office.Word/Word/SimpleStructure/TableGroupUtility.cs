@@ -1,8 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
+using System;
 using System.Data;
-using System.IO.Pipes;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Sereno.Office.Word.SimpleStructure
 {
@@ -18,6 +17,8 @@ namespace Sereno.Office.Word.SimpleStructure
             {
                 Table = table,
             };
+
+            result.TableInfo = GetTableInfo(result);
 
             return result;
         }
@@ -88,6 +89,7 @@ namespace Sereno.Office.Word.SimpleStructure
                     result.Columns.Add(new ColumnInfo()
                     {
                         ColumnName = columnName,
+                        ColumnWidth = GetCellWidth(cell)
                     });
                 }
                 rows.RemoveAt(0);
@@ -101,6 +103,7 @@ namespace Sereno.Office.Word.SimpleStructure
                     result.Columns.Add(new ColumnInfo()
                     {
                         ColumnName = columnName,
+                        ColumnWidth = GetCellWidth(firstRowCells[i])
                     });
                 }
             }
@@ -124,6 +127,38 @@ namespace Sereno.Office.Word.SimpleStructure
         private static string GetCellText(TableCell cell)
         {
             return cell.Descendants<Text>().Aggregate("", (current, text) => current + text.Text);
+        }
+
+        private static double? GetCellWidth(TableCell cell)
+        {
+            var cellProperties = cell.GetFirstChild<TableCellProperties>();
+            if (cellProperties == null) return null;
+
+            var cellWidth = cellProperties.GetFirstChild<TableCellWidth>();
+            if (cellWidth == null || !cellWidth.Width.HasValue) return null;
+
+            if (int.TryParse(cellWidth.Width.Value, out int twips))
+            {
+                return TwipsToCentimeters(twips);
+            }
+
+            return null;
+        }
+
+        private static double TwipsToCentimeters(int twips)
+        {
+            // 1 twip = 1/20 Punkt
+            double points = twips / 20.0;
+
+            // 1 Inch = 72 Punkte
+            double inches = points / 72.0;
+            
+            // 1 cm = 2.54 Inch
+            double result = inches * 2.54;
+
+            result = Math.Round(result, 2);
+
+            return result;
         }
     }
 }

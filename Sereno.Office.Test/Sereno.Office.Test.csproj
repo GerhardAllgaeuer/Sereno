@@ -17,6 +17,7 @@
     <None Remove="Documents\~%24st_0001.docx" />
     <None Remove="Documents\~%24st_0002.docx" />
     <None Remove="Documents\~%24st_Paragraphs.docx" />
+    <None Remove="Documents\~%24Tables.docx" />
     <None Remove="Documents\~WRL0003.tmp" />
   </ItemGroup>
 
