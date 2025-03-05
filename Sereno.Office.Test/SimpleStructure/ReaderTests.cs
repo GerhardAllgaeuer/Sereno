@@ -13,6 +13,29 @@ namespace Sereno.Office.Test.SimpleStructure
     public sealed class ReaderTests
     {
         [TestMethod]
+        public void Read_List_Paragraphs()
+        {
+            string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\List_Paragraphs.docx";
+
+            using (WordprocessingDocument document = WordUtility.OpenWordDocument(filePath))
+            {
+                List<ListParagraphGroup> paragraphs = DocumentGroupUtility.GetDocumentGroups(document)
+                                                            .OfType<ListParagraphGroup>()
+                                                            .ToList();
+
+                var expectedGroups = new[]
+                {
+                    new { StyleNameEn = "List Paragraph" },
+                    new { StyleNameEn = "List Paragraph" },
+                };
+
+                paragraphs.Should().BeEquivalentTo(expectedGroups);
+            }
+        }
+
+
+
+        [TestMethod]
         public void Read_All_Paragraphs()
         {
             string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";

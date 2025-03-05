@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.Generic;
 using System.Linq;
+using Sereno.Office.Word.Word.SimpleStructure;
 
 namespace Sereno.Office.Word.SimpleStructure
 {
@@ -43,7 +44,15 @@ namespace Sereno.Office.Word.SimpleStructure
             {
                 if (element is Paragraph paragraph)
                 {
-                    currentGroup = ParagraphGroupUtility.ProcessParagraph(paragraph, document, options);
+                    if (ListParagraphGroupUtility.IsListParagraph(paragraph))
+                    {
+                        currentGroup = ListParagraphGroupUtility.ProcessListParagraph(paragraph, document, options);
+                    }
+                    else
+                    {
+                        currentGroup = ParagraphGroupUtility.ProcessParagraph(paragraph, document, options);
+                    }
+
                 }
                 else if (element is Table table)
                 {
@@ -66,6 +75,7 @@ namespace Sereno.Office.Word.SimpleStructure
             }
 
 
+            ListParagraphGroupUtility.CompressListParagraphs(groups);
             ParagraphGroupUtility.CompressParagraphsByStyle(groups);
             ParagraphGroupUtility.ExtractParagraphGroupText(groups);
 

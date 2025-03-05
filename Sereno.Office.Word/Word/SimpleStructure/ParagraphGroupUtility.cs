@@ -33,7 +33,6 @@ namespace Sereno.Office.Word.SimpleStructure
             string styleNameEn = GetStyleNameEn(document, currentStyleId) ?? "";
             string styleName = GetStyleName(currentStyleId) ?? "";
 
-
             ParagraphGroup result = new ParagraphGroup()
             {
                 StyleId = currentStyleId,
@@ -89,8 +88,6 @@ namespace Sereno.Office.Word.SimpleStructure
             ParagraphGroup previousGroup = null;
             List<DocumentGroup> groupsToRemove = new List<DocumentGroup>();
 
-            List<ParagraphGroup> paragraphs = groups.OfType<ParagraphGroup>().ToList();
-
             foreach (DocumentGroup group in groups)
             {
                 if (group is ParagraphGroup currentGroup)
@@ -101,6 +98,10 @@ namespace Sereno.Office.Word.SimpleStructure
                         {
                             previousGroup.Paragraphs.AddRange(currentGroup.Paragraphs);
                             groupsToRemove.Add(group);
+                        }
+                        else
+                        {
+                            previousGroup = currentGroup;
                         }
                     }
                 }

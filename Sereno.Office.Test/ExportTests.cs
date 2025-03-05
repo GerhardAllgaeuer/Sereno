@@ -11,7 +11,7 @@ namespace Sereno.Office.Test
         [TestMethod]
         public void Export_Word_Document_To_Csv()
         {
-            string wordFilePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\Test_0001.docx";
+            string wordFilePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Templates\List_Paragraphs.docx";
             string exportFilePath = $@"{CodeUtility.GetDataDirectory()}\Sereno.Office\Test_0001.csv";
 
             using (WordprocessingDocument? document = WordUtility.OpenWordDocument(wordFilePath))
