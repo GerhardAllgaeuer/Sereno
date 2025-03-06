@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <None Remove="Documents\~%24l_Types.docx" />
+    <None Remove="Documents\~%24ng_Document.docx" />
     <None Remove="Documents\~%24st_0001.docx" />
     <None Remove="Documents\~%24st_0002.docx" />
     <None Remove="Documents\~%24st_Paragraphs.docx" />
