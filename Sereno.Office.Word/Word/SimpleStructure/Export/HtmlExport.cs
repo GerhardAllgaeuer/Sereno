@@ -19,6 +19,12 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
             this.templateDirectory = new DirectoryInfo(directory);
 
             htmlContent = File.ReadAllText($@"{templateDirectory.FullName}\template.html");
+
+            // Setup image directory
+            DirectoryInfo imageDirectory = new DirectoryInfo(Path.Combine(this.Options.ExportDirectory.FullName, "images"));
+            if (imageDirectory.Exists)
+                imageDirectory.Delete(true);
+            imageDirectory.Create();
         }
 
         protected override void Finish()
@@ -76,6 +82,10 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
                     AddToContent("<p>{{Content}}</p>", paragraphGroup.InnerText, identation);
                 }
             }
+            else if (group is ImageGroup imagegroup)
+            {
+                AddImagesToContent(imagegroup);
+            }
             else if (group is ListParagraphGroup listParagraphGroup)
             {
                 AddListParagraphsToContent(listParagraphGroup.ListParagraphs, identation);
@@ -83,6 +93,41 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
             else if (group is TableGroup tableGroup)
             {
                 AddTableToContent(tableGroup.TableInfo, identation);
+            }
+        }
+
+        private void AddImagesToContent(ImageGroup imagegroup)
+        {
+            // Save images first
+            foreach (var image in imagegroup.Images)
+            {
+                string imagePath = Path.Combine(this.Options.ExportDirectory.FullName, "images", $"{image.ImageName}.png");
+                File.WriteAllBytes(imagePath, image.Data);
+            }
+
+            if (imagegroup.Images.Count > 1)
+            {
+                // Container für mehrere Bilder nebeneinander
+                AddToContent("<div class=\"image-container\">", "", 1);
+                
+                foreach (var image in imagegroup.Images)
+                {
+                    AddToContent("<div class=\"image-wrapper\">", "", 2);
+                    AddToContent($"<img src=\"{{{{Content}}}}\" width=\"{image.PixelWidth}\" height=\"{image.PixelHeight}\" alt=\"\" style=\"max-width: 100%; height: auto;\" />", 
+                        $"images/{image.ImageName}.png", 3);
+                    AddToContent("</div>", "", 2);
+                }
+                
+                AddToContent("</div>", "", 1);
+            }
+            else if (imagegroup.Images.Count == 1)
+            {
+                var image = imagegroup.Images[0];
+                // Einzelnes Bild in einem Paragraph
+                AddToContent("<p class=\"image-paragraph\">", "", 1);
+                AddToContent($"<img src=\"{{{{Content}}}}\" width=\"{image.PixelWidth}\" height=\"{image.PixelHeight}\" alt=\"\" style=\"max-width: 100%; height: auto;\" />", 
+                    $"images/{image.ImageName}.png", 2);
+                AddToContent("</p>", "", 1);
             }
         }
 

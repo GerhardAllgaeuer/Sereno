@@ -4,11 +4,30 @@ using DocumentFormat.OpenXml.Vml;
 using DocumentFormat.OpenXml.Packaging;
 using Sereno.Office.Word.SimpleStructure;
 using DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using System.Collections.Generic;
 
 namespace Sereno.Office.Word.Word.SimpleStructure
 {
     public class ImageGroupUtility
     {
+
+        public static void PrepareImages(List<DocumentGroup> groups)
+        {
+            List<ImageGroup> paragraphs = groups.OfType<ImageGroup>()
+                                            .ToList();
+
+            int imageCounter = 1;
+            foreach (var imageGroup in paragraphs)
+            {
+                foreach (var image in imageGroup.Images)
+                {
+                    image.ImageName = $"Image{imageCounter:D4}";
+                    imageCounter++;
+                }
+            }
+        }
+
+
         public static bool ParagraphContainsAnImage(Paragraph paragraph)
         {
             if (paragraph == null)
@@ -33,7 +52,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure
         public static ImageGroup ProcessParagraph(Paragraph paragraph, WordprocessingDocument document, DocumentGroupOptions options)
         {
             ImageGroup result = new ImageGroup();
-            
+
             // Bilder aus Drawing-Elementen extrahieren (neueres Format)
             var drawings = paragraph.Descendants<Drawing>();
             foreach (var drawing in drawings)
@@ -55,7 +74,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                             double heightCm = 0;
                             double dpiX = 96; // Standard-DPI
                             double dpiY = 96; // Standard-DPI
-                            
+
                             if (extent != null)
                             {
                                 // EMUs (English Metric Units) in Pixel und cm umrechnen
@@ -65,7 +84,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                                 heightPx = (int)(extent.Cy.Value / 9525);
                                 widthCm = extent.Cx.Value / 360000.0;
                                 heightCm = extent.Cy.Value / 360000.0;
-                                
+
                                 // DPI berechnen
                                 // 1 inch = 2.54 cm
                                 if (widthCm > 0)
@@ -73,7 +92,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                                 if (heightCm > 0)
                                     dpiY = heightPx / (heightCm / 2.54);
                             }
-                            
+
                             // Bilddaten auslesen
                             byte[] imageData;
                             using (var stream = imagePart.GetStream())
@@ -81,7 +100,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                                 imageData = new byte[stream.Length];
                                 stream.Read(imageData, 0, (int)stream.Length);
                             }
-                            
+
                             // ImageInfo erstellen und zur Gruppe hinzufügen
                             var imageInfo = new ImageInfo
                             {
@@ -94,13 +113,13 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                                 DpiY = dpiY
                                 // ImageName wird später implementiert
                             };
-                            
+
                             result.Images.Add(imageInfo);
                         }
                     }
                 }
             }
-            
+
             // VML-Bilder extrahieren (älteres Format)
             var shapes = paragraph.Descendants<Shape>();
             foreach (var shape in shapes)
@@ -119,7 +138,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                         double heightCm = 0;
                         double dpiX = 96; // Standard-DPI
                         double dpiY = 96; // Standard-DPI
-                        
+
                         var style = shape.Style?.Value;
                         if (style != null)
                         {
@@ -154,7 +173,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                                     }
                                 }
                             }
-                            
+
                             // DPI berechnen
                             // 1 inch = 2.54 cm
                             if (widthCm > 0)
@@ -162,7 +181,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                             if (heightCm > 0)
                                 dpiY = heightPx / (heightCm / 2.54);
                         }
-                        
+
                         // Bilddaten auslesen
                         byte[] imageBytes;
                         using (var stream = imagePart.GetStream())
@@ -170,7 +189,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                             imageBytes = new byte[stream.Length];
                             stream.Read(imageBytes, 0, (int)stream.Length);
                         }
-                        
+
                         // ImageInfo erstellen und zur Gruppe hinzufügen
                         var imageInfo = new ImageInfo
                         {
@@ -183,12 +202,12 @@ namespace Sereno.Office.Word.Word.SimpleStructure
                             DpiY = dpiY
                             // ImageName wird später implementiert
                         };
-                        
+
                         result.Images.Add(imageInfo);
                     }
                 }
             }
-            
+
             return result;
         }
     }
