@@ -48,6 +48,10 @@ namespace Sereno.Office.Word.SimpleStructure
                     {
                         currentGroup = ListParagraphGroupUtility.ProcessListParagraph(paragraph, document, options);
                     }
+                    else if (ImageGroupUtility.ParagraphContainsAnImage(paragraph))
+                    {
+                        currentGroup = ImageGroupUtility.ProcessParagraph(paragraph, document, options);
+                    }
                     else
                     {
                         currentGroup = ParagraphGroupUtility.ProcessParagraph(paragraph, document, options);
