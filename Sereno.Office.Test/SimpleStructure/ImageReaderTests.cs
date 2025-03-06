@@ -13,14 +13,25 @@ namespace Sereno.Office.Test.SimpleStructure
     {
 
         [TestMethod]
-        public void Read_Image()
+        public void Read_Images()
         {
             string filePath = $@"{CodeUtility.GetProjectRoot()}\Sereno.Office.Test\Documents\Images.docx";
 
             using WordprocessingDocument document = WordUtility.OpenWordDocument(filePath);
-            ImageGroup tableGroup = DocumentGroupUtility.GetDocumentGroups(document)
+
+
+            List<ImageGroup> groups = DocumentGroupUtility.GetDocumentGroups(document)
                                         .OfType<ImageGroup>()
-                                        .ElementAt(0);
+                                        .ToList();
+
+            ImageGroup imageGroup0 = groups.ElementAt(0);
+
+            imageGroup0.Images.Count.Should().Be(1);
+
+
+            ImageGroup imageGroup1 = groups.ElementAt(1);
+
+            imageGroup1.Images.Count.Should().Be(2);
 
         }
 
