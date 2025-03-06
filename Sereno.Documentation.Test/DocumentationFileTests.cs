@@ -1,6 +1,11 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Packaging;
 using FluentAssertions;
+using Microsoft.CodeCoverage.Core.Reports.Coverage;
 using Sereno.Documentation.FileAccess;
+using Sereno.Office.Word.SimpleStructure;
+using Sereno.Office.Word.Word.SimpleStructure.Export;
+using Sereno.Office.Word;
 using Sereno.Test;
 using Sereno.Test.Excel;
 using Sereno.Utilities;
@@ -69,6 +74,35 @@ namespace Sereno.Documentation
 
             DocumentationLibraryUtility.WriteToExcel(files, templatePath, exportPath);
         }
+
+        [TestMethod]
+        [TestProperty("Dev", "")]
+        public void Export_Html_Production_Structure()
+        {
+            string rootDirectory = $@"\\conad01\info\EDV\Dokumentation";
+            string exportPath = $@"{CodeUtility.GetDataDirectory()}\Sereno.Office\Documents.xlsx";
+            string templatePath = $@"{CodeUtility.GetProjectRoot()}\\Sereno.Documentation.Dal\FileAccess\DocumentsTemplate.xlsx";
+
+            List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
+
+            foreach (DocumentationFile file in files)
+            {
+                using (WordprocessingDocument document = WordUtility.OpenWordDocument(file.Path))
+                {
+                    List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
+
+                    ExportOptions options = new()
+                    {
+                        ExportDirectory = new DirectoryInfo(@$"D:\Data\Sereno.Office\Production\{file.RelativeDirectory}\{file.Key}"),
+                        Groups = groups,
+                    };
+
+                    HtmlExport htmlExport = new();
+                    htmlExport.Export(options);
+                }
+            }
+        }
+
 
         [TestMethod]
         [TestProperty("Dev", "")]

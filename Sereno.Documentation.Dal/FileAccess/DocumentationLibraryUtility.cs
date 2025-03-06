@@ -76,10 +76,18 @@ namespace Sereno.Documentation.FileAccess
                         DocumentationFile? docFile = DocumentationFileReader.Read(new DocumentationReaderOptions() { FilePath = file });
                         if (docFile != null)
                         {
-                            docFile.RelativePath = file.Replace(rootdirectory, "");
+                            FileInfo fileInfo = new FileInfo(file);
+
+                            docFile.RelativePath = fileInfo.FullName.Replace(rootdirectory, "");
                             if (docFile.RelativePath.StartsWith('\\'))
                             {
                                 docFile.RelativePath = docFile.RelativePath.Substring(1);
+                            }
+
+                            docFile.RelativeDirectory = fileInfo!.Directory!.FullName.Replace(rootdirectory, "");
+                            if (docFile.RelativeDirectory.StartsWith('\\'))
+                            {
+                                docFile.RelativeDirectory = docFile.RelativeDirectory.Substring(1);
                             }
 
                             processedFiles.Add(docFile);
