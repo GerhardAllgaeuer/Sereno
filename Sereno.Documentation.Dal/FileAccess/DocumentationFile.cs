@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Sereno.Office.Word.SimpleStructure;
+using System.IO;
 
 namespace Sereno.Documentation.FileAccess
 {
@@ -33,6 +34,8 @@ namespace Sereno.Documentation.FileAccess
         public DateTime? NextCheck { get; set; }
         public string Type { get; set; } = string.Empty;
 
+
+        public List<DocumentGroup> Contents { get; set; } = [];
 
         public override string ToString()
         {

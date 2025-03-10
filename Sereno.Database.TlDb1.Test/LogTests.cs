@@ -120,18 +120,25 @@ public sealed class LogTests : DatabaseTestBase
         }
 
         // Log Table Eintrag muss vorhanden sein
-        this.LogConnection.DataRows("tstSimple", null, "tTimestamp")
-            .Should().ContainValues(
-            [
+        this.LogConnection.DataRows("Select * from tstSimple order by tTimestamp")
+            .Should().ContainValues(new object[] 
+            {
                 new { vChangeType = "I", vUserName = "autotest@test.com", vId = newEntry.Id, vTitle = "Title 1", vDescription = "Description 1" },
-            ]);
+            });
+
+        // Log Table Eintrag muss vorhanden sein
+        this.LogConnection.DataRows("tstSimple", null, "tTimestamp")
+            .Should().ContainValues(new object[]
+            {
+                new { vChangeType = "I", vUserName = "autotest@test.com", vId = newEntry.Id, vTitle = "Title 1", vDescription = "Description 1" },
+            });
 
         // Log History Eintrag muss vorhanden sein
         this.LogConnection.DataRows("logChange", null, "tTimestamp")
-            .Should().ContainValues(
-            [
+            .Should().ContainValues(new object[]
+            {
                 new { vChangeType = "I", vPrimaryKey = newEntry.Id, vTable = "tstSimple", vUserName = "autotest@test.com" },
-            ]);
+            });
 
 
 
@@ -150,18 +157,18 @@ public sealed class LogTests : DatabaseTestBase
 
         // Log Table Eintrag muss vorhanden sein
         this.LogConnection.DataRows("tstSimple", "vChangeType in ('U', 'UO')", "tTimestamp")
-            .Should().ContainValues(
-            [
+            .Should().ContainValues(new object[]
+            {
                 new { vChangeType = "UO", vUserName = "autotest2@test.com", vId = newEntry.Id, vTitle = "Title 1", vDescription = "Description 1", vModifyUser = "autotest@test.com" },
                 new { vChangeType = "U", vUserName = "autotest2@test.com", vId = newEntry.Id, vTitle = "Title 2", vDescription = "Description 2", vModifyUser = "autotest2@test.com" },
-            ]);
+            });
 
         // Log History Eintrag muss vorhanden sein
         this.LogConnection.DataRows("logChange", "vChangeType in ('U')", "tTimestamp")
-            .Should().ContainValues(
-            [
+            .Should().ContainValues(new object[]
+            {
                 new { vChangeType = "U", vPrimaryKey = newEntry.Id, vTable = "tstSimple", vUserName = "autotest2@test.com" },
-            ]);
+            });
 
 
 
@@ -181,17 +188,17 @@ public sealed class LogTests : DatabaseTestBase
 
         // Log Table Eintrag muss vorhanden sein
         this.LogConnection.DataRows("tstSimple", "vChangeType in ('D')", "tTimestamp")
-            .Should().ContainValues(
-            [
+            .Should().ContainValues(new object[]
+            {
                 new { vChangeType = "D", vUserName = "autotest2@test.com", vId = newEntry.Id, vTitle = "Title 2", vDescription = "Description 2", vModifyUser = "autotest2@test.com" },
-            ]);
+            });
 
         // Log History Eintrag muss vorhanden sein
         this.LogConnection.DataRows("logChange", "vChangeType in ('D')", "tTimestamp")
-            .Should().ContainValues(
-            [
+            .Should().ContainValues(new object[]
+            {
                 new { vChangeType = "D", vPrimaryKey = newEntry.Id, vTable = "tstSimple", vUserName = "autotest2@test.com" },
-            ]);
+            });
 
 
     }

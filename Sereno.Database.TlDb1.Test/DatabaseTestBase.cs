@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sereno.Database.Logging.TlDb1;
-using Sereno.TlDb1.DataAccess;
 using Sereno.Utilities;
 
 namespace Sereno.Database.TlDb1.Test

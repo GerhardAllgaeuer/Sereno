@@ -21,11 +21,10 @@ namespace Sereno.Office.Test.SimpleStructure
             ExportOptions options = new()
             {
                 ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\All_Types"),
-                Groups = groups,
             };
 
             HtmlExport htmlExport = new();
-            htmlExport.Export(options);
+            htmlExport.Export(groups, options);
         }
 
 
@@ -40,11 +39,10 @@ namespace Sereno.Office.Test.SimpleStructure
             ExportOptions options = new()
             {
                 ExportDirectory = new DirectoryInfo(@"D:\Data\Sereno.Office\Long_Document"),
-                Groups = groups,
             };
 
             HtmlExport htmlExport = new();
-            htmlExport.Export(options);
+            htmlExport.Export(groups, options);
         }
     }
 }

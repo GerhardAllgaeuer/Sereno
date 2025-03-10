@@ -1,12 +1,10 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Packaging;
 using FluentAssertions;
-using Microsoft.CodeCoverage.Core.Reports.Coverage;
 using Sereno.Documentation.FileAccess;
 using Sereno.Office.Word.SimpleStructure;
 using Sereno.Office.Word.Word.SimpleStructure.Export;
 using Sereno.Office.Word;
-using Sereno.Test;
 using Sereno.Test.Excel;
 using Sereno.Utilities;
 using Sereno.Utilities.DirectorySync;
@@ -94,11 +92,13 @@ namespace Sereno.Documentation
                     ExportOptions options = new()
                     {
                         ExportDirectory = new DirectoryInfo(@$"D:\Data\Sereno.Office\Production\{file.RelativeDirectory}\{file.Key}"),
-                        Groups = groups,
                     };
 
-                    HtmlExport htmlExport = new();
-                    htmlExport.Export(options);
+                    DocumentationExportOptions exportOptions = new DocumentationExportOptions()
+                    {
+                        RootDirectory = new DirectoryInfo(rootDirectory),
+                    };
+                    DocumentationExport.ExportHtml(file, exportOptions);
                 }
             }
         }
@@ -106,7 +106,7 @@ namespace Sereno.Documentation
 
         [TestMethod]
         [TestProperty("Dev", "")]
-        public void Sync_Sereno_Code()
+        public void Copy_Sereno_Code_To_Connexia()
         {
             string sourceDirectory = $@"D:\Projekte\Privat\Sereno\Sereno.Office.Excel";
             string targetDirectory = $@"D:\Projekte\Connexia\Connexia.root\Sereno.Office.Excel";
@@ -123,6 +123,12 @@ namespace Sereno.Documentation
 
             sourceDirectory = $@"D:\Projekte\Privat\Sereno\Sereno.Utilities";
             targetDirectory = $@"D:\Projekte\Connexia\Connexia.root\Sereno.Utilities";
+
+            CopySource(sourceDirectory, targetDirectory);
+
+
+            sourceDirectory = $@"D:\Projekte\Privat\Sereno\Sereno.Test.Extensions";
+            targetDirectory = $@"D:\Projekte\Connexia\Connexia.root\Sereno.Test.Extensions";
 
             CopySource(sourceDirectory, targetDirectory);
 

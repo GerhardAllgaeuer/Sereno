@@ -14,7 +14,7 @@ namespace Sereno.Test.Excel
             return new ExcelTableAssertion(table);
         }
 
-        public static ExcelTableAssertion Table(this XLWorkbook workbook, string? sheetName = null, string? tableName = null)
+        public static ExcelTableAssertion Table(this XLWorkbook workbook, string sheetName = null, string tableName = null)
         {
             var sheet = string.IsNullOrWhiteSpace(sheetName)
                 ? workbook.Worksheets.FirstOrDefault()

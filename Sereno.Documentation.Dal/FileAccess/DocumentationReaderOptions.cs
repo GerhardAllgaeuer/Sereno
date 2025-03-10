@@ -1,4 +1,7 @@
-﻿namespace Sereno.Documentation.FileAccess
+﻿
+using Sereno.Office.Word.Word.SimpleStructure.Export;
+
+namespace Sereno.Documentation.FileAccess
 {
     public class DocumentationReaderOptions
     {

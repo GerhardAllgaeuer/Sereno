@@ -13,7 +13,6 @@ namespace Sereno.Documentation.FileAccess
         {
             List<DocumentationFile> result = [];
 
-
             if (!Directory.Exists(directory))
             {
                 Console.WriteLine($"Directory does not exist: {directory}");

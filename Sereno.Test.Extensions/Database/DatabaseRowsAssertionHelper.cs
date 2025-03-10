@@ -1,4 +1,6 @@
 ﻿using FluentAssertions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Sereno.Test.Database
 {
@@ -25,6 +27,11 @@ namespace Sereno.Test.Database
 
                 expectedDicts.Should().ContainEquivalentOf(filteredRow);
             });
+        }
+
+        public void ContainValues(List<object> expectedRows)
+        {
+            ContainValues(expectedRows.ToArray());
         }
     }
 }

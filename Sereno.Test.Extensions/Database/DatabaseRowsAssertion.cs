@@ -1,4 +1,6 @@
-﻿namespace Sereno.Test.Database
+﻿using System.Collections.Generic;
+
+namespace Sereno.Test.Database
 {
     public class DatabaseRowsAssertion
     {

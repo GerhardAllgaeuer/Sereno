@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace Sereno.Test.Database
 {
@@ -16,7 +18,7 @@ namespace Sereno.Test.Database
             return new DatabaseRowAssertion(connection, table, primaryKeyColumn, primaryKeyValue);
         }
 
-        public static DatabaseRowsAssertion DataRows(this SqlConnection connection, string table, object? whereClause = null, string? orderBy = null)
+        public static DatabaseRowsAssertion DataRows(this SqlConnection connection, string table, object whereClause = null, string orderBy = null)
         {
             if (connection.State != System.Data.ConnectionState.Open)
             {
@@ -39,6 +41,22 @@ namespace Sereno.Test.Database
             }
 
             var result = connection.Query<dynamic>(query, parameters).ToList();
+
+            var rows = result.Select(row => (IDictionary<string, object>)row)
+                             .Select(dict => new Dictionary<string, object>(dict))
+                             .ToList();
+
+            return new DatabaseRowsAssertion(rows);
+        }
+
+        public static DatabaseRowsAssertion DataRows(this SqlConnection connection, string selectStatement)
+        {
+            if (connection.State != System.Data.ConnectionState.Open)
+            {
+                connection.Open();
+            }
+
+            var result = connection.Query<dynamic>(selectStatement).ToList();
 
             var rows = result.Select(row => (IDictionary<string, object>)row)
                              .Select(dict => new Dictionary<string, object>(dict))

@@ -53,11 +53,11 @@ public sealed class DatabaseTests : DatabaseTestBase
 
         // Zeilen prüfen
         this.Connection.DataRows("tstSimple", null, "dModify")
-            .Should().ContainValues(
-            [
+            .Should().ContainValues(new object[]
+            {
                 new { vTitle = "Title 1", vDescription = "Description 1" },
                 new { vTitle = "Title 2", vDescription = "Description 2" },
-            ]);
+            });
 
     }
 }
