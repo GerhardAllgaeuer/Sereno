@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { HeaderComponent } from './components/header/header.component';
 import { RouterOutlet } from '@angular/router';
@@ -13,5 +14,7 @@ import { RouterOutlet } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  constructor(private http: HttpClient) { }
+
   title = 'Sereno.Documentation.Client';
 }

@@ -10,12 +10,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add CORS policy for Angular client
+// Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowClientApp", policy =>
+    options.AddPolicy("AllowAngularApp", policy =>
     {
-        policy.WithOrigins("http://localhost:4200") // Angenommen, der Angular-Client läuft auf Port 4200
+        policy.WithOrigins("http://localhost:58343")  // Your Angular app's origin
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -33,8 +33,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Use CORS policy
-app.UseCors("AllowClientApp");
+// Use CORS
+app.UseCors("AllowAngularApp");
 
 app.UseAuthorization();
 
