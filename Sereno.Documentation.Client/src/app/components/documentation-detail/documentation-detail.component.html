@@ -1,0 +1,28 @@
+<div class="documentation-detail-container">
+  <button class="back-button" (click)="goBack()">
+    <span class="back-icon">←</span> Zurück zur Übersicht
+  </button>
+
+  <div *ngIf="loading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Lade Dokumentation...</p>
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+    <button class="retry-button" (click)="loadDocumentation()">Erneut versuchen</button>
+  </div>
+
+  <div *ngIf="!loading && !error && documentation" class="documentation-content">
+    <h1 class="doc-title">{{ documentation.title }}</h1>
+    
+    <div class="doc-meta">
+      <span class="doc-topic">{{ documentation.topic }}</span>
+      <span>Aktualisiert: {{ documentation.updatedAt | date:'dd.MM.yyyy' }}</span>
+    </div>
+    
+    <div class="doc-body">
+      <p>{{ documentation.content }}</p>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,31 @@
+<header class="app-header">
+  <div class="header-container">
+    <div class="logo">
+      <a routerLink="/">Sereno Dokumentation</a>
+    </div>
+    
+    <nav class="main-nav">
+      <ul>
+        <li>
+          <a 
+            routerLink="/" 
+            [class.active]="isActive('/')" 
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}"
+          >
+            Übersicht
+          </a>
+        </li>
+        <li>
+          <a 
+            routerLink="/search" 
+            [class.active]="isActive('/search')"
+            routerLinkActive="active"
+          >
+            Suche
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header> 

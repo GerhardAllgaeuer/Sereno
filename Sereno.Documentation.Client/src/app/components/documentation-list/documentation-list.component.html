@@ -1,0 +1,42 @@
+<div class="documentation-list-container">
+  <div class="topic-filter">
+    <h3>Nach Thema filtern</h3>
+    <div class="topic-buttons">
+      <button 
+        class="topic-button" 
+        [class.active]="selectedTopic === ''"
+        (click)="filterByTopic('')">
+        Alle
+      </button>
+      <button 
+        *ngFor="let topic of topics" 
+        class="topic-button" 
+        [class.active]="selectedTopic === topic"
+        (click)="filterByTopic(topic)">
+        {{ topic }}
+      </button>
+    </div>
+  </div>
+
+  <div class="documentation-list">
+    <h2>Dokumentationsübersicht</h2>
+    
+    <div *ngIf="loading" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Lade Dokumentationen...</p>
+    </div>
+
+    <div *ngIf="!loading && documentations.length === 0" class="no-results">
+      <p>Keine Dokumentationen gefunden.</p>
+    </div>
+
+    <div *ngIf="!loading && documentations.length > 0" class="documentation-items">
+      <div *ngFor="let doc of documentations" class="documentation-item" [routerLink]="['/documentation', doc.id]">
+        <h3 class="doc-title">{{ doc.title }}</h3>
+        <p class="doc-topic">Thema: {{ doc.topic }}</p>
+        <p class="doc-content">{{ truncateContent(doc.content) }}</p>
+        <p class="doc-date">Aktualisiert: {{ doc.updatedAt | date:'dd.MM.yyyy' }}</p>
+      </div>
+    </div>
+  </div>
+</div> 

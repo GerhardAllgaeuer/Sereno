@@ -42,6 +42,27 @@ namespace Sereno.Utilities.DirectorySync
                 }
             }
 
+            // Lösche Verzeichnisse, die nicht mehr in der Quelle existieren
+            foreach (var targetSubDir in Directory.GetDirectories(targetDir, "*", SearchOption.AllDirectories)
+                                         .OrderByDescending(d => d.Length)) // Sortiere nach Länge absteigend, um zuerst tiefere Verzeichnisse zu verarbeiten
+            {
+                string relativePath = GetRelativePath(targetDir, targetSubDir);
+                string sourceSubDir = Path.Combine(sourceDir, relativePath);
+
+                if (!Directory.Exists(sourceSubDir))
+                {
+                    try
+                    {
+                        Directory.Delete(targetSubDir, true);
+                    }
+                    catch (IOException)
+                    {
+                        // Falls das Verzeichnis nicht gelöscht werden kann, ignoriere den Fehler
+                        // und versuche später mit RemoveEmptyDirectories
+                    }
+                }
+            }
+
             RemoveEmptyDirectories(targetDir);
         }
 

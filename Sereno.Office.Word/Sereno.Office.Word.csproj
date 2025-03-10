@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Sereno.Utilities\Sereno.Utilities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SimpleStructure\" />
-  </ItemGroup>
-
 </Project>
