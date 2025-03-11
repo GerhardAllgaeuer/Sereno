@@ -1,0 +1,133 @@
+﻿/* Einbindung der Avenir Next LT Pro Fonts von Connexia */
+@font-face {
+    font-family: 'Avenir Next LT Pro';
+    src: url('http://www.connexia.at/avenir_next_lt_pro_regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Avenir Next LT Pro';
+    src: url('http://www.connexia.at/avenir_next_lt_pro_medium.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Einbindung der Sabon LT Pro */
+@font-face {
+    font-family: 'Sabon LT Pro';
+    src: url('http://www.connexia.at/sabon_lt_pro_Roman.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/* Allgemeine Stile */
+body {
+    font-family: 'Avenir Next LT Pro';
+    font-size: 16px;
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 12px;
+    line-height: 1.682em;
+    color: #333;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Titel-Stil */
+.title {
+    font-family: 'Sabon LT Pro';
+    font-size: 35px;
+    line-height: 1.4;
+    color: #9A9084;
+    margin-bottom: 20px;
+    letter-spacing: 0.08em; /* Mehr Abstand für Titel */
+}
+
+/* Einheitliche Überschriften-Stile */
+h1 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+h2, h3 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    color: #999;
+}
+
+/* Absätze */
+p {
+    margin-bottom: 15px;
+}
+
+/* Links */
+a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+/* Container für den Content */
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Listen */
+ul, ol {
+    margin-bottom: 15px;
+    padding-left: 20px;
+}
+
+    /* Neue Regel für verschachtelte Listen */
+    ul ul {
+        margin-bottom: 0; /* Entfernt den zusätzlichen Abstand am Ende der verschachtelten Liste */
+    }
+
+/* Footer */
+.footer {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+}
+
+/* Tabellen-Stile */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 0.9em; /* 80% der normalen Schriftgröße */
+}
+
+th, td {
+    padding: 4px 0px 0px 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: rgba(154, 144, 132, 0.10); /* 25% vom Titel-Farbton */
+    color: #333;
+    font-weight: 600;
+}

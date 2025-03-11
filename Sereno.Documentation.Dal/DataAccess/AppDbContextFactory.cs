@@ -17,5 +17,18 @@ namespace Sereno.Documentation.DataAccess
 
             return new AppDbContext(optionsBuilder.Options, context);
         }
+
+        public static AppDbContext CreateDbContext(string connectionString)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            optionsBuilder.UseSqlServer(connectionString);
+
+            Context context = new()
+            {
+                UserName = "sync@test.com",
+            };
+
+            return new AppDbContext(optionsBuilder.Options, context);
+        }
     }
 }

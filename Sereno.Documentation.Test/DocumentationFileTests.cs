@@ -8,6 +8,8 @@ using Sereno.Office.Word;
 using Sereno.Test.Excel;
 using Sereno.Utilities;
 using Sereno.Utilities.DirectorySync;
+using Microsoft.Extensions.Configuration;
+using Sereno.Documentation.Synchronization;
 
 namespace Sereno.Documentation
 {
@@ -73,13 +75,33 @@ namespace Sereno.Documentation
             DocumentationLibraryUtility.WriteToExcel(files, templatePath, exportPath);
         }
 
+
+        [TestMethod]
+        [TestProperty("Dev", "")]
+        public void Sync_Production_Structure()
+        {
+            var configuration = ConfigurationUtility.GetConfiguration();
+
+            SyncOptions options = new()
+            {
+                DatabaseConnectionString = configuration.GetConnectionString("Development_ConnectionString")!,
+                DocumentsDirectory = new DirectoryInfo(@"D:\Data\Dokumentation"),
+                HtmlExportDirectory = new DirectoryInfo(@"D:\Projekte\Privat\Sereno\Sereno.Documentation.Client\images"),
+            };
+
+            DocumentationLibraryUtility.SyncLibrary(options);
+        }
+
         [TestMethod]
         [TestProperty("Dev", "")]
         public void Export_Html_Production_Structure()
         {
-            string rootDirectory = $@"\\conad01\info\EDV\Dokumentation";
+            var configuration = ConfigurationUtility.GetConfiguration();
+            string connectionString = configuration.GetConnectionString("Development_ConnectionString")!;
+
+            string rootDirectory = $@"D:\Data\Dokumentation";
             string exportPath = $@"{CodeUtility.GetDataDirectory()}\Sereno.Office\Documents.xlsx";
-            string templatePath = $@"{CodeUtility.GetProjectRoot()}\\Sereno.Documentation.Dal\FileAccess\DocumentsTemplate.xlsx";
+
 
             List<DocumentationFile> files = DocumentationLibraryUtility.ReadLibrary(rootDirectory);
 

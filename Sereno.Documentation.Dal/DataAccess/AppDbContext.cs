@@ -28,6 +28,12 @@ namespace Sereno.Documentation.DataAccess
         public DbSet<Document> Documents { get; set; }
 
 
+        public string GetPrimaryKey()
+        {
+            return System.Guid.NewGuid().ToString();
+        }
+
+
         public override int SaveChanges()
         {
             LoggingUtility.SetSessionContext(context, Database.GetDbConnection());

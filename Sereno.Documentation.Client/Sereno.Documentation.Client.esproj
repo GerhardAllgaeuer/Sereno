@@ -7,4 +7,8 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\Sereno.Documentation.Client\browser\</BuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="images\**" />
+    <TypeScriptConfiguration Remove="images\**" />
+  </ItemGroup>
 </Project>

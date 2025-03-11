@@ -1,8 +1,16 @@
-﻿using Sereno.Office.Excel.Excel.Writer;
+﻿using DocumentFormat.OpenXml.Packaging;
+using Sereno.Documentation.Synchronization;
+using Sereno.Office.Excel.Excel.Writer;
 using Sereno.Office.Excel.Writer;
+using Sereno.Office.Word.SimpleStructure;
+using Sereno.Office.Word;
 using Sereno.Utilities.TableConverter;
 using System.Data;
 using System.Diagnostics;
+using Sereno.Office.Word.Word.SimpleStructure.Export;
+using System;
+using Sereno.Documentation.DataAccess;
+using Sereno.Documentation.DataAccess.Entities;
 
 namespace Sereno.Documentation.FileAccess
 {
@@ -21,6 +29,41 @@ namespace Sereno.Documentation.FileAccess
 
             ProcessDirectory(directory, directory, result);
             return result;
+        }
+
+        public static void SyncLibrary(SyncOptions options)
+        {
+            using var context = AppDbContextFactory.CreateDbContext(options.DatabaseConnectionString);
+            List<DocumentationFile> files = ReadLibrary(options.DocumentsDirectory.FullName);
+
+            foreach (DocumentationFile file in files)
+            {
+                using (WordprocessingDocument document = WordUtility.OpenWordDocument(file.Path))
+                {
+                    List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
+
+                    DocumentationExportOptions exportOptions = new DocumentationExportOptions()
+                    {
+                        RootDirectory = options.HtmlExportDirectory,
+                    };
+                    DocumentationExport.ExportHtml(file, exportOptions);
+                }
+
+                SaveFileToDatabase(context, file);
+            }
+        }
+
+        private static void SaveFileToDatabase(AppDbContext dbContext, DocumentationFile file)
+        {
+            var document = new Document
+            {
+                Id = dbContext.GetPrimaryKey(),
+                Title = file.Title,
+                Content = "",
+            };
+
+            dbContext.Documents.Add(document);
+            dbContext.SaveChanges();
         }
 
 
@@ -66,6 +109,12 @@ namespace Sereno.Documentation.FileAccess
 
         private static void ProcessDirectory(string rootdirectory, string directory, List<DocumentationFile> processedFiles)
         {
+            bool limitFiles = true;
+            int currentFile = 0;
+            int countFiles = 2;
+            int currentDirectory = 0;
+            int countDirectories = 1;
+
             foreach (string file in Directory.GetFiles(directory))
             {
                 if (IncludeFile(file))
@@ -98,12 +147,24 @@ namespace Sereno.Documentation.FileAccess
                     {
                         Console.WriteLine($"Error processing file {file}: {ex.Message}");
                     }
+
+                    currentFile++;
                 }
+
+                if (limitFiles &&
+                    currentFile > countFiles)
+                    break;
             }
 
             foreach (string subDirectory in Directory.GetDirectories(directory))
             {
                 ProcessDirectory(rootdirectory, subDirectory, processedFiles);
+
+                currentDirectory++;
+
+                if (limitFiles &
+                    currentDirectory > countDirectories)
+                    break;
             }
         }
     }
