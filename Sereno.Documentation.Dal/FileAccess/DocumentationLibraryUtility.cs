@@ -7,8 +7,6 @@ using Sereno.Office.Word;
 using Sereno.Utilities.TableConverter;
 using System.Data;
 using System.Diagnostics;
-using Sereno.Office.Word.Word.SimpleStructure.Export;
-using System;
 using Sereno.Documentation.DataAccess;
 using Sereno.Documentation.DataAccess.Entities;
 
@@ -52,6 +50,12 @@ namespace Sereno.Documentation.FileAccess
                 SaveFileToDatabase(context, file);
             }
         }
+
+
+        public void CleanupHtmlExportDirectory()
+        {
+        }
+
 
         private static void SaveFileToDatabase(AppDbContext dbContext, DocumentationFile file)
         {

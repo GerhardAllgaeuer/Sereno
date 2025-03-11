@@ -7,8 +7,5 @@
         public required DirectoryInfo HtmlExportDirectory { get; set; }
 
         public required string DatabaseConnectionString { get; set; }
-
-
-
     }
 }
