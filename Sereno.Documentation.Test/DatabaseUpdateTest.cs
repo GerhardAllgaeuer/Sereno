@@ -13,7 +13,7 @@ namespace Sereno.Documentation
 
             Console.WriteLine(connectionString);
 
-            using var context = TestDbContextFactory.Create(appContext);
+            using var context = DbContextFactory.CreateTestDb(appContext);
 
             string id = Guid.NewGuid().ToString();
 
@@ -34,7 +34,7 @@ namespace Sereno.Documentation
             Console.WriteLine(connectionString);
 
 
-            using var updatecontext = TestDbContextFactory.Create(appContext);
+            using var updatecontext = DbContextFactory.CreateTestDb(appContext);
 
             // Ändere den Datensatz
             var existingDocument = updatecontext.Documents.FirstOrDefault(d => d.Id == id);

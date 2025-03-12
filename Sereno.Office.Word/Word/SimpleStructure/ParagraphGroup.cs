@@ -36,12 +36,12 @@ namespace Sereno.Office.Word.SimpleStructure
         public override string ToString()
         {
             string result = "";
-            if (!string.IsNullOrWhiteSpace(InnerText))
+            if (!string.IsNullOrWhiteSpace(PlainText))
             {
-                if (InnerText.Length > 20)
-                    result = InnerText.Substring(0, 17) + "...";
+                if (PlainText.Length > 20)
+                    result = PlainText.Substring(0, 17) + "...";
                 else
-                    result = InnerText;
+                    result = PlainText;
             }
 
             if (!string.IsNullOrWhiteSpace(StyleName))

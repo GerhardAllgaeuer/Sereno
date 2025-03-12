@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Testing.Platform.Configurations;
+using Mono.Cecil.Cil;
 using Sereno.Database;
 using Sereno.Database.Logging.TlDb1;
 using Sereno.Documentation.DataAccess;
@@ -64,21 +65,35 @@ namespace Sereno.Documentation.Test
             if (createDatabase)
             {
                 var configuration = ConfigurationUtility.GetConfiguration();
+
+                // Test DB
                 string connectionString = configuration.GetConnectionString("TestDb_ConnectionString")!;
-                string masterConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, "master");
-                ConnectionStringInfo connectionStringInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
+                CreateDatabase(connectionString);
 
-                // Datenbanken löschen
-                LogDatabaseUtility.DropDatabaseWithLogDatabase(masterConnectionString, connectionStringInfo.Database);
+                // Development DB
+                connectionString = configuration.GetConnectionString("Development_ConnectionString")!;
+                CreateDatabase(connectionString);
 
-                // Datenbank erstellen
-                Context appContext = ContextUtility.Create("autotest@test.com");
-                using var context = TestDbContextFactory.Create(appContext);
-                context.Database.EnsureCreated();
-
-                // Log Datenbank erstellen
-                LoggingUtility.EnableLogging(masterConnectionString, connectionStringInfo.Database);
             }
+        }
+
+
+        private static void CreateDatabase(string connectionString)
+        {
+            var configuration = ConfigurationUtility.GetConfiguration();
+            string masterConnectionString = ConnectionStringUtility.ChangeDatabaseName(connectionString, "master");
+            ConnectionStringInfo connectionStringInfo = ConnectionStringUtility.ParseConnectionString(connectionString);
+
+            // Datenbanken löschen
+            LogDatabaseUtility.DropDatabaseWithLogDatabase(masterConnectionString, connectionStringInfo.Database);
+
+            // Datenbank erstellen
+            Context appContext = ContextUtility.Create("autotest@test.com");
+            using var context = DbContextFactory.Create(appContext, connectionString);
+            context.Database.EnsureCreated();
+
+            // Log Datenbank erstellen
+            LoggingUtility.EnableLogging(masterConnectionString, connectionStringInfo.Database);
         }
     }
 }

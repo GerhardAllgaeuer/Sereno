@@ -9,7 +9,7 @@ namespace Sereno.Documentation.FileAccess
 
         public string? Path => this.File?.FullName;
 
-        public string Key
+        public string DocumentKey
         {
             get
             {
@@ -25,6 +25,7 @@ namespace Sereno.Documentation.FileAccess
 
         public string Title { get; set; } = string.Empty;
 
+        public string PlainText { get; set; } = string.Empty;
 
         public bool HasDocumentationData { get; set; }
         public string RelativePath { get; set; } = string.Empty;

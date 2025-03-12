@@ -99,7 +99,7 @@ namespace Sereno.Documentation
 
                     ExportOptions options = new()
                     {
-                        ExportDirectory = new DirectoryInfo(@$"D:\Data\Sereno.Office\Production\{file.RelativeDirectory}\{file.Key}"),
+                        ExportDirectory = new DirectoryInfo(@$"D:\Data\Sereno.Office\Production\{file.RelativeDirectory}\{file.DocumentKey}"),
                     };
 
                     DocumentationExportOptions exportOptions = new DocumentationExportOptions()

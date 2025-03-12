@@ -27,7 +27,7 @@ namespace Sereno.Documentation
 
         [TestMethod]
         [TestProperty("Dev", "")]
-        public void Sync_Production_Structure()
+        public void Sync_Production_Library()
         {
             SyncOptions options = new()
             {

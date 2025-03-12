@@ -56,7 +56,7 @@ namespace Sereno.Office.Test.SimpleStructure
             using WordprocessingDocument document = WordUtility.OpenWordDocument(filePath);
             List<ParagraphGroup> paragraphs = DocumentGroupUtility.GetDocumentGroups(document)
                                                         .OfType<ParagraphGroup>()
-                                                        .Where(x => !string.IsNullOrWhiteSpace(x.InnerText))
+                                                        .Where(x => !string.IsNullOrWhiteSpace(x.PlainText))
                                                         .ToList();
 
             var expectedGroups = new[]

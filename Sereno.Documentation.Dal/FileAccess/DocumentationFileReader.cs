@@ -2,6 +2,7 @@
 using Sereno.Office.Word;
 using Sereno.Office.Word.SimpleStructure;
 using Sereno.Office.Word.Word.SimpleStructure.Export;
+using Sereno.Utilities;
 using System.Data;
 
 namespace Sereno.Documentation.FileAccess
@@ -26,7 +27,7 @@ namespace Sereno.Documentation.FileAccess
 
             if (title != null)
             {
-                result.Title = title.InnerText;
+                result.Title = title.PlainText;
             }
 
             // Dokumentations Daten
@@ -46,6 +47,10 @@ namespace Sereno.Documentation.FileAccess
 
                 result.Contents = GetContentGroups(allGroups, tableGroup, title);
             }
+
+            // Plain Text
+            result.PlainText = String.Join(Environment.NewLine, result.Contents.Select(x => x.PlainText));
+
 
             return result;
         }
@@ -75,7 +80,7 @@ namespace Sereno.Documentation.FileAccess
                 if (contentAfterTableReached)
                 {
                     // dann warten wir bis zum ersten Paragraphen, der etwas beinhaltet (keine Leeerzeilen)
-                    if (String.IsNullOrWhiteSpace(group.InnerText))
+                    if (String.IsNullOrWhiteSpace(group.PlainText))
                     {
                         startGroupAdding = true;
                     }

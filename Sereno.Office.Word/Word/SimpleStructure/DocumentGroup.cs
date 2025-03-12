@@ -22,7 +22,7 @@ namespace Sereno.Office.Word.SimpleStructure
         /// <summary>
         /// Text aus der Gruppe
         /// </summary>
-        public string InnerText { get; set; } = "";
+        public string PlainText { get; set; } = "";
 
     }
 }

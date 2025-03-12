@@ -57,29 +57,29 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
             {
                 if (paragraphGroup.StyleNameEn == "Title")
                 {
-                    string title = System.Net.WebUtility.HtmlEncode(paragraphGroup.InnerText);
+                    string title = System.Net.WebUtility.HtmlEncode(paragraphGroup.PlainText);
                     htmlContent = htmlContent.Replace("{{Title}}", title);
                 }
 
                 else if (paragraphGroup.StyleNameEn == "heading 1")
                 {
-                    AddToContent("<h1>{{Content}}</h1>", paragraphGroup.InnerText, identation);
+                    AddToContent("<h1>{{Content}}</h1>", paragraphGroup.PlainText, identation);
                 }
                 else if (paragraphGroup.StyleNameEn == "heading 2")
                 {
-                    AddToContent("<h2>{{Content}}</h2>", paragraphGroup.InnerText, identation);
+                    AddToContent("<h2>{{Content}}</h2>", paragraphGroup.PlainText, identation);
                 }
                 else if (paragraphGroup.StyleNameEn == "heading 3")
                 {
-                    AddToContent("<h3>{{Content}}</h3>", paragraphGroup.InnerText, identation);
+                    AddToContent("<h3>{{Content}}</h3>", paragraphGroup.PlainText, identation);
                 }
                 else if (paragraphGroup.StyleNameEn == "List Paragraph")
                 {
-                    AddToContent("<h3>{{Content}}</h3>", paragraphGroup.InnerText, identation);
+                    AddToContent("<h3>{{Content}}</h3>", paragraphGroup.PlainText, identation);
                 }
                 else
                 {
-                    AddToContent("<p>{{Content}}</p>", paragraphGroup.InnerText, identation);
+                    AddToContent("<p>{{Content}}</p>", paragraphGroup.PlainText, identation);
                 }
             }
             else if (group is ImageGroup imagegroup)

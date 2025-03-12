@@ -33,8 +33,6 @@ namespace Sereno.Documentation
             {
                 using (WordprocessingDocument document = WordUtility.OpenWordDocument(file.Path))
                 {
-                    List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
-
                     DocumentationExportOptions exportOptions = new DocumentationExportOptions()
                     {
                         RootDirectory = this.HtmlExportDirectory,
@@ -73,10 +71,12 @@ namespace Sereno.Documentation
             var document = new Document
             {
                 Id = dbContext.GetPrimaryKey(),
-                LibraryPath = @"\Abc\Def",
-                DocumentKey = "Document0001",
+                LibraryPath = file.RelativePath,
+                DocumentKey = file.DocumentKey,
                 Title = file.Title,
-                Content = "",
+                Author = file.Author,
+                NextCheck = file.NextCheck,
+                Content = file.PlainText,
             };
 
             dbContext.Documents.Add(document);
@@ -126,7 +126,7 @@ namespace Sereno.Documentation
 
         private static void ProcessDirectory(string rootdirectory, string directory, List<DocumentationFile> processedFiles)
         {
-            bool limitFiles = true;
+            bool limitFiles = false;
             int currentFile = 0;
             int countFiles = 2;
             int currentDirectory = 0;

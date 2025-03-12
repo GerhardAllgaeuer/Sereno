@@ -51,7 +51,7 @@ namespace Sereno.Office.Word.SimpleStructure
         /// </summary>
         public static void ExtractParagraphGroupText(ParagraphGroup paragraph)
         {
-            paragraph.InnerText = StringUtility.CleanAndJoinStringList(paragraph.Paragraphs.Select(p => p.InnerText).ToList(), Environment.NewLine);
+            paragraph.PlainText = StringUtility.CleanAndJoinStringList(paragraph.Paragraphs.Select(p => p.InnerText).ToList(), Environment.NewLine);
         }
 
 
