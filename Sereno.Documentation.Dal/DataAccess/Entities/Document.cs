@@ -11,15 +11,31 @@ namespace Sereno.Documentation.DataAccess.Entities
         public required string Id { get; set; }
 
 
+        [Column(TypeName = "nvarchar(1000)")]
+        public required string LibraryPath { get; set; }
 
 
         [Column(TypeName = "nvarchar(500)")]
+        public required string DocumentKey { get; set; }
+
+
+
+        [Column(TypeName = "nvarchar(1000)")]
         public string? Title { get; set; }
 
         [Column(TypeName = "nvarchar(max)")]
         public string? Content { get; set; }
 
+        [Column(TypeName = "nvarchar(max)")]
+        public string? HtmlContent { get; set; }
 
+
+
+        [Column(TypeName = "nvarchar(1000)")]
+        public string? Author { get; set; }
+
+
+        public DateTime? NextCheck { get; set; }
 
 
         public DateTime? Create { get; set; }

@@ -1,5 +1,4 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
-using Sereno.Documentation.Synchronization;
 using Sereno.Office.Excel.Excel.Writer;
 using Sereno.Office.Excel.Writer;
 using Sereno.Office.Word.SimpleStructure;
@@ -9,11 +8,44 @@ using System.Data;
 using System.Diagnostics;
 using Sereno.Documentation.DataAccess;
 using Sereno.Documentation.DataAccess.Entities;
+using Sereno.Documentation.FileAccess;
+using Sereno.Documentation.Synchronization;
+using Sereno.Utilities;
 
-namespace Sereno.Documentation.FileAccess
+namespace Sereno.Documentation
 {
-    public class DocumentationLibraryUtility
+    public class DocumentationLibrary
     {
+
+        public required DirectoryInfo DocumentsDirectory { get; set; }
+
+        public required DirectoryInfo HtmlExportDirectory { get; set; }
+
+        public required string DatabaseConnectionString { get; set; }
+
+
+        public void SyncLibrary(SyncOptions options)
+        {
+            using var context = AppDbContextFactory.CreateDbContext(this.DatabaseConnectionString);
+            List<DocumentationFile> files = ReadLibrary(this.DocumentsDirectory.FullName);
+
+            foreach (DocumentationFile file in files)
+            {
+                using (WordprocessingDocument document = WordUtility.OpenWordDocument(file.Path))
+                {
+                    List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
+
+                    DocumentationExportOptions exportOptions = new DocumentationExportOptions()
+                    {
+                        RootDirectory = this.HtmlExportDirectory,
+                    };
+                    DocumentationExport.ExportHtml(file, exportOptions);
+                }
+
+                SaveFileToDatabase(context, file);
+            }
+        }
+
 
         public static List<DocumentationFile> ReadLibrary(string directory)
         {
@@ -29,31 +61,10 @@ namespace Sereno.Documentation.FileAccess
             return result;
         }
 
-        public static void SyncLibrary(SyncOptions options)
-        {
-            using var context = AppDbContextFactory.CreateDbContext(options.DatabaseConnectionString);
-            List<DocumentationFile> files = ReadLibrary(options.DocumentsDirectory.FullName);
-
-            foreach (DocumentationFile file in files)
-            {
-                using (WordprocessingDocument document = WordUtility.OpenWordDocument(file.Path))
-                {
-                    List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
-
-                    DocumentationExportOptions exportOptions = new DocumentationExportOptions()
-                    {
-                        RootDirectory = options.HtmlExportDirectory,
-                    };
-                    DocumentationExport.ExportHtml(file, exportOptions);
-                }
-
-                SaveFileToDatabase(context, file);
-            }
-        }
-
 
         public void CleanupHtmlExportDirectory()
         {
+            DirectoryUtility.CleanUpDirectory(this.HtmlExportDirectory);
         }
 
 
@@ -62,6 +73,8 @@ namespace Sereno.Documentation.FileAccess
             var document = new Document
             {
                 Id = dbContext.GetPrimaryKey(),
+                LibraryPath = @"\Abc\Def",
+                DocumentKey = "Document0001",
                 Title = file.Title,
                 Content = "",
             };
@@ -89,7 +102,7 @@ namespace Sereno.Documentation.FileAccess
 
             File.Delete(path);
             File.Copy(template, path);
-            DataSet dataSet = TableConverterUtility.DataSetFromObjectList<DocumentationFile>(files, tableInfo);
+            DataSet dataSet = TableConverterUtility.DataSetFromObjectList(files, tableInfo);
             DataSetInsertOptions options = new DataSetInsertOptions()
             {
                 StartRow = 4,

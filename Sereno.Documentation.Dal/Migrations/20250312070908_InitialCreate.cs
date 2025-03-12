@@ -16,8 +16,13 @@ namespace Sereno.Documentation.Migrations
                 columns: table => new
                 {
                     vId = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    vTitle = table.Column<string>(type: "nvarchar(500)", nullable: true),
+                    vLibraryPath = table.Column<string>(type: "nvarchar(1000)", nullable: false),
+                    vDocumentKey = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    vTitle = table.Column<string>(type: "nvarchar(1000)", nullable: true),
                     vContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    vHtmlContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    vAuthor = table.Column<string>(type: "nvarchar(1000)", nullable: true),
+                    dNextCheck = table.Column<DateTime>(type: "datetime2", nullable: true),
                     dCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     vCreateUser = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     dModify = table.Column<DateTime>(type: "datetime2", nullable: true),

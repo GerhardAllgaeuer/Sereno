@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Testing.Platform.Configurations;
 using Sereno.Database;
 using Sereno.Database.Logging.TlDb1;
 using Sereno.Documentation.DataAccess;
@@ -8,7 +9,7 @@ using Sereno.Utilities;
 namespace Sereno.Documentation.Test
 {
     [TestClass]
-    public class DatabaseTestBase
+    public class DocumentationTestBase
     {
         static bool createDatabase = true;
 
@@ -23,6 +24,35 @@ namespace Sereno.Documentation.Test
             connectionString = configuration.GetConnectionString("TestDb_ConnectionString")!;
         }
 
+
+        protected DocumentationLibrary CreateDocumentationLibrary()
+        {
+            var configuration = ConfigurationUtility.GetConfiguration();
+
+            DocumentationLibrary result = new DocumentationLibrary()
+            {
+                DatabaseConnectionString = configuration.GetConnectionString("Development_ConnectionString")!,
+                DocumentsDirectory = new DirectoryInfo(@"D:\Data\Dokumentation"),
+                HtmlExportDirectory = new DirectoryInfo(@"D:\Projekte\Privat\Sereno\Sereno.Documentation.Client\images"),
+            };
+
+            return result;
+        }
+
+
+        protected DocumentationLibrary CreateTestLibrary()
+        {
+            var configuration = ConfigurationUtility.GetConfiguration();
+
+            DocumentationLibrary result = new DocumentationLibrary()
+            {
+                DatabaseConnectionString = configuration.GetConnectionString("TestDb_ConnectionString")!,
+                DocumentsDirectory = new DirectoryInfo($@"{CodeUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary"),
+                HtmlExportDirectory = new DirectoryInfo($@"{CodeUtility.GetDataDirectory()}\Sereno.Office\"),
+            };
+
+            return result;
+        }
 
         /// <summary>
         /// Einmalige Erstellung der Datenbank pro Test Durchlauf

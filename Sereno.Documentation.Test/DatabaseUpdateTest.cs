@@ -4,7 +4,7 @@ using Sereno.Documentation.Test;
 namespace Sereno.Documentation
 {
     [TestClass]
-    public sealed class DatabaseUpdateTest : DatabaseTestBase
+    public sealed class DatabaseUpdateTest : DocumentationTestBase
     {
 
         [TestMethod]
@@ -21,6 +21,8 @@ namespace Sereno.Documentation
             var document = new Document
             {
                 Id = id,
+                LibraryPath = @"\Abc\Def",
+                DocumentKey = "Document0001",
                 Title = "Erstes Dokument",
                 Content = "Dies ist der Inhalt des Dokuments.",
             };

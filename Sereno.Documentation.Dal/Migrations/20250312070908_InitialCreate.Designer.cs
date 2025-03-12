@@ -12,7 +12,7 @@ using Sereno.Documentation.DataAccess;
 namespace Sereno.Documentation.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250127211340_InitialCreate")]
+    [Migration("20250312070908_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Sereno.Documentation.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -30,6 +30,10 @@ namespace Sereno.Documentation.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("vId");
+
+                    b.Property<string>("Author")
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnName("vAuthor");
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)")
@@ -43,6 +47,20 @@ namespace Sereno.Documentation.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("vCreateUser");
 
+                    b.Property<string>("DocumentKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("vDocumentKey");
+
+                    b.Property<string>("HtmlContent")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("vHtmlContent");
+
+                    b.Property<string>("LibraryPath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnName("vLibraryPath");
+
                     b.Property<DateTime?>("Modify")
                         .HasColumnType("datetime2")
                         .HasColumnName("dModify");
@@ -51,8 +69,12 @@ namespace Sereno.Documentation.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("vModifyUser");
 
+                    b.Property<DateTime?>("NextCheck")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("dNextCheck");
+
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(500)")
+                        .HasColumnType("nvarchar(1000)")
                         .HasColumnName("vTitle");
 
                     b.HasKey("Id");

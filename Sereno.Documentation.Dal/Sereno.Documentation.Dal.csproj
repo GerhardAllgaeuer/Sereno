@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="DataAccess\Triggers\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
