@@ -61,12 +61,12 @@ namespace Sereno.Office.Test.SimpleStructure
 
             var expectedGroups = new[]
             {
-                    new { StyleId = "Titel", StyleName = "Titel", StyleNameEn = "Title", InnerText = "Test Titel" },
-                    new { StyleId = "berschrift1", StyleName = "Überschrift 1", StyleNameEn = "heading 1", InnerText = "Test Ü1" },
-                    new { StyleId = "berschrift2", StyleName = "Überschrift 2", StyleNameEn = "heading 2", InnerText = "Test Ü2" },
-                    new { StyleId = "berschrift3", StyleName = "Überschrift 3", StyleNameEn = "heading 3", InnerText = "Test Ü3" },
-                    new { StyleId = "", StyleName = "", StyleNameEn = "", InnerText = "Standard" },
-                    new { StyleId = "", StyleName = "", StyleNameEn = "", InnerText = "https://test.com" },
+                    new { StyleId = "Titel", StyleName = "Titel", StyleNameEn = "Title", PlainText = "Test Titel" },
+                    new { StyleId = "berschrift1", StyleName = "Überschrift 1", StyleNameEn = "heading 1", PlainText = "Test Ü1" },
+                    new { StyleId = "berschrift2", StyleName = "Überschrift 2", StyleNameEn = "heading 2", PlainText = "Test Ü2" },
+                    new { StyleId = "berschrift3", StyleName = "Überschrift 3", StyleNameEn = "heading 3", PlainText = "Test Ü3" },
+                    new { StyleId = "", StyleName = "", StyleNameEn = "", PlainText = "Standard" },
+                    new { StyleId = "", StyleName = "", StyleNameEn = "", PlainText = "https://test.com" },
                 };
 
             paragraphs.Should().BeEquivalentTo(expectedGroups);

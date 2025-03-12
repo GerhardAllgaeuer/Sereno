@@ -10,6 +10,7 @@
     <PackageReference Include="FluentAssertions" Version="8.1.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.6" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.0" />
   </ItemGroup>
 
 </Project>
