@@ -3,7 +3,7 @@ namespace Sereno.Documentation.Api.Models
     public class Documentation
     {
         public string Id { get; set; } = string.Empty;
-        public string LibraryPath { get; set; } = string.Empty;
+        public string Topic { get; set; } = string.Empty;
         public string DocumentKey { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Content { get; set; }

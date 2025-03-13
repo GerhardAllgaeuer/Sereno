@@ -17,7 +17,7 @@
     <h1 class="doc-title">{{ documentation.title }}</h1>
     
     <div class="doc-meta">
-      <span class="doc-library">{{ documentation.libraryPath }}</span>
+      <span class="doc-library">{{ documentation.topic }}</span>
       <span>Aktualisiert: {{ documentation.updatedAt | date:'dd.MM.yyyy' }}</span>
       <span *ngIf="documentation.author">Autor: {{ documentation.author }}</span>
     </div>

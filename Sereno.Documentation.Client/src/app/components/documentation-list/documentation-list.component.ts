@@ -28,7 +28,7 @@ export class DocumentationListComponent implements OnInit {
     this.documentationService.getAllDocumentations().subscribe({
       next: (docs: Documentation[]) => {
         this.documentations = docs;
-        this.libraries = [...new Set(docs.map(doc => doc.libraryPath))];
+        this.libraries = [...new Set(docs.map(doc => doc.topic))];
         this.loading = false;
       },
       error: (error: Error) => {
@@ -45,7 +45,7 @@ export class DocumentationListComponent implements OnInit {
     if (library) {
       this.documentationService.getAllDocumentations().subscribe({
         next: (docs: Documentation[]) => {
-          this.documentations = docs.filter(doc => doc.libraryPath === library);
+          this.documentations = docs.filter(doc => doc.topic === library);
           this.loading = false;
         },
         error: (error: Error) => {

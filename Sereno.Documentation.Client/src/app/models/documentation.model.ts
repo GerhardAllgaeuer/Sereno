@@ -1,6 +1,6 @@
 export interface Documentation {
   id: string;
-  libraryPath: string;
+  topic: string;
   documentKey: string;
   title: string | null;
   content: string | null;

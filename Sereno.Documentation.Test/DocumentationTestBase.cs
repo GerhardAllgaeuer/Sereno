@@ -10,7 +10,7 @@ namespace Sereno.Documentation.Test
     public class DocumentationTestBase
     {
         static bool createTestDatabase = true;
-        static bool createDevelopmentDatabase = true;
+        static bool createDevelopmentDatabase = false;
 
         protected string connectionString = "";
         protected string logConnectionString = "";

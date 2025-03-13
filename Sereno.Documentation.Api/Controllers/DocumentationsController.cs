@@ -14,7 +14,7 @@ namespace Sereno.Documentation.Api.Controllers
                 Id = "1",
                 Title = "Angular Komponenten",
                 Content = "Angular Komponenten sind die grundlegenden Bausteine einer Angular-Anwendung. Sie bestehen aus einem Template, einer Klasse und Metadaten. Das Template definiert die Benutzeroberfläche, die Klasse enthält die Logik und die Metadaten stellen zusätzliche Informationen bereit.",
-                LibraryPath = "Angular/Components",
+                Topic = "Angular/Components",
                 DocumentKey = "angular-components",
                 Author = "Max Mustermann",
                 CreatedAt = new DateTime(2023, 1, 15),
@@ -27,7 +27,7 @@ namespace Sereno.Documentation.Api.Controllers
                 Id = "2",
                 Title = "TypeScript Grundlagen",
                 Content = "TypeScript ist eine von Microsoft entwickelte Programmiersprache, die auf JavaScript aufbaut und es um statische Typisierung erweitert. TypeScript-Code wird zu JavaScript kompiliert und kann in jedem Browser oder JavaScript-Laufzeitumgebung ausgeführt werden.",
-                LibraryPath = "TypeScript/Basics",
+                Topic = "TypeScript/Basics",
                 DocumentKey = "typescript-basics",
                 Author = "Erika Musterfrau",
                 CreatedAt = new DateTime(2023, 3, 10),
@@ -40,7 +40,7 @@ namespace Sereno.Documentation.Api.Controllers
                 Id = "3",
                 Title = "CSS Flexbox Layout",
                 Content = "Flexbox ist ein CSS-Layout-Modell, das es ermöglicht, Elemente in einer flexiblen und responsiven Weise anzuordnen. Es bietet eine einfache Möglichkeit, Elemente horizontal oder vertikal auszurichten und den verfügbaren Platz zwischen ihnen zu verteilen.",
-                LibraryPath = "CSS/Flexbox",
+                Topic = "CSS/Flexbox",
                 DocumentKey = "css-flexbox",
                 Author = "John Doe",
                 CreatedAt = new DateTime(2023, 4, 5),
@@ -53,7 +53,7 @@ namespace Sereno.Documentation.Api.Controllers
                 Id = "4",
                 Title = "Angular Routing",
                 Content = "Angular Routing ermöglicht die Navigation zwischen verschiedenen Ansichten in einer Single-Page-Application. Es unterstützt die Verwendung von URL-Segmenten, Query-Parametern und Route-Guards für die Zugriffskontrolle.",
-                LibraryPath = "Angular/Routing",
+                Topic = "Angular/Routing",
                 DocumentKey = "angular-routing",
                 Author = "Jane Smith",
                 CreatedAt = new DateTime(2023, 5, 20),
@@ -66,7 +66,7 @@ namespace Sereno.Documentation.Api.Controllers
                 Id = "5",
                 Title = "JavaScript Promises",
                 Content = "Promises in JavaScript sind Objekte, die den eventuellen Abschluss oder Fehler einer asynchronen Operation repräsentieren. Sie ermöglichen es, asynchronen Code auf eine sauberere Weise zu schreiben als mit Callbacks.",
-                LibraryPath = "JavaScript/Async",
+                Topic = "JavaScript/Async",
                 DocumentKey = "javascript-promises",
                 Author = "Alex Johnson",
                 CreatedAt = new DateTime(2023, 6, 15),
@@ -94,7 +94,7 @@ namespace Sereno.Documentation.Api.Controllers
                 Title = d.Title,
                 Content = d.Content,
                 HtmlContent = d.HtmlContent,
-                LibraryPath = d.LibraryPath,
+                Topic = GetTopicFromLibraryPath(d.LibraryPath),
                 DocumentKey = d.DocumentKey,
                 Author = d.Author,
                 NextCheck = d.NextCheck,
@@ -105,6 +105,14 @@ namespace Sereno.Documentation.Api.Controllers
             }).ToList();
             
             return Ok(documentations);
+        }
+
+        private string GetTopicFromLibraryPath(string libraryPath)
+        {
+            int index = libraryPath.IndexOf('\\');
+            string result = index >= 0 ? libraryPath.Substring(0, index) : libraryPath;
+
+            return result;
         }
 
         [HttpGet("{id}")]
@@ -122,7 +130,7 @@ namespace Sereno.Documentation.Api.Controllers
                 Title = document.Title,
                 Content = document.Content,
                 HtmlContent = document.HtmlContent,
-                LibraryPath = document.LibraryPath,
+                Topic = document.LibraryPath,
                 DocumentKey = document.DocumentKey,
                 Author = document.Author,
                 NextCheck = document.NextCheck,
@@ -148,7 +156,7 @@ namespace Sereno.Documentation.Api.Controllers
                 Title = d.Title,
                 Content = d.Content,
                 HtmlContent = d.HtmlContent,
-                LibraryPath = d.LibraryPath,
+                Topic = d.LibraryPath,
                 DocumentKey = d.DocumentKey,
                 Author = d.Author,
                 NextCheck = d.NextCheck,
@@ -181,7 +189,7 @@ namespace Sereno.Documentation.Api.Controllers
                 Title = d.Title,
                 Content = d.Content,
                 HtmlContent = d.HtmlContent,
-                LibraryPath = d.LibraryPath,
+                Topic = d.LibraryPath,
                 DocumentKey = d.DocumentKey,
                 Author = d.Author,
                 NextCheck = d.NextCheck,
