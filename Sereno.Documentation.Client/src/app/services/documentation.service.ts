@@ -7,20 +7,26 @@ import { Documentation } from '../models/documentation.model';
   providedIn: 'root'
 })
 export class DocumentationService {
-  private apiUrl = 'https://localhost:7000/api/documentation'; // Vollständige URL für den DocumentationController
+  private apiUrl = 'https://localhost:7000/api/documentations'; // Vollständige URL für den DocumentationController
 
   constructor(private http: HttpClient) { }
 
   getAllDocumentations(): Observable<Documentation[]> {
-    return this.http.get<Documentation[]>(this.apiUrl);
+    return this.http.get<Documentation[]>(`${this.apiUrl}`);
   }
 
   getDocumentationsByTopic(topic: string): Observable<Documentation[]> {
     return this.http.get<Documentation[]>(`${this.apiUrl}/topic/${topic}`);
   }
 
-  getDocumentationById(id: number): Observable<Documentation | undefined> {
+  getDocumentationById(id: string): Observable<Documentation> {
     return this.http.get<Documentation>(`${this.apiUrl}/${id}`);
+  }
+
+  getDocumentationsByLibrary(library: string): Observable<Documentation[]> {
+    return this.http.get<Documentation[]>(`${this.apiUrl}`, {
+      params: { library }
+    });
   }
 
   searchDocumentations(query: string): Observable<Documentation[]> {
@@ -31,6 +37,8 @@ export class DocumentationService {
       });
     }
     
-    return this.http.get<Documentation[]>(`${this.apiUrl}/search?query=${query}`);
+    return this.http.get<Documentation[]>(`${this.apiUrl}/search`, {
+      params: { query }
+    });
   }
 } 

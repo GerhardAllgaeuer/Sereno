@@ -53,8 +53,8 @@ export class DocumentationSearchComponent implements OnInit {
     });
   }
 
-  // Hilfsfunktion, um den Inhalt auf 2-3 Zeilen zu kürzen
-  truncateContent(content: string): string {
+  truncateContent(content: string | null): string {
+    if (!content) return '';
     const words = content.split(' ');
     if (words.length > 30) {
       return words.slice(0, 30).join(' ') + '...';

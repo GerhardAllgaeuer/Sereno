@@ -1,19 +1,19 @@
 <div class="documentation-list-container">
   <div class="topic-filter">
-    <h3>Nach Thema filtern</h3>
+    <h3>Nach Bibliothek filtern</h3>
     <div class="topic-buttons">
       <button 
         class="topic-button" 
-        [class.active]="selectedTopic === ''"
-        (click)="filterByTopic('')">
+        [class.active]="selectedLibrary === ''"
+        (click)="filterByLibrary('')">
         Alle
       </button>
       <button 
-        *ngFor="let topic of topics" 
+        *ngFor="let library of libraries" 
         class="topic-button" 
-        [class.active]="selectedTopic === topic"
-        (click)="filterByTopic(topic)">
-        {{ topic }}
+        [class.active]="selectedLibrary === library"
+        (click)="filterByLibrary(library)">
+        {{ library }}
       </button>
     </div>
   </div>
@@ -33,9 +33,10 @@
     <div *ngIf="!loading && documentations.length > 0" class="documentation-items">
       <div *ngFor="let doc of documentations" class="documentation-item" [routerLink]="['/documentation', doc.id]">
         <h3 class="doc-title">{{ doc.title }}</h3>
-        <p class="doc-topic">Thema: {{ doc.topic }}</p>
+        <p class="doc-library">Bibliothek: {{ doc.libraryPath }}</p>
         <p class="doc-content">{{ truncateContent(doc.content) }}</p>
         <p class="doc-date">Aktualisiert: {{ doc.updatedAt | date:'dd.MM.yyyy' }}</p>
+        <p class="doc-author" *ngIf="doc.author">Autor: {{ doc.author }}</p>
       </div>
     </div>
   </div>

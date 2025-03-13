@@ -12,8 +12,8 @@ import { DocumentationService } from '../../services/documentation.service';
   styleUrls: ['./documentation-detail.component.css']
 })
 export class DocumentationDetailComponent implements OnInit {
-  documentation: Documentation | undefined;
-  loading: boolean = false;
+  documentation: Documentation | null = null;
+  loading = false;
   error: string | null = null;
 
   constructor(
@@ -30,32 +30,28 @@ export class DocumentationDetailComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = this.route.snapshot.paramMap.get('id');
     
-    if (isNaN(id)) {
-      this.error = 'Ungültige Dokumentations-ID';
+    if (!id) {
+      this.error = 'Keine ID gefunden';
       this.loading = false;
       return;
     }
-    
+
     this.documentationService.getDocumentationById(id).subscribe({
       next: (doc) => {
-        if (doc) {
-          this.documentation = doc;
-        } else {
-          this.error = 'Dokumentation nicht gefunden';
-        }
+        this.documentation = doc;
         this.loading = false;
       },
-      error: (err) => {
-        console.error('Fehler beim Laden der Dokumentation:', err);
+      error: (error) => {
         this.error = 'Fehler beim Laden der Dokumentation';
         this.loading = false;
+        console.error('Error loading documentation:', error);
       }
     });
   }
 
   goBack(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/documentations']);
   }
 } 

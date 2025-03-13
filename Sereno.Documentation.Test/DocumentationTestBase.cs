@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Testing.Platform.Configurations;
-using Mono.Cecil.Cil;
 using Sereno.Database;
 using Sereno.Database.Logging.TlDb1;
-using Sereno.Documentation.DataAccess;
 using Sereno.Utilities;
 
 namespace Sereno.Documentation.Test
@@ -12,7 +9,8 @@ namespace Sereno.Documentation.Test
     [TestClass]
     public class DocumentationTestBase
     {
-        static bool createDatabase = true;
+        static bool createTestDatabase = true;
+        static bool createProdDatabase = false;
 
         protected string connectionString = "";
         protected string logConnectionString = "";
@@ -62,19 +60,21 @@ namespace Sereno.Documentation.Test
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext testContext)
         {
-            if (createDatabase)
-            {
-                var configuration = ConfigurationUtility.GetConfiguration();
+            var configuration = ConfigurationUtility.GetConfiguration();
 
-                // Test DB
+            if (createTestDatabase)
+            {
                 string connectionString = configuration.GetConnectionString("TestDb_ConnectionString")!;
                 CreateDatabase(connectionString);
-
-                // Development DB
-                connectionString = configuration.GetConnectionString("Development_ConnectionString")!;
-                CreateDatabase(connectionString);
-
             }
+
+            if (createProdDatabase)
+            {
+                // Development DB
+                string connectionString = configuration.GetConnectionString("Development_ConnectionString")!;
+                CreateDatabase(connectionString);
+            }
+
         }
 
 

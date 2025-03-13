@@ -17,12 +17,18 @@
     <h1 class="doc-title">{{ documentation.title }}</h1>
     
     <div class="doc-meta">
-      <span class="doc-topic">{{ documentation.topic }}</span>
+      <span class="doc-library">{{ documentation.libraryPath }}</span>
       <span>Aktualisiert: {{ documentation.updatedAt | date:'dd.MM.yyyy' }}</span>
+      <span *ngIf="documentation.author">Autor: {{ documentation.author }}</span>
     </div>
     
     <div class="doc-body">
-      <p>{{ documentation.content }}</p>
+      <div *ngIf="documentation.htmlContent" [innerHTML]="documentation.htmlContent"></div>
+      <p *ngIf="!documentation.htmlContent">{{ documentation.content }}</p>
+    </div>
+
+    <div class="doc-footer" *ngIf="documentation.createdBy || documentation.createdAt">
+      <p>Erstellt von {{ documentation.createdBy }} am {{ documentation.createdAt | date:'dd.MM.yyyy' }}</p>
     </div>
   </div>
 </div> 

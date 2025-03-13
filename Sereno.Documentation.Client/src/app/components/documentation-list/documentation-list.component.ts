@@ -13,8 +13,8 @@ import { DocumentationService } from '../../services/documentation.service';
 })
 export class DocumentationListComponent implements OnInit {
   documentations: Documentation[] = [];
-  topics: string[] = [];
-  selectedTopic: string = '';
+  libraries: string[] = [];
+  selectedLibrary: string = '';
   loading: boolean = false;
 
   constructor(private documentationService: DocumentationService) { }
@@ -26,31 +26,30 @@ export class DocumentationListComponent implements OnInit {
   loadDocumentations(): void {
     this.loading = true;
     this.documentationService.getAllDocumentations().subscribe({
-      next: (docs) => {
+      next: (docs: Documentation[]) => {
         this.documentations = docs;
-        // Extrahiere eindeutige Themen für den Filter
-        this.topics = [...new Set(docs.map(doc => doc.topic))];
+        this.libraries = [...new Set(docs.map(doc => doc.libraryPath))];
         this.loading = false;
       },
-      error: (error) => {
+      error: (error: Error) => {
         console.error('Fehler beim Laden der Dokumentationen:', error);
         this.loading = false;
       }
     });
   }
 
-  filterByTopic(topic: string): void {
-    this.selectedTopic = topic;
+  filterByLibrary(library: string): void {
+    this.selectedLibrary = library;
     this.loading = true;
     
-    if (topic) {
-      this.documentationService.getDocumentationsByTopic(topic).subscribe({
-        next: (docs) => {
-          this.documentations = docs;
+    if (library) {
+      this.documentationService.getAllDocumentations().subscribe({
+        next: (docs: Documentation[]) => {
+          this.documentations = docs.filter(doc => doc.libraryPath === library);
           this.loading = false;
         },
-        error: (error) => {
-          console.error('Fehler beim Filtern nach Thema:', error);
+        error: (error: Error) => {
+          console.error('Fehler beim Filtern nach Bibliothek:', error);
           this.loading = false;
         }
       });
@@ -59,8 +58,8 @@ export class DocumentationListComponent implements OnInit {
     }
   }
 
-  // Hilfsfunktion, um den Inhalt auf 2-3 Zeilen zu kürzen
-  truncateContent(content: string): string {
+  truncateContent(content: string | null): string {
+    if (!content) return '';
     const words = content.split(' ');
     if (words.length > 30) {
       return words.slice(0, 30).join(' ') + '...';

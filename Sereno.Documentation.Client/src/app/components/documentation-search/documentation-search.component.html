@@ -38,8 +38,9 @@
     <div class="search-results-list">
       <div *ngFor="let result of searchResults" class="search-result-item" [routerLink]="['/documentation', result.id]">
         <h3 class="result-title">{{ result.title }}</h3>
-        <p class="result-topic">{{ result.topic }}</p>
+        <p class="result-library">{{ result.libraryPath }}</p>
         <p class="result-content">{{ truncateContent(result.content) }}</p>
+        <p class="result-author" *ngIf="result.author">{{ result.author }}</p>
       </div>
     </div>
   </div>

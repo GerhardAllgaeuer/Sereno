@@ -1,6 +1,4 @@
-﻿using Sereno.Utilities;
-using Microsoft.Extensions.Configuration;
-using Sereno.Documentation.Synchronization;
+﻿using Sereno.Documentation.Synchronization;
 using Sereno.Documentation.Test;
 
 namespace Sereno.Documentation
