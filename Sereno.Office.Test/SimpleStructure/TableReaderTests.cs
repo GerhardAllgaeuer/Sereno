@@ -1,11 +1,9 @@
-﻿using DocumentFormat.OpenXml.Math;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using FluentAssertions;
 using Sereno.Office.Word;
 using Sereno.Office.Word.SimpleStructure;
 using Sereno.Test.Database;
 using Sereno.Utilities;
-using System.Data;
 
 namespace Sereno.Office.Test.SimpleStructure
 {
@@ -46,16 +44,16 @@ namespace Sereno.Office.Test.SimpleStructure
                 HasHeader = false,
                 Columns = new[]
                 {
-                        new { ColumnName = "Column 0" },
-                        new { ColumnName = "Column 1" },
+                        new { ColumnName = "Column1" },
+                        new { ColumnName = "Column2" },
                     },
             });
 
             var expectedData = new[]
             {
-                    new { Column1 = "Zeile 1, Spalte 1", Column2 = "Zeile 1, Spalte 2" },
-                    new { Column1 = "Zeile 2, Spalte 1", Column2 = "Zeile 2, Spalte 2" }
-                };
+                new { Column1 = "Zeile 1, Spalte 1", Column2 = "Zeile 1, Spalte 2" },
+                new { Column1 = "Zeile 2, Spalte 1", Column2 = "Zeile 2, Spalte 2" }
+            };
 
             tableInfo.Data.ShouldBeEquivalentTo(expectedData);
         }
@@ -89,8 +87,8 @@ namespace Sereno.Office.Test.SimpleStructure
                 HasHeader = true,
                 Columns = new[]
                 {
-                        new { ColumnName = "Column 1" },
-                        new { ColumnName = "Column 2" },
+                        new { ColumnName = "Column1" },
+                        new { ColumnName = "Column2" },
                     },
             });
 

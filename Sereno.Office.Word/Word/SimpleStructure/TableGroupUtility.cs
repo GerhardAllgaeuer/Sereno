@@ -98,7 +98,7 @@ namespace Sereno.Office.Word.SimpleStructure
             {
                 for (int i = 0; i < columnCount; i++)
                 {
-                    string columnName = $"Column {i}";
+                    string columnName = $"Column{i + 1}";
                     dataTable.Columns.Add(columnName);
                     result.Columns.Add(new ColumnInfo()
                     {

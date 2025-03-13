@@ -10,7 +10,7 @@ namespace Sereno.Documentation.Test
     public class DocumentationTestBase
     {
         static bool createTestDatabase = true;
-        static bool createProdDatabase = false;
+        static bool createDevelopmentDatabase = true;
 
         protected string connectionString = "";
         protected string logConnectionString = "";
@@ -68,7 +68,7 @@ namespace Sereno.Documentation.Test
                 CreateDatabase(connectionString);
             }
 
-            if (createProdDatabase)
+            if (createDevelopmentDatabase)
             {
                 // Development DB
                 string connectionString = configuration.GetConnectionString("Development_ConnectionString")!;
