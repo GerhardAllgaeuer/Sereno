@@ -135,7 +135,10 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
                 this.Options.RelativeImageHtmlDirectory = this.Options.RelativeImageHtmlDirectory.Substring(0, this.Options.RelativeImageHtmlDirectory.Length - 1);
             }
 
-            this.Options.RelativeImageHtmlDirectory = $"{this.Options.RelativeImageHtmlDirectory}";
+
+            if (!String.IsNullOrEmpty(this.Options.RelativeImageHtmlDirectory))
+                this.Options.RelativeImageHtmlDirectory = $"{this.Options.RelativeImageHtmlDirectory}/";
+
         }
 
 
@@ -223,7 +226,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
                 // Einzelnes Bild in einem Paragraph
                 AddToContent("<p class=\"image-paragraph\">", "", 1);
                 AddToContent($"<img src=\"{{{{Content}}}}\" width=\"{image.PixelWidth}\" height=\"{image.PixelHeight}\" alt=\"\" style=\"max-width: 100%; height: auto;\" />",
-                    $"{this.Options.RelativeImageHtmlDirectory}/{image.ImageName}.png", 2);
+                    $"{this.Options.RelativeImageHtmlDirectory}{image.ImageName}.png", 2);
                 AddToContent("</p>", "", 1);
             }
         }
