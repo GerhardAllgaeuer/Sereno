@@ -32,7 +32,7 @@ namespace Sereno.Documentation.Test
             {
                 DatabaseConnectionString = configuration.GetConnectionString("Development_ConnectionString")!,
                 SourceRootDirectory = new DirectoryInfo(@"D:\Data\Dokumentation"),
-                TargetFilesDirectory = new DirectoryInfo(@"D:\Projekte\Privat\Sereno\Sereno.Documentation.Client\public\images"),
+                TargetFilesDirectory = new DirectoryInfo(@"D:\Projekte\Privat\Sereno\Sereno.Documentation.Content\Content\images"),
             };
 
             return result;

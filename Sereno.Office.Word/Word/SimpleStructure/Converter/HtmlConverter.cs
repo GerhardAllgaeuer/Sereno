@@ -135,7 +135,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
                 this.Options.RelativeImageHtmlDirectory = this.Options.RelativeImageHtmlDirectory.Substring(0, this.Options.RelativeImageHtmlDirectory.Length - 1);
             }
 
-            this.Options.RelativeImageHtmlDirectory = $"/{this.Options.RelativeImageHtmlDirectory}";
+            this.Options.RelativeImageHtmlDirectory = $"{this.Options.RelativeImageHtmlDirectory}";
         }
 
 

@@ -39,7 +39,7 @@ namespace Sereno.Documentation
         private string GetRelativeImageHtmlDirectory(DocumentationFile file)
         {
             string documentPath = file.DocumentKey.Replace(@"\", "/");
-            return $@"src/assets/images/{documentPath}";
+            return $@"https://localhost:44303/Content/images/{documentPath}";
         }
 
         public string SaveData(DocumentationFile file)

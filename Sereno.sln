@@ -49,6 +49,8 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Sereno.Documentation.Client
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Documentation.Api", "Sereno.Documentation.Api\Sereno.Documentation.Api.csproj", "{5603BE91-4908-4580-9CAE-79A9C78DD129}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Documentation.Content", "Sereno.Documentation.Content\Sereno.Documentation.Content.csproj", "{71884475-F82A-436B-B3F9-ABE1AA7C184D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -151,6 +153,10 @@ Global
 		{5603BE91-4908-4580-9CAE-79A9C78DD129}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5603BE91-4908-4580-9CAE-79A9C78DD129}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5603BE91-4908-4580-9CAE-79A9C78DD129}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71884475-F82A-436B-B3F9-ABE1AA7C184D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71884475-F82A-436B-B3F9-ABE1AA7C184D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71884475-F82A-436B-B3F9-ABE1AA7C184D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71884475-F82A-436B-B3F9-ABE1AA7C184D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
