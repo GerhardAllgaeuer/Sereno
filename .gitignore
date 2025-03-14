@@ -362,3 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Sereno.Documentation.Test/appsettings.json
+
+# Ignore Content folder
+Content/
