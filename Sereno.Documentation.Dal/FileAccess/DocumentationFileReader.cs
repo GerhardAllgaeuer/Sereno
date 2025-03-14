@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using Sereno.Office.Word;
 using Sereno.Office.Word.SimpleStructure;
-using Sereno.Office.Word.Word.SimpleStructure.Export;
+using Sereno.Office.Word.Word.SimpleStructure.Converter;
 using Sereno.Utilities;
 using System.Data;
 

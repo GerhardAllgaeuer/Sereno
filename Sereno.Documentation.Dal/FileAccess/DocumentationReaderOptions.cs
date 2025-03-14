@@ -1,5 +1,5 @@
 ﻿
-using Sereno.Office.Word.Word.SimpleStructure.Export;
+using Sereno.Office.Word.Word.SimpleStructure.Converter;
 
 namespace Sereno.Documentation.FileAccess
 {

@@ -3,7 +3,7 @@ using DocumentFormat.OpenXml.Packaging;
 using FluentAssertions;
 using Sereno.Documentation.FileAccess;
 using Sereno.Office.Word.SimpleStructure;
-using Sereno.Office.Word.Word.SimpleStructure.Export;
+using Sereno.Office.Word.Word.SimpleStructure.Converter;
 using Sereno.Office.Word;
 using Sereno.Test.Excel;
 using Sereno.Utilities;
@@ -74,41 +74,6 @@ namespace Sereno.Documentation
             List<DocumentationFile> files = DocumentationLibrary.ReadLibrary(rootDirectory);
 
             DocumentationLibrary.WriteToExcel(files, templatePath, exportPath);
-        }
-
-
-
-        [TestMethod]
-        [TestProperty("Dev", "")]
-        public void Export_Html_Production_Structure()
-        {
-            var configuration = ConfigurationUtility.GetConfiguration();
-            string connectionString = configuration.GetConnectionString("Development_ConnectionString")!;
-
-            string rootDirectory = $@"D:\Data\Dokumentation";
-            string exportPath = $@"{CodeUtility.GetDataDirectory()}\Sereno.Office\Documents.xlsx";
-
-
-            List<DocumentationFile> files = DocumentationLibrary.ReadLibrary(rootDirectory);
-
-            foreach (DocumentationFile file in files)
-            {
-                using (WordprocessingDocument document = WordUtility.OpenWordDocument(file.Path))
-                {
-                    List<DocumentGroup> groups = [.. DocumentGroupUtility.GetDocumentGroups(document)];
-
-                    ExportOptions options = new()
-                    {
-                        ExportDirectory = new DirectoryInfo(@$"D:\Data\Sereno.Office\Production\{file.RelativeDirectory}\{file.DocumentKey}"),
-                    };
-
-                    DocumentationExportOptions exportOptions = new DocumentationExportOptions()
-                    {
-                        RootDirectory = new DirectoryInfo(rootDirectory),
-                    };
-                    DocumentationExport.ExportHtml(file, exportOptions);
-                }
-            }
         }
 
 

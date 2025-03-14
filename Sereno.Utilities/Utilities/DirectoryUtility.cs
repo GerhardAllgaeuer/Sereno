@@ -5,6 +5,22 @@ namespace Sereno.Utilities
 {
     public class DirectoryUtility
     {
+
+        public static void EnsureEmptyDirectory(DirectoryInfo directory)
+        {
+            EnsureDirectory(directory);
+            CleanUpDirectory(directory);
+        }
+
+
+        public static void EnsureDirectory(DirectoryInfo directory)
+        {
+            if (!directory.Exists)
+            {
+                directory.Create();
+            }
+        }
+
         public static void CleanUpDirectory(DirectoryInfo rootDirectory)
         {
             if (!Directory.Exists(rootDirectory.FullName))

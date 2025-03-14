@@ -31,8 +31,8 @@ namespace Sereno.Documentation.Test
             DocumentationLibrary result = new DocumentationLibrary()
             {
                 DatabaseConnectionString = configuration.GetConnectionString("Development_ConnectionString")!,
-                DocumentsDirectory = new DirectoryInfo(@"D:\Data\Dokumentation"),
-                HtmlExportDirectory = new DirectoryInfo(@"D:\Projekte\Privat\Sereno\Sereno.Documentation.Client\images"),
+                SourceRootDirectory = new DirectoryInfo(@"D:\Data\Dokumentation"),
+                TargetFilesDirectory = new DirectoryInfo(@"D:\Projekte\Privat\Sereno\Sereno.Documentation.Client\public\images"),
             };
 
             return result;
@@ -46,8 +46,8 @@ namespace Sereno.Documentation.Test
             DocumentationLibrary result = new DocumentationLibrary()
             {
                 DatabaseConnectionString = configuration.GetConnectionString("TestDb_ConnectionString")!,
-                DocumentsDirectory = new DirectoryInfo($@"{CodeUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary"),
-                HtmlExportDirectory = new DirectoryInfo($@"{CodeUtility.GetDataDirectory()}\Sereno.Office\"),
+                SourceRootDirectory = new DirectoryInfo($@"{CodeUtility.GetProjectRoot()}\Sereno.Documentation.Test\DocumentsLibrary"),
+                TargetFilesDirectory = new DirectoryInfo($@"{CodeUtility.GetDataDirectory()}\Sereno.Office\"),
             };
 
             return result;

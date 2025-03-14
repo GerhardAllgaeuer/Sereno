@@ -1,4 +1,5 @@
-﻿using Sereno.Documentation.Synchronization;
+﻿using FluentAssertions;
+using Sereno.Documentation.Synchronization;
 using Sereno.Documentation.Test;
 
 namespace Sereno.Documentation
@@ -15,9 +16,12 @@ namespace Sereno.Documentation
 
             DocumentationLibrary library = this.CreateTestLibrary();
 
-            library.CleanupHtmlExportDirectory();
-
+            library.CleanupTargetFilesDirectory();
+            library.DeleteAllDocumentsInDatabase();
             library.SyncLibrary(options);
+
+            File.Exists($@"{library.TargetFilesDirectory!.FullName}\Topic1\Documentation_0001\Image0001.png").Should().BeTrue("Image0001.png nicht vorhanden");
+
         }
 
 
@@ -32,6 +36,8 @@ namespace Sereno.Documentation
             };
 
             DocumentationLibrary library = this.CreateDocumentationLibrary();
+            library.DeleteAllDocumentsInDatabase();
+            library.CleanupTargetFilesDirectory();
             library.SyncLibrary(options);
         }
     }

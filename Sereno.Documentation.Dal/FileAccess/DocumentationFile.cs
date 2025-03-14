@@ -1,4 +1,5 @@
 ﻿using Sereno.Office.Word.SimpleStructure;
+using Sereno.Utilities;
 using System.IO;
 
 namespace Sereno.Documentation.FileAccess
@@ -13,11 +14,7 @@ namespace Sereno.Documentation.FileAccess
         {
             get
             {
-                string result = "";
-                if (this.File != null)
-                {
-                    result = System.IO.Path.GetFileNameWithoutExtension(this.File.Name);
-                }
+                string result = FileUtility.RemoveExtension(this.RelativeSourceFilePath);
 
                 return result;
             }
@@ -28,8 +25,8 @@ namespace Sereno.Documentation.FileAccess
         public string PlainText { get; set; } = string.Empty;
 
         public bool HasDocumentationData { get; set; }
-        public string RelativePath { get; set; } = string.Empty;
-        public string RelativeDirectory { get; set; } = string.Empty;
+        public string RelativeSourceFilePath { get; set; } = string.Empty;
+        public string RelativeSourceFileDirectory { get; set; } = string.Empty;
         public string Author { get; set; } = string.Empty;
         public string InfoReceivers { get; set; } = string.Empty;
         public DateTime? NextCheck { get; set; }
@@ -40,7 +37,7 @@ namespace Sereno.Documentation.FileAccess
 
         public override string ToString()
         {
-            return this.RelativePath;
+            return this.RelativeSourceFilePath;
         }
 
 

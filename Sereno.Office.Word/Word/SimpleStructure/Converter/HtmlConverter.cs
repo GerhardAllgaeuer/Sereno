@@ -4,50 +4,147 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Sereno.Office.Word.Word.SimpleStructure.Export
+namespace Sereno.Office.Word.Word.SimpleStructure.Converter
 {
-    public class HtmlExport : ExportBase
+    public class HtmlConverter : ConverterBase
     {
+
+        public HtmlConverter()
+        {
+            this.Options = new HtmlConverterOptions();
+        }
+
+        public HtmlConverter(HtmlConverterOptions options)
+        {
+            this.Options = options;
+        }
+
         DirectoryInfo templateDirectory;
 
         string htmlContent = "";
-        string content = "";
+        string groupContent = "";
+
+        /// <summary>
+        /// Generierte Styles
+        /// </summary>
+        public string Styles { get; set; }
+
+        HtmlConverterOptions Options { get; set; }
+
 
         protected override void Init()
         {
-            string directory = $@"{CodeUtility.GetSolutionDirectory()}\Sereno.Office.Word\Word\SimpleStructure\Export\Templates\Html";
+            string directory = $@"{CodeUtility.GetSolutionDirectory()}\Sereno.Office.Word\Word\SimpleStructure\Converter\Templates\Html";
             this.templateDirectory = new DirectoryInfo(directory);
 
             htmlContent = File.ReadAllText($@"{templateDirectory.FullName}\template.html");
 
-            // Setup image directory
-            DirectoryInfo imageDirectory = new DirectoryInfo(Path.Combine(this.Options.ExportDirectory.FullName, "images"));
-            if (imageDirectory.Exists)
-                imageDirectory.Delete(true);
-            imageDirectory.Create();
+            PrepareImagePaths();
         }
+
+
+        public void SaveFiles()
+        {
+            if (this.Options.ExportRootDirectory == null)
+                throw new Exception("Export Directory not set");
+
+            DirectoryInfo fileExportDirectory = new DirectoryInfo(Path.Combine(this.Options.ExportRootDirectory.FullName, this.Options.RelativeImageDirectory));
+
+            if (this.Files.Count > 0)
+            {
+                DirectoryUtility.EnsureEmptyDirectory(fileExportDirectory);
+
+                foreach (var file in this.Files)
+                {
+                    string imagePath = Path.Combine(fileExportDirectory.FullName, $"{file.Key}");
+                    File.WriteAllBytes(imagePath, file.Value);
+                }
+            }
+            else
+            {
+                if (fileExportDirectory.Exists)
+                {
+                    fileExportDirectory.Delete();
+                }
+            }
+
+        }
+
+
+
+
+        public void SaveStyleSheet()
+        {
+            if (this.Options.ExportRootDirectory == null)
+                throw new Exception("Export Directory not set");
+
+            // css kopieren
+            FileInfo cssTemplate = new FileInfo($@"{templateDirectory.FullName}\styles.css");
+            DirectoryInfo cssTargetDirectory = this.Options.ExportRootDirectory;
+
+            DirectoryUtility.EnsureDirectory(cssTargetDirectory);
+
+            string targetFilePath = Path.Combine(cssTargetDirectory.FullName, this.Options.CssFileName);
+
+            File.Copy(cssTemplate.FullName, targetFilePath, true);
+        }
+
+
+
+
+        public void SaveDocument()
+        {
+            if (this.Options.ExportRootDirectory == null)
+                throw new Exception("Export Directory not set");
+
+            FileInfo file = new FileInfo(Path.Combine(this.Options.ExportRootDirectory.FullName, this.Options.HtmlFileName));
+
+            DirectoryUtility.EnsureDirectory(file.Directory);
+
+            File.WriteAllText(file.FullName, this.Document);
+        }
+
+        private void PrepareImagePaths()
+        {
+
+            if (this.Options.RelativeImageDirectory == null)
+                this.Options.RelativeImageDirectory = "";
+
+            if (this.Options.RelativeImageDirectory.StartsWith(@"\"))
+            {
+                this.Options.RelativeImageDirectory = this.Options.RelativeImageDirectory.Substring(1);
+            }
+
+            if (this.Options.RelativeImageDirectory.EndsWith(@"\"))
+            {
+                this.Options.RelativeImageDirectory = this.Options.RelativeImageDirectory.Substring(0, this.Options.RelativeImageDirectory.Length - 1);
+            }
+
+
+
+            if (this.Options.RelativeImageHtmlDirectory == null)
+                this.Options.RelativeImageHtmlDirectory = "";
+
+            if (this.Options.RelativeImageHtmlDirectory.StartsWith("/"))
+            {
+                this.Options.RelativeImageHtmlDirectory = this.Options.RelativeImageHtmlDirectory.Substring(1);
+            }
+
+            if (this.Options.RelativeImageHtmlDirectory.EndsWith("/"))
+            {
+                this.Options.RelativeImageHtmlDirectory = this.Options.RelativeImageHtmlDirectory.Substring(0, this.Options.RelativeImageHtmlDirectory.Length - 1);
+            }
+
+            this.Options.RelativeImageHtmlDirectory = $"/{this.Options.RelativeImageHtmlDirectory}";
+        }
+
+
 
         protected override void Finish()
         {
-            // css kopieren
-            FileInfo cssTemplate = new FileInfo($@"{templateDirectory.FullName}\styles.css");
-            FileInfo cssTarget = new FileInfo($@"{this.Options.ExportDirectory}\{cssTemplate.Name}");
-
-            if (!this.Options.ExportDirectory.Exists)
-                this.Options.ExportDirectory.Create();
-
-            File.Copy(cssTemplate.FullName, cssTarget.FullName, true);
-
-            htmlContent = htmlContent.Replace("{{Content}}", content);
-
-            SaveHtmlFile();
+            this.Document = htmlContent.Replace("{{Content}}", groupContent);
         }
 
-        private void SaveHtmlFile()
-        {
-            FileInfo file = new FileInfo($@"{this.Options.ExportDirectory}\document.html");
-            File.WriteAllText(file.FullName, htmlContent);
-        }
 
         protected override void ProcessGroup(DocumentGroup group)
         {
@@ -101,23 +198,23 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
             // Save images first
             foreach (var image in imagegroup.Images)
             {
-                string imagePath = Path.Combine(this.Options.ExportDirectory.FullName, "images", $"{image.ImageName}.png");
-                File.WriteAllBytes(imagePath, image.Data);
+                string imageFileName = $"{image.ImageName}.png";
+                this.Files.Add(imageFileName, image.Data);
             }
 
             if (imagegroup.Images.Count > 1)
             {
                 // Container für mehrere Bilder nebeneinander
                 AddToContent("<div class=\"image-container\">", "", 1);
-                
+
                 foreach (var image in imagegroup.Images)
                 {
                     AddToContent("<div class=\"image-wrapper\">", "", 2);
-                    AddToContent($"<img src=\"{{{{Content}}}}\" width=\"{image.PixelWidth}\" height=\"{image.PixelHeight}\" alt=\"\" style=\"max-width: 100%; height: auto;\" />", 
-                        $"images/{image.ImageName}.png", 3);
+                    AddToContent($"<img src=\"{{{{Content}}}}\" width=\"{image.PixelWidth}\" height=\"{image.PixelHeight}\" alt=\"\" style=\"max-width: 100%; height: auto;\" />",
+                        $"{this.Options.RelativeImageHtmlDirectory}{image.ImageName}.png", 3);
                     AddToContent("</div>", "", 2);
                 }
-                
+
                 AddToContent("</div>", "", 1);
             }
             else if (imagegroup.Images.Count == 1)
@@ -125,8 +222,8 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
                 var image = imagegroup.Images[0];
                 // Einzelnes Bild in einem Paragraph
                 AddToContent("<p class=\"image-paragraph\">", "", 1);
-                AddToContent($"<img src=\"{{{{Content}}}}\" width=\"{image.PixelWidth}\" height=\"{image.PixelHeight}\" alt=\"\" style=\"max-width: 100%; height: auto;\" />", 
-                    $"images/{image.ImageName}.png", 2);
+                AddToContent($"<img src=\"{{{{Content}}}}\" width=\"{image.PixelWidth}\" height=\"{image.PixelHeight}\" alt=\"\" style=\"max-width: 100%; height: auto;\" />",
+                    $"{this.Options.RelativeImageHtmlDirectory}/{image.ImageName}.png", 2);
                 AddToContent("</p>", "", 1);
             }
         }
@@ -138,7 +235,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
                 // Prüfe, ob es sich um eine nummerierte Liste handelt
                 bool isNumbered = listParagraphs[0].IsNumbered;
                 string listTag = isNumbered ? "ol" : "ul";
-                
+
                 AddToContent($"<{listTag}>", "", identation);
 
                 foreach (ListParagraph listParagraph in listParagraphs)
@@ -150,7 +247,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
                     else
                     {
                         AddToContent("<li>{{Content}}", listParagraph.InnerText, identation + 1, false);
-                        content += Environment.NewLine;
+                        groupContent += Environment.NewLine;
                         AddListParagraphsToContent(listParagraph.Children, identation + 2);
                         AddToContent("</li>", "", identation + 1);
                     }
@@ -179,32 +276,32 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
             {
                 AddToContent("<thead>", "", identation + 1);
                 AddToContent("<tr>", "", identation + 2);
-                
+
                 foreach (ColumnInfo column in tableInfo.Columns)
                 {
                     AddToContent("<th>{{Content}}</th>", column.ColumnName, identation + 3);
                 }
-                
+
                 AddToContent("</tr>", "", identation + 2);
                 AddToContent("</thead>", "", identation + 1);
             }
 
             // Tabellen-Body erstellen
             AddToContent("<tbody>", "", identation + 1);
-            
+
             for (int row = 0; row < tableInfo.Data.Rows.Count; row++)
             {
                 AddToContent("<tr>", "", identation + 2);
-                
+
                 for (int col = 0; col < tableInfo.Columns.Count; col++)
                 {
                     string cellValue = tableInfo.Data.Rows[row][col]?.ToString() ?? "";
                     AddToContent("<td>{{Content}}</td>", cellValue, identation + 3);
                 }
-                
+
                 AddToContent("</tr>", "", identation + 2);
             }
-            
+
             AddToContent("</tbody>", "", identation + 1);
             AddToContent("</table>", "", identation);
         }
@@ -218,7 +315,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Export
             if (withNewLine)
                 text += Environment.NewLine;
 
-            content += text;
+            groupContent += text;
         }
     }
 }
