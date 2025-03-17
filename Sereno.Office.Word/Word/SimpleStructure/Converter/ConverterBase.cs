@@ -10,7 +10,6 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
     {
         public Dictionary<string, byte[]> Files { get; set; } = new Dictionary<string, byte[]>();
 
-        public string Document { get; set; }
 
 
         protected virtual void Init()

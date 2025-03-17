@@ -19,10 +19,12 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
             this.Options = options;
         }
 
+        public string HtmlDocument { get; set; }
+
         DirectoryInfo templateDirectory;
 
-        string htmlContent = "";
-        string groupContent = "";
+        string htmlDocument = "";
+        string htmlBody = "";
 
         /// <summary>
         /// Generierte Styles
@@ -37,9 +39,16 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
             string directory = $@"{CodeUtility.GetSolutionDirectory()}\Sereno.Office.Word\Word\SimpleStructure\Converter\Templates\Html";
             this.templateDirectory = new DirectoryInfo(directory);
 
-            htmlContent = File.ReadAllText($@"{templateDirectory.FullName}\template.html");
+            htmlDocument = File.ReadAllText($@"{templateDirectory.FullName}\template.html");
 
             PrepareImagePaths();
+        }
+
+
+
+        protected override void Finish()
+        {
+            this.HtmlDocument = htmlDocument.Replace("{{Content}}", htmlBody);
         }
 
 
@@ -101,7 +110,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
 
             DirectoryUtility.EnsureDirectory(file.Directory);
 
-            File.WriteAllText(file.FullName, this.Document);
+            File.WriteAllText(file.FullName, this.HtmlDocument);
         }
 
         private void PrepareImagePaths()
@@ -142,13 +151,6 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
         }
 
 
-
-        protected override void Finish()
-        {
-            this.Document = htmlContent.Replace("{{Content}}", groupContent);
-        }
-
-
         protected override void ProcessGroup(DocumentGroup group)
         {
             int identation = 1;
@@ -158,7 +160,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
                 if (paragraphGroup.StyleNameEn == "Title")
                 {
                     string title = System.Net.WebUtility.HtmlEncode(paragraphGroup.PlainText);
-                    htmlContent = htmlContent.Replace("{{Title}}", title);
+                    htmlDocument = htmlDocument.Replace("{{Title}}", title);
                 }
 
                 else if (paragraphGroup.StyleNameEn == "heading 1")
@@ -250,7 +252,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
                     else
                     {
                         AddToContent("<li>{{Content}}", listParagraph.InnerText, identation + 1, false);
-                        groupContent += Environment.NewLine;
+                        htmlBody += Environment.NewLine;
                         AddListParagraphsToContent(listParagraph.Children, identation + 2);
                         AddToContent("</li>", "", identation + 1);
                     }
@@ -318,7 +320,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
             if (withNewLine)
                 text += Environment.NewLine;
 
-            groupContent += text;
+            htmlBody += text;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Sereno.Office.Test.SimpleStructure
             htmlExport.SaveFiles();
 
             File.Exists($@"{exportDirectory.FullName}\Image0001.png").Should().BeTrue("Image0001.png nicht vorhanden");
-            htmlExport.Document.Should().Contain("<img src=\"Image0001.png\"");
+            htmlExport.HtmlDocument.Should().Contain("<img src=\"Image0001.png\"");
 
 
             // Mit Unterordner Images
@@ -47,7 +47,7 @@ namespace Sereno.Office.Test.SimpleStructure
             htmlExport.SaveFiles();
 
             File.Exists($@"{exportDirectory.FullName}\{options.RelativeImageDirectory}\Image0001.png").Should().BeTrue("Image0001.png nicht vorhanden");
-            htmlExport.Document.Should().Contain("<img src=\"images/Image0001.png\"");
+            htmlExport.HtmlDocument.Should().Contain("<img src=\"images/Image0001.png\"");
 
 
         }

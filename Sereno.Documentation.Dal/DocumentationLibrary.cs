@@ -63,7 +63,7 @@ namespace Sereno.Documentation
             // Daten in der DB Speichern
             SaveFileToDatabase(context, file, converter);
 
-            return converter.Document;
+            return converter.HtmlDocument;
         }
 
 
@@ -105,7 +105,7 @@ namespace Sereno.Documentation
                 Author = file.Author,
                 NextCheck = file.NextCheck,
                 Content = file.PlainText,
-                HtmlContent = converter.Document,
+                HtmlContent = converter.HtmlDocument,
             };
 
             dbContext.Documents.Add(document);
