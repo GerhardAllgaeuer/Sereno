@@ -73,14 +73,10 @@ namespace Sereno.Documentation.FileAccess
 
             foreach (DocumentGroup group in allGroups)
             {
-                // zuerst warten wir, bis wir die Tabelle mit den Dokumentationsaten passiert haben
-                if (group == documentDataTable)
-                    contentAfterTableReached = true;
-
                 if (contentAfterTableReached)
                 {
                     // dann warten wir bis zum ersten Paragraphen, der etwas beinhaltet (keine Leeerzeilen)
-                    if (String.IsNullOrWhiteSpace(group.PlainText))
+                    if (!String.IsNullOrWhiteSpace(group.PlainText))
                     {
                         startGroupAdding = true;
                     }
@@ -90,6 +86,12 @@ namespace Sereno.Documentation.FileAccess
                 {
                     result.Add(group);
                 }
+
+                // zuerst warten wir, bis wir die Tabelle mit den Dokumentationsaten passiert haben
+                if (group == documentDataTable)
+                    contentAfterTableReached = true;
+
+
             }
 
             // Falls wir einen Titel haben, kommt der wieder ganz zu Beginn rein
