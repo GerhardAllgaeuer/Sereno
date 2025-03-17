@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Sereno.Documentation.DataAccess;
+using Microsoft.EntityFrameworkCore;
 
 namespace Sereno.Documentation.Api.Controllers
 {
@@ -183,9 +184,10 @@ namespace Sereno.Documentation.Api.Controllers
             }
 
             var lowercaseQuery = query.ToLower();
+            
             var documents = _dbContext.Documents
-                .Where(d => d.Title != null && d.Title.Contains(lowercaseQuery, StringComparison.CurrentCultureIgnoreCase) ||
-                           d.Content != null && d.Content.Contains(lowercaseQuery, StringComparison.CurrentCultureIgnoreCase))
+                .Where(d => (d.Title != null && EF.Functions.Like(d.Title.ToLower(), $"%{lowercaseQuery}%")) ||
+                            (d.Content != null && EF.Functions.Like(d.Content.ToLower(), $"%{lowercaseQuery}%")))
                 .ToList();
             
             var documentations = documents.Select(d => new Models.Documentation
