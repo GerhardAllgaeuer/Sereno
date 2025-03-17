@@ -3,27 +3,34 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Documentation } from '../../models/documentation.model';
 import { DocumentationService } from '../../services/documentation.service';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-documentation-detail',
   standalone: true,
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, SafeHtmlPipe],
   templateUrl: './documentation-detail.component.html',
   styleUrls: ['./documentation-detail.component.scss']
 })
 export class DocumentationDetailComponent implements OnInit {
-  documentation: Documentation | null = null;
+  documentation!: Documentation;
   loading = false;
   error: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private documentationService: DocumentationService
+    private documentationService: DocumentationService,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
-    this.loadDocumentation();
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      console.log('Loading documentation with ID:', id);
+      this.loadDocumentation();
+    });
   }
 
   loadDocumentation(): void {
@@ -53,5 +60,9 @@ export class DocumentationDetailComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/documentations']);
+  }
+
+  getSafeHtml(html: string | null): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html || '');
   }
 } 

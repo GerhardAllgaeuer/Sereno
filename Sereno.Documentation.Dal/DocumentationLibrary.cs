@@ -105,7 +105,7 @@ namespace Sereno.Documentation
                 Author = file.Author,
                 NextCheck = file.NextCheck,
                 Content = file.PlainText,
-                HtmlContent = converter.HtmlDocument,
+                HtmlContent = converter.HtmlBody,
             };
 
             dbContext.Documents.Add(document);

@@ -3,7 +3,21 @@ import { DocumentationListComponent } from './components/documentation-list/docu
 import { DocumentationDetailComponent } from './components/documentation-detail/documentation-detail.component';
 
 export const routes: Routes = [
-  { path: '', component: DocumentationListComponent },
-  { path: 'detail/:id', component: DocumentationDetailComponent },
-  // weitere Routen...
+  { 
+    path: '', 
+    redirectTo: 'documentation', 
+    pathMatch: 'full' 
+  },
+  { 
+    path: 'documentation', 
+    component: DocumentationListComponent 
+  },
+  { 
+    path: 'documentation/:id', // Diese Route ermöglicht den Zugriff auf einzelne Dokumente
+    component: DocumentationDetailComponent 
+  },
+  { 
+    path: '**', 
+    redirectTo: 'documentation' 
+  }
 ]; 

@@ -23,7 +23,10 @@
     </div>
     
     <div class="doc-body">
-      <div *ngIf="documentation.htmlContent" [innerHTML]="documentation.htmlContent"></div>
+      <div *ngIf="documentation">
+        <div [innerHTML]="(documentation.htmlContent || '') | safeHtml"></div>
+        <p>Erstellt von {{ documentation.createdBy }} am {{ documentation.createdAt | date:'dd.MM.yyyy' }}</p>
+      </div>
       <p *ngIf="!documentation.htmlContent">{{ documentation.content }}</p>
     </div>
 

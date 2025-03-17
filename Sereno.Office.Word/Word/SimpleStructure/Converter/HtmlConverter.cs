@@ -18,20 +18,23 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
         {
             this.Options = options;
         }
-
-        public string HtmlDocument { get; set; }
+        HtmlConverterOptions Options { get; set; }
 
         DirectoryInfo templateDirectory;
 
+        public string HtmlDocument { get; set; }
         string htmlDocument = "";
+
+        public string HtmlBody { get; set; }
         string htmlBody = "";
+
+
 
         /// <summary>
         /// Generierte Styles
         /// </summary>
         public string Styles { get; set; }
 
-        HtmlConverterOptions Options { get; set; }
 
 
         protected override void Init()
@@ -49,6 +52,7 @@ namespace Sereno.Office.Word.Word.SimpleStructure.Converter
         protected override void Finish()
         {
             this.HtmlDocument = htmlDocument.Replace("{{Content}}", htmlBody);
+            this.HtmlBody = this.htmlBody;
         }
 
 
