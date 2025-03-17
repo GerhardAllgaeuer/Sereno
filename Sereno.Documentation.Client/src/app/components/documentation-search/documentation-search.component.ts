@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -14,7 +14,8 @@ import { DocumentationService } from '../../services/documentation.service';
   templateUrl: './documentation-search.component.html',
   styleUrls: ['./documentation-search.component.scss']
 })
-export class DocumentationSearchComponent implements OnInit {
+export class DocumentationSearchComponent implements OnInit, AfterViewInit {
+  @ViewChild('searchInput') searchInput!: ElementRef;
   searchControl = new FormControl('');
   searchResults: Documentation[] = [];
   loading: boolean = false;
@@ -24,6 +25,12 @@ export class DocumentationSearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.setupSearch();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.searchInput.nativeElement.focus();
+    });
   }
 
   setupSearch(): void {

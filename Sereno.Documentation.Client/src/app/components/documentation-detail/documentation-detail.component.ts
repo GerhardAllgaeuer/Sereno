@@ -65,4 +65,12 @@ export class DocumentationDetailComponent implements OnInit {
   getSafeHtml(html: string | null): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html || '');
   }
+
+  copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      console.log('Pfad in Zwischenablage kopiert');
+    }).catch(err => {
+      console.error('Fehler beim Kopieren:', err);
+    });
+  }
 } 

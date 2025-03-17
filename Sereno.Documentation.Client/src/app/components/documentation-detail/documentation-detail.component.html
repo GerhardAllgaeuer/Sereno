@@ -15,11 +15,15 @@
 
   <div *ngIf="!loading && !error && documentation" class="documentation-content">
     <h1 class="doc-title">{{ documentation.title }}</h1>
-    
+  
     <div class="doc-meta">
-      <span class="doc-library">{{ documentation.topic }}</span>
-      <span>Aktualisiert: {{ documentation.updatedAt | date:'dd.MM.yyyy' }}</span>
-      <span *ngIf="documentation.author">Autor: {{ documentation.author }}</span>
+      <span *ngIf="documentation.author">{{ documentation.author }} | {{ documentation.updatedAt | date:'dd.MM.yyyy' }}</span>
+      <span class="doc-library">
+        {{ documentation.topic }}
+        <button class="copy-button" (click)="copyToClipboard('\\\\conad01\\info\\edv\\dokumentation\\' + documentation.topic)" title="Pfad kopieren">
+          <i class="material-icons">content_copy</i>
+        </button>
+      </span>
     </div>
     
     <div class="doc-body">
