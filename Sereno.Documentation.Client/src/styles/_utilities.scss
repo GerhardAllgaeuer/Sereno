@@ -1,0 +1,9 @@
+@use 'variables' as *;
+
+.container {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: $container-padding;
+}
+
+// Andere utility classes hier 

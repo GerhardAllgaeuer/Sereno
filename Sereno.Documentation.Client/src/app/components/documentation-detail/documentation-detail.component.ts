@@ -9,7 +9,7 @@ import { DocumentationService } from '../../services/documentation.service';
   standalone: true,
   imports: [CommonModule, DatePipe],
   templateUrl: './documentation-detail.component.html',
-  styleUrls: ['./documentation-detail.component.css']
+  styleUrls: ['./documentation-detail.component.scss']
 })
 export class DocumentationDetailComponent implements OnInit {
   documentation: Documentation | null = null;

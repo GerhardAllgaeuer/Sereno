@@ -12,7 +12,7 @@ import { DocumentationService } from '../../services/documentation.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './documentation-search.component.html',
-  styleUrls: ['./documentation-search.component.css']
+  styleUrls: ['./documentation-search.component.scss']
 })
 export class DocumentationSearchComponent implements OnInit {
   searchControl = new FormControl('');

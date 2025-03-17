@@ -3,13 +3,20 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Documentation } from '../../models/documentation.model';
 import { DocumentationService } from '../../services/documentation.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-documentation-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe],
+  imports: [
+    CommonModule,
+    RouterModule,
+    DatePipe,
+    HttpClientModule,
+  ],
+  providers: [DocumentationService],
   templateUrl: './documentation-list.component.html',
-  styleUrls: ['./documentation-list.component.css']
+  styleUrls: ['./documentation-list.component.scss']
 })
 export class DocumentationListComponent implements OnInit {
   documentations: Documentation[] = [];
