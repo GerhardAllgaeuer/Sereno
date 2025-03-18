@@ -165,14 +165,12 @@
         display: block;
         margin: 20px 0;
         transform-origin: left;
-        transform: scale(1.5);
       }
 
       p:has(img) {
         display: block;
-        min-height: 150%;
         overflow: visible;
-        margin: 40px 0;
+        margin: 20px 0;
       }
     }
   }

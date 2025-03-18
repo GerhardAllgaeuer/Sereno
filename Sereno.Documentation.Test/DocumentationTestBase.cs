@@ -31,7 +31,8 @@ namespace Sereno.Documentation.Test
             DocumentationLibrary result = new DocumentationLibrary()
             {
                 DatabaseConnectionString = configuration.GetConnectionString("Development_ConnectionString")!,
-                SourceRootDirectory = new DirectoryInfo(@"D:\Data\Dokumentation"),
+                //SourceRootDirectory = new DirectoryInfo(@"D:\Data\Dokumentation"),
+                SourceRootDirectory = new DirectoryInfo(@"\\conad01\info\EDV\Dokumentation"),
                 TargetFilesDirectory = new DirectoryInfo(@"D:\Projekte\Privat\Sereno\Sereno.Documentation.Content\Content\images"),
             };
 

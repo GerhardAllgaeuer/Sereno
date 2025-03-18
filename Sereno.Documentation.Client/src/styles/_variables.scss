@@ -1,12 +1,12 @@
 // Colors
-$primary-color: #007bff;
-$primary-hover: #0056b3;
-$text-color: #333;
-$text-light: #666;
-$text-lighter: #888;
-$border-color: #ddd;
-$background-light: #f5f5f5;
-$background-white: #fff;
+$primary-color: #3b82f6;
+$primary-hover: #2563eb;
+$text-color: #111827;
+$text-light: #4b5563;
+$text-lighter: #9ca3af;
+$border-color: #e5e7eb;
+$background-light: #f9fafb;
+$background-white: #ffffff;
 
 // Shadows
 $shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -40,14 +40,14 @@ $gradients: (
 
 // Colors
 $colors: (
-  --bright-blue: oklch(51.01% 0.274 263.83),
-  --electric-violet: oklch(53.18% 0.28 296.97),
-  --french-violet: oklch(47.66% 0.246 305.88),
-  --vivid-pink: oklch(69.02% 0.277 332.77),
-  --hot-red: oklch(61.42% 0.238 15.34),
-  --orange-red: oklch(63.32% 0.24 31.68),
-  
+  --accent: oklch(55.7% 0.2 263.83),
   --gray-900: oklch(19.37% 0.006 300.98),
+  --gray-800: oklch(25.5% 0.006 300.98),
   --gray-700: oklch(36.98% 0.014 302.71),
-  --gray-400: oklch(70.9% 0.015 304.04)
+  --gray-600: oklch(45.2% 0.015 304.04),
+  --gray-500: oklch(55.5% 0.015 304.04),
+  --gray-400: oklch(70.9% 0.015 304.04),
+  --gray-300: oklch(85.5% 0.015 304.04),
+  --gray-200: oklch(93.2% 0.015 304.04),
+  --gray-100: oklch(98.5% 0.015 304.04)
 ); 

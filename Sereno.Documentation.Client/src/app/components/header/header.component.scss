@@ -19,14 +19,15 @@
 
 .logo {
   a {
+    margin-left: 20px;
     font-size: 22px;
-    font-weight: bold;
-    color: $primary-color;
+    font-weight: 500;
+    color: $text-light;
     text-decoration: none;
     transition: $transition-base;
 
     &:hover {
-      color: $primary-hover;
+      color: $primary-color;
     }
   }
 }
@@ -41,11 +42,12 @@
 
   li {
     margin-left: 30px;
+    margin-right: 15px;
   }
 
   a {
     text-decoration: none;
-    color: $text-color;
+    color: $text-light;
     font-size: 16px;
     font-weight: 500;
     padding: 10px 0;
@@ -53,11 +55,12 @@
     transition: $transition-base;
 
     &:hover {
-      color: $primary-color;
+      color: $text-color;
     }
 
     &.active {
       color: $primary-color;
+      font-weight: 600;
 
       &::after {
         content: '';
@@ -65,7 +68,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 3px;
+        height: 2px;
         background-color: $primary-color;
         border-radius: 3px 3px 0 0;
       }

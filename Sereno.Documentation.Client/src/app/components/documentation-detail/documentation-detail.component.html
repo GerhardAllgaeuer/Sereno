@@ -29,13 +29,8 @@
     <div class="doc-body">
       <div *ngIf="documentation">
         <div [innerHTML]="(documentation.htmlContent || '') | safeHtml"></div>
-        <p>Erstellt von {{ documentation.createdBy }} am {{ documentation.createdAt | date:'dd.MM.yyyy' }}</p>
       </div>
       <p *ngIf="!documentation.htmlContent">{{ documentation.content }}</p>
-    </div>
-
-    <div class="doc-footer" *ngIf="documentation.createdBy || documentation.createdAt">
-      <p>Erstellt von {{ documentation.createdBy }} am {{ documentation.createdAt | date:'dd.MM.yyyy' }}</p>
     </div>
   </div>
 </div> 
