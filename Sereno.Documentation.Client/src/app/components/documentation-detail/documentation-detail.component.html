@@ -15,8 +15,8 @@
     <div class="doc-meta">
       <span *ngIf="documentation.author">{{ documentation.author }} | {{ documentation.updatedAt | date:'dd.MM.yyyy' }}</span>
       <span class="doc-library">
-        {{ documentation.topic }}
-        <button class="copy-button" (click)="copyToClipboard('\\\\conad01\\info\\edv\\dokumentation\\' + documentation.topic)" title="Pfad kopieren">
+        {{ documentation.libraryPath }}
+        <button class="copy-button" (click)="copyToClipboard('\\\\conad01\\info\\edv\\dokumentation\\' + documentation.libraryPath)" title="Pfad kopieren">
           <i class="material-icons">content_copy</i>
         </button>
       </span>

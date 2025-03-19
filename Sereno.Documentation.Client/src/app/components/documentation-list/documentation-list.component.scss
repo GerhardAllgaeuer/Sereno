@@ -1,71 +1,109 @@
 @use 'variables' as *;
 @use 'mixins' as *;
-
+@import '../../styles/documentation-meta';
 
 .documentation-list-container {
-  @include container;
+  padding: 1rem;
 }
 
 .topic-filter {
-  margin-bottom: 30px;
-  background-color: #f5f5f5;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.topic-filter h3 {
-  margin-top: 0;
-  color: #333;
-  font-weight: $font-weight-bold;
+  margin-bottom: 1rem;
 }
 
 .topic-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
 .topic-button {
-  padding: 8px 16px;
-  background-color: #fff;
+  padding: 0.5rem 1rem;
   border: 1px solid #ddd;
-  border-radius: 20px;
+  border-radius: 4px;
+  background: white;
   cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+
+  &.active {
+    background: #007bff;
+    color: white;
+    border-color: #0056b3;
+  }
 }
 
-.topic-button:hover {
-  background-color: #f0f0f0;
+.documentation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.topic-button.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
+.documentation-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.documentation-list h2 {
-  margin-bottom: 20px;
+.documentation-item {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 1rem;
+  background: white;
+  transition: box-shadow 0.2s;
+
+  &:hover {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+}
+
+.doc-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.doc-link {
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+
+.doc-title {
+  margin: 0;
   color: #333;
+  font-size: 1.2rem;
+}
+
+.doc-library {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.doc-content {
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .loading-spinner {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 40px 0;
+  gap: 1rem;
+  padding: 2rem;
 }
 
 .spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  border-top: 4px solid #007bff;
   width: 40px;
   height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 15px;
 }
 
 @keyframes spin {
@@ -75,38 +113,37 @@
 
 .no-results {
   text-align: center;
-  margin: 40px 0;
+  padding: 2rem;
   color: #666;
 }
 
-.documentation-items {
+.doc-path-section {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+  font-size: 0.9em;
+  color: #666;
 }
 
-.documentation-item {
-  padding: 20px;
-  @include card;
+.copy-button {
+  background: none;
+  border: none;
+  padding: 4px;
   cursor: pointer;
-}
-
-.doc-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   &:hover {
-    text-decoration: none;
-    color: inherit;
+    color: #007bff;
   }
-}
-
-.doc-title {
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: $text-light;
-  font-size: 20px;
+  
+  .material-icons {
+    font-size: 18px;
+  }
 }
 
 .doc-topic {
@@ -114,15 +151,28 @@
   margin-bottom: 10px;
 }
 
-.doc-content {
-  color: #555;
-  line-height: 1.5;
-  margin-bottom: 15px;
-}
-
 .doc-date {
   color: #888;
   font-size: 12px;
   text-align: right;
   margin-bottom: 0;
+}
+
+.doc-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  font-size: 0.9em;
+  color: #666;
+
+  .doc-library-container {
+    margin-left: auto;
+  }
+
+  .doc-library {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
 } 

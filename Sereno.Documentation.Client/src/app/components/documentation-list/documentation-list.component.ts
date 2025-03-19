@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Documentation } from '../../models/documentation.model';
 import { DocumentationService } from '../../services/documentation.service';
 import { HttpClientModule } from '@angular/common/http';
+import { DocumentationMetaTemplate } from '../../shared/templates/documentation-meta.template';
 
 @Component({
   selector: 'app-documentation-list',
@@ -12,13 +13,14 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule,
     RouterModule,
     DatePipe,
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [DocumentationService],
   templateUrl: './documentation-list.component.html',
   styleUrls: ['./documentation-list.component.scss']
 })
 export class DocumentationListComponent implements OnInit, OnDestroy {
+  @ViewChild('documentationMeta') documentationMeta!: DocumentationMetaTemplate;
   documentations: Documentation[] = [];
   libraries: string[] = [];
   selectedLibrary: string = '';
@@ -92,6 +94,14 @@ export class DocumentationListComponent implements OnInit, OnDestroy {
         console.error('Fehler beim Laden der Dokumentationen:', error);
         this.loading = false;
       }
+    });
+  }
+
+  copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      console.log('Pfad in Zwischenablage kopiert');
+    }).catch(err => {
+      console.error('Fehler beim Kopieren:', err);
     });
   }
 

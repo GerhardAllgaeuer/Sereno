@@ -84,27 +84,31 @@ namespace Sereno.Documentation.Api.Controllers
             _dbContext = dbContext;
         }
 
+        private Models.Documentation MapToDocumentation(DataAccess.Entities.Document document)
+        {
+            return new Models.Documentation
+            {
+                Id = document.Id,
+                Title = document.Title,
+                Content = document.Content,
+                HtmlContent = document.HtmlContent,
+                Topic = GetTopicFromLibraryPath(document.LibraryPath),
+                LibraryPath = document.LibraryPath,
+                DocumentKey = document.DocumentKey,
+                Author = document.Author,
+                NextCheck = document.NextCheck,
+                CreatedAt = document.Create,
+                CreatedBy = document.CreateUser,
+                UpdatedAt = document.Modify,
+                UpdatedBy = document.ModifyUser
+            };
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<Models.Documentation>> GetAll()
         {
             var documents = _dbContext.Documents.ToList();
-
-            var documentations = documents.Select(d => new Models.Documentation
-            {
-                Id = d.Id,
-                Title = d.Title,
-                Content = d.Content,
-                HtmlContent = d.HtmlContent,
-                Topic = GetTopicFromLibraryPath(d.LibraryPath),
-                DocumentKey = d.DocumentKey,
-                Author = d.Author,
-                NextCheck = d.NextCheck,
-                CreatedAt = d.Create,
-                CreatedBy = d.CreateUser,
-                UpdatedAt = d.Modify,
-                UpdatedBy = d.ModifyUser
-            }).ToList();
-            
+            var documentations = documents.Select(MapToDocumentation).ToList();
             return Ok(documentations);
         }
 
@@ -125,22 +129,7 @@ namespace Sereno.Documentation.Api.Controllers
                 return NotFound();
             }
             
-            var documentation = new Models.Documentation
-            {
-                Id = document.Id,
-                Title = document.Title,
-                Content = document.Content,
-                HtmlContent = document.HtmlContent,
-                Topic = document.LibraryPath,
-                DocumentKey = document.DocumentKey,
-                Author = document.Author,
-                NextCheck = document.NextCheck,
-                CreatedAt = document.Create,
-                CreatedBy = document.CreateUser,
-                UpdatedAt = document.Modify,
-                UpdatedBy = document.ModifyUser
-            };
-            
+            var documentation = MapToDocumentation(document);
             return Ok(documentation);
         }
 
@@ -156,21 +145,7 @@ namespace Sereno.Documentation.Api.Controllers
                 .Where(d => d.Title != null && d.Title.Contains(topic, StringComparison.CurrentCultureIgnoreCase))
                 .ToList();
             
-            var documentations = documents.Select(d => new Models.Documentation
-            {
-                Id = d.Id,
-                Title = d.Title,
-                Content = d.Content,
-                HtmlContent = d.HtmlContent,
-                Topic = d.LibraryPath,
-                DocumentKey = d.DocumentKey,
-                Author = d.Author,
-                NextCheck = d.NextCheck,
-                CreatedAt = d.Create,
-                CreatedBy = d.CreateUser,
-                UpdatedAt = d.Modify,
-                UpdatedBy = d.ModifyUser
-            }).ToList();
+            var documentations = documents.Select(MapToDocumentation).ToList();
             
             return Ok(documentations);
         }
@@ -190,21 +165,7 @@ namespace Sereno.Documentation.Api.Controllers
                             (d.Content != null && EF.Functions.Like(d.Content.ToLower(), $"%{lowercaseQuery}%")))
                 .ToList();
             
-            var documentations = documents.Select(d => new Models.Documentation
-            {
-                Id = d.Id,
-                Title = d.Title,
-                Content = d.Content,
-                HtmlContent = d.HtmlContent,
-                Topic = d.LibraryPath,
-                DocumentKey = d.DocumentKey,
-                Author = d.Author,
-                NextCheck = d.NextCheck,
-                CreatedAt = d.Create,
-                CreatedBy = d.CreateUser,
-                UpdatedAt = d.Modify,
-                UpdatedBy = d.ModifyUser
-            }).ToList();
+            var documentations = documents.Select(MapToDocumentation).ToList();
             
             return Ok(documentations);
         }

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Documentation } from '../../models/documentation.model';
 import { DocumentationService } from '../../services/documentation.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
+import { DocumentationMetaTemplate } from '../../shared/templates/documentation-meta.template';
 
 @Component({
   selector: 'app-documentation-detail',
@@ -14,6 +15,7 @@ import { SafeHtmlPipe } from '../../pipes/safe-html.pipe';
   styleUrls: ['./documentation-detail.component.scss']
 })
 export class DocumentationDetailComponent implements OnInit {
+  @ViewChild('documentationMeta') documentationMeta!: DocumentationMetaTemplate;
   documentation!: Documentation;
   loading = false;
   error: string | null = null;

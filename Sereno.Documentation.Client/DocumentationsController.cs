@@ -1,0 +1,105 @@
+using Microsoft.AspNetCore.Mvc;
+using Sereno.Documentation.DataAccess;
+using Microsoft.EntityFrameworkCore;
+
+namespace Sereno.Documentation.Api.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class DocumentationsController : ControllerBase
+    {
+        private static readonly List<Models.Documentation> _dummyDocumentations = new()
+        {
+            // ... existing code ...
+        };
+
+        private readonly AppDbContext _dbContext;
+
+        public DocumentationsController(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+        private Models.Documentation MapToDocumentation(DataAccess.Document document)
+        {
+            return new Models.Documentation
+            {
+                Id = document.Id,
+                Title = document.Title,
+                Content = document.Content,
+                HtmlContent = document.HtmlContent,
+                Topic = GetTopicFromLibraryPath(document.LibraryPath),
+                DocumentKey = document.DocumentKey,
+                Author = document.Author,
+                NextCheck = document.NextCheck,
+                CreatedAt = document.Create,
+                CreatedBy = document.CreateUser,
+                UpdatedAt = document.Modify,
+                UpdatedBy = document.ModifyUser
+            };
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Models.Documentation>> GetAll()
+        {
+            var documents = _dbContext.Documents.ToList();
+            var documentations = documents.Select(MapToDocumentation).ToList();
+            return Ok(documentations);
+        }
+
+        private string GetTopicFromLibraryPath(string libraryPath)
+        {
+            int index = libraryPath.IndexOf('\\');
+            string result = index >= 0 ? libraryPath.Substring(0, index) : libraryPath;
+            return result;
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Models.Documentation> GetById(string id)
+        {
+            var document = _dbContext.Documents.FirstOrDefault(d => d.Id == id);
+            if (document == null)
+            {
+                return NotFound();
+            }
+            
+            var documentation = MapToDocumentation(document);
+            return Ok(documentation);
+        }
+
+        [HttpGet("topic/{topic}")]
+        public ActionResult<IEnumerable<Models.Documentation>> GetByTopic(string topic)
+        {
+            if (string.IsNullOrWhiteSpace(topic))
+            {
+                return Ok(new List<Models.Documentation>());
+            }
+
+            var documents = _dbContext.Documents
+                .Where(d => d.Title != null && d.Title.Contains(topic, StringComparison.CurrentCultureIgnoreCase))
+                .ToList();
+            
+            var documentations = documents.Select(MapToDocumentation).ToList();
+            return Ok(documentations);
+        }
+
+        [HttpGet("search")]
+        public ActionResult<IEnumerable<Models.Documentation>> Search([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return Ok(new List<Models.Documentation>());
+            }
+
+            var lowercaseQuery = query.ToLower();
+            
+            var documents = _dbContext.Documents
+                .Where(d => (d.Title != null && EF.Functions.Like(d.Title.ToLower(), $"%{lowercaseQuery}%")) ||
+                            (d.Content != null && EF.Functions.Like(d.Content.ToLower(), $"%{lowercaseQuery}%")))
+                .ToList();
+            
+            var documentations = documents.Select(MapToDocumentation).ToList();
+            return Ok(documentations);
+        }
+    }
+} 

@@ -6,6 +6,7 @@ import { DocumentationListComponent } from './components/documentation-list/docu
 import { DocumentationDetailComponent } from './components/documentation-detail/documentation-detail.component';
 import { DocumentationSearchComponent } from './components/documentation-search/documentation-search.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { DocumentationMetaComponent } from './components/documentation-meta/documentation-meta.component';
 
 @NgModule({
   imports: [
@@ -16,6 +17,9 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
     DocumentationDetailComponent,
     DocumentationSearchComponent,
     SafeHtmlPipe
+  ],
+  declarations: [
+    DocumentationMetaComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

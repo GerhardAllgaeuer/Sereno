@@ -5,6 +5,7 @@ export interface Documentation {
   createdBy: string;
   createdAt: string | Date;
   topic: string;
+  libraryPath: string;
   documentKey: string;
   content: string | null;
   author: string | null;
