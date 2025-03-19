@@ -7,12 +7,24 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: $font-family-base;
+}
+
+// Reset heading styles
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-weight-bold;
+  margin: 0;
+}
+
+// Reset other elements that might have browser default font-weight
+b,
+strong,
+th {
+  font-weight: $font-weight-bold;
 }
 
 body {
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
+  font-family: $font-family-base;
   line-height: 1.6;
   color: var(--gray-900);
   background-color: #f8f9fa;
@@ -27,4 +39,11 @@ a {
 
 button {
   cursor: pointer;
-} 
+}
+
+h1 { font-size: $h1-size; }
+h2 { font-size: $h2-size; }
+h3 { font-size: $h3-size; }
+h4 { font-size: $h4-size; }
+h5 { font-size: $h5-size; }
+h6 { font-size: $h6-size; } 

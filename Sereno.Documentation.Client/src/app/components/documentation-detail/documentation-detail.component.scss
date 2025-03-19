@@ -1,7 +1,8 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
 .documentation-detail-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 30px 20px;
+  @include container;
 }
 
 .back-button {
@@ -76,9 +77,7 @@
 }
 
 .documentation-content {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  @include card;
   padding: 30px;
   font-size: 16px;
   line-height: 1.682em;
@@ -86,7 +85,7 @@
 
   .doc-title {
     font-size: 24px;
-    font-weight: 500;
+    font-weight: $font-weight-bold;
     color: #444;
     margin-top: 5px;
     margin-bottom: 10px;
@@ -100,7 +99,7 @@
     ::ng-deep {
       h1 {
         font-size: 18px !important;
-        font-weight: 500 !important;
+        font-weight: $font-weight-bold !important;
         color: #444 !important;
         margin-top: 80px !important;
         margin-bottom: 10px !important;
@@ -112,7 +111,7 @@
 
       h2, h3 {
         font-size: 16px !important;
-        font-weight: 500 !important;
+        font-weight: $font-weight-bold !important;
         margin-top: 20px !important;
         margin-bottom: 10px !important;
       }
@@ -157,7 +156,7 @@
         th {
           background-color: rgba(154, 144, 132, 0.10) !important;
           color: #333 !important;
-          font-weight: 600 !important;
+          font-weight: $font-weight-bold !important;
         }
       }
 
@@ -187,12 +186,7 @@
 }
 
 .doc-topic {
-  display: inline-block;
-  background-color: #e9f5ff;
-  color: #0066cc;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
+  @include topic-badge;
 }
 
 .doc-date {
@@ -224,3 +218,5 @@
     font-size: 12px;
   }
 }
+
+@include loading-spinner;

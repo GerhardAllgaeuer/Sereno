@@ -1,8 +1,11 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
 .search-container {
+  @include container;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
 .search-box {
@@ -101,16 +104,8 @@
 
 .search-result-item {
   padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  @include card;
   cursor: pointer;
-}
-
-.search-result-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .result-title {
@@ -121,12 +116,7 @@
 }
 
 .result-topic {
-  display: inline-block;
-  background-color: #e9f5ff;
-  color: #0066cc;
-  padding: 4px 10px;
-  border-radius: 15px;
-  font-size: 12px;
+  @include topic-badge;
   margin-bottom: 10px;
 }
 
@@ -134,4 +124,6 @@
   color: #555;
   line-height: 1.5;
   margin-bottom: 0;
-} 
+}
+
+@include loading-spinner; 
