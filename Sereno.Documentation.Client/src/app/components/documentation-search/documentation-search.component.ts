@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -14,16 +14,48 @@ import { DocumentationService } from '../../services/documentation.service';
   templateUrl: './documentation-search.component.html',
   styleUrls: ['./documentation-search.component.scss']
 })
-export class DocumentationSearchComponent implements OnInit, AfterViewInit {
+export class DocumentationSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('searchInput') searchInput!: ElementRef;
   searchControl = new FormControl('');
   searchResults: Documentation[] = [];
   loading: boolean = false;
   hasSearched: boolean = false;
+  private readonly STORAGE_KEY = 'documentation-search-state';
+  private scrollPosition = 0;
 
   constructor(private documentationService: DocumentationService) { }
 
   ngOnInit(): void {
+    const savedState = sessionStorage.getItem(this.STORAGE_KEY);
+    if (savedState) {
+      const state = JSON.parse(savedState);
+      this.searchControl.setValue(state.searchTerm, { emitEvent: false });
+      
+      // Initial search with restored term
+      if (state.searchTerm) {
+        this.loading = true;
+        this.hasSearched = true;
+        this.documentationService.searchDocumentations(state.searchTerm)
+          .pipe(
+            catchError(error => {
+              console.error('Fehler bei der Suche:', error);
+              return of([]);
+            })
+          )
+          .subscribe(results => {
+            this.searchResults = results;
+            this.loading = false;
+            // Scroll position after results are loaded
+            if (state.scrollPosition) {
+              setTimeout(() => window.scrollTo(0, state.scrollPosition), 100);
+            }
+          });
+      }
+    }
+
+    // Scroll-Position speichern
+    window.addEventListener('scroll', this.saveScrollPosition.bind(this));
+
     this.setupSearch();
   }
 
@@ -31,6 +63,20 @@ export class DocumentationSearchComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.searchInput.nativeElement.focus();
     });
+  }
+
+  ngOnDestroy() {
+    // Zustand speichern
+    const state = {
+      searchTerm: this.searchControl.value,
+      scrollPosition: this.scrollPosition
+    };
+    sessionStorage.setItem(this.STORAGE_KEY, JSON.stringify(state));
+    window.removeEventListener('scroll', this.saveScrollPosition.bind(this));
+  }
+
+  private saveScrollPosition() {
+    this.scrollPosition = window.scrollY;
   }
 
   setupSearch(): void {

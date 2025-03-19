@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
+import { StateResetService } from './services/state-reset.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,10 @@ import { HeaderComponent } from './components/header/header.component';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private stateResetService: StateResetService) {
+    // Beim App-Start alle gespeicherten Zustände löschen
+    this.stateResetService.clearStoredStates();
+  }
 
   title = 'Sereno.Documentation.Client';
 }
