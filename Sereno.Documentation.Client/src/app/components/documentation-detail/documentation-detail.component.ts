@@ -58,10 +58,6 @@ export class DocumentationDetailComponent implements OnInit {
     });
   }
 
-  goBack(): void {
-    this.router.navigate(['/documentations']);
-  }
-
   getSafeHtml(html: string | null): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html || '');
   }
