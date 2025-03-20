@@ -11,7 +11,7 @@
 
   <div *ngIf="!loading && !error && documentation" class="documentation-content">
     <h1 class="doc-title">{{ documentation.title }}</h1>
-  
+
     <div class="doc-meta">
       <span *ngIf="documentation.author">{{ documentation.author }} | {{ documentation.updatedAt | date:'dd.MM.yyyy' }}</span>
       <span class="doc-library">
@@ -21,7 +21,7 @@
         </button>
       </span>
     </div>
-    
+
     <div class="doc-body">
       <div *ngIf="documentation">
         <div [innerHTML]="(documentation.htmlContent || '') | safeHtml"></div>
@@ -29,4 +29,4 @@
       <p *ngIf="!documentation.htmlContent">{{ documentation.content }}</p>
     </div>
   </div>
-</div> 
+</div>

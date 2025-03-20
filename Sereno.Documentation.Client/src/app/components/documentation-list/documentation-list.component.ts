@@ -1,10 +1,9 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Documentation } from '../../models/documentation.model';
 import { DocumentationService } from '../../services/documentation.service';
 import { HttpClientModule } from '@angular/common/http';
-import { DocumentationMetaTemplate } from '../../shared/templates/documentation-meta.template';
 
 @Component({
   selector: 'app-documentation-list',
@@ -13,14 +12,13 @@ import { DocumentationMetaTemplate } from '../../shared/templates/documentation-
     CommonModule,
     RouterModule,
     DatePipe,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [DocumentationService],
   templateUrl: './documentation-list.component.html',
   styleUrls: ['./documentation-list.component.scss']
 })
 export class DocumentationListComponent implements OnInit, OnDestroy {
-  @ViewChild('documentationMeta') documentationMeta!: DocumentationMetaTemplate;
   documentations: Documentation[] = [];
   libraries: string[] = [];
   selectedLibrary: string = '';
@@ -35,7 +33,7 @@ export class DocumentationListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const savedState = sessionStorage.getItem(this.STORAGE_KEY);
     let stateToRestore = null;
-    
+
     if (savedState) {
       stateToRestore = JSON.parse(savedState);
     }
@@ -45,7 +43,7 @@ export class DocumentationListComponent implements OnInit, OnDestroy {
       next: (docs: Documentation[]) => {
         this.documentations = docs;
         this.libraries = [...new Set(docs.map(doc => doc.topic))];
-        
+
         // Zustand nach dem Laden wiederherstellen
         if (stateToRestore) {
           this.selectedLibrary = stateToRestore.selectedLibrary;
@@ -56,7 +54,7 @@ export class DocumentationListComponent implements OnInit, OnDestroy {
             setTimeout(() => window.scrollTo(0, stateToRestore.scrollPosition), 100);
           }
         }
-        
+
         this.loading = false;
       },
       error: (error: Error) => {
@@ -97,18 +95,10 @@ export class DocumentationListComponent implements OnInit, OnDestroy {
     });
   }
 
-  copyToClipboard(text: string) {
-    navigator.clipboard.writeText(text).then(() => {
-      console.log('Pfad in Zwischenablage kopiert');
-    }).catch(err => {
-      console.error('Fehler beim Kopieren:', err);
-    });
-  }
-
   filterByLibrary(library: string): void {
     this.selectedLibrary = library;
     this.loading = true;
-    
+
     if (library) {
       this.documentationService.getAllDocumentations().subscribe({
         next: (docs: Documentation[]) => {

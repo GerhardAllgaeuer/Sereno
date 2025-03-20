@@ -1,11 +1,15 @@
 <div class="documentation-list-container">
   <div class="topic-filter">
     <div class="topic-buttons">
-      <button class="topic-button" [class.active]="selectedLibrary === ''" (click)="filterByLibrary('')">
+      <button class="topic-button"
+              [class.active]="selectedLibrary === ''"
+              (click)="filterByLibrary('')">
         Alle
       </button>
-      <button *ngFor="let library of libraries" class="topic-button" [class.active]="selectedLibrary === library"
-        (click)="filterByLibrary(library)">
+      <button *ngFor="let library of libraries"
+              class="topic-button"
+              [class.active]="selectedLibrary === library"
+              (click)="filterByLibrary(library)">
         {{ library }}
       </button>
     </div>
@@ -23,19 +27,13 @@
 
     <div *ngIf="!loading && documentations.length > 0" class="documentation-items">
       <div *ngFor="let doc of documentations" class="documentation-item">
-        <div class="doc-content-wrapper">
-          <a [routerLink]="['/documentation', doc.id]" class="doc-link">
-            <h3 class="doc-title">{{ doc.title }}</h3>
-            <p class="doc-library">Bibliothek: {{ doc.topic }}</p>
-            <p class="doc-content">{{ truncateContent(doc.content) }}</p>
-          </a>
-          <ng-container *ngTemplateOutlet="documentationMeta; context: {
-            author: doc.author,
-            updatedAt: doc.updatedAt,
-            libraryPath: doc.libraryPath
-          }">
-          </ng-container>
-        </div>
+        <a [routerLink]="['/documentation', doc.id]" class="doc-link">
+          <h3 class="doc-title">{{ doc.title }}</h3>
+          <p class="doc-library">Bibliothek: {{ doc.topic }}</p>
+          <p class="doc-content">{{ truncateContent(doc.content) }}</p>
+          <p class="doc-date">Aktualisiert: {{ doc.updatedAt | date:'dd.MM.yyyy' }}</p>
+          <p class="doc-author" *ngIf="doc.author">Autor: {{ doc.author }}</p>
+        </a>
       </div>
     </div>
   </div>
