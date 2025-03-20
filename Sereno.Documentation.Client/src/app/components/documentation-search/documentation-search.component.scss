@@ -18,7 +18,7 @@
   padding: 15px 50px 15px 50px;
   border: 2px solid #ddd;
   border-radius: 30px;
-  font-size: 16px;
+  font-size: $font-size-base;
   transition: border-color 0.3s, box-shadow 0.3s;
   outline: none;
 }
@@ -88,12 +88,13 @@
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 8px;
+  font-size: $font-size-base;
 }
 
 .results-count {
   margin-bottom: 20px;
   color: #666;
-  font-size: 14px;
+  font-size: $font-size-sm;
 }
 
 .search-results-list {
@@ -124,7 +125,7 @@
   margin-top: 0;
   margin-bottom: 10px;
   color: #007bff;
-  font-size: 20px;
+  font-size: $font-size-xl;
 }
 
 .result-topic {
@@ -134,8 +135,9 @@
 
 .result-content {
   color: #555;
-  line-height: 1.5;
+  line-height: $line-height-normal;
   margin-bottom: 0;
+  font-size: $font-size-base;
 }
 
 @include loading-spinner; 

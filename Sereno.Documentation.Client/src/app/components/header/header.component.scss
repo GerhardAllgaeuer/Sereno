@@ -20,7 +20,7 @@
 .logo {
   a {
     margin-left: 20px;
-    font-size: 22px;
+    font-size: $font-size-xl;
     font-weight: $font-weight-bold;
     color: $text-light;
     text-decoration: none;
@@ -48,7 +48,7 @@
   a {
     text-decoration: none;
     color: $text-light;
-    font-size: 16px;
+    font-size: $font-size-base;
     font-weight: $font-weight-bold;
     padding: 10px 0;
     position: relative;

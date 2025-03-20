@@ -2,6 +2,11 @@
 @use 'styles/mixins' as *;
 @use 'styles/utilities' as *;
 
+// Set base font size on html element
+html {
+  font-size: 16px;
+}
+
 // Global styles
 * {
   margin: 0;
@@ -14,6 +19,7 @@
 h1, h2, h3, h4, h5, h6 {
   font-weight: $font-weight-bold;
   margin: 0;
+  line-height: $line-height-tight;
 }
 
 // Reset other elements that might have browser default font-weight
@@ -25,11 +31,12 @@ th {
 
 body {
   font-family: $font-family-base;
-  line-height: 1.6;
+  line-height: $line-height-normal;
   color: var(--gray-900);
   background-color: #f8f9fa;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: $font-size-base;
 }
 
 a {
@@ -41,6 +48,7 @@ button {
   cursor: pointer;
 }
 
+// Heading sizes
 h1 { font-size: $h1-size; }
 h2 { font-size: $h2-size; }
 h3 { font-size: $h3-size; }

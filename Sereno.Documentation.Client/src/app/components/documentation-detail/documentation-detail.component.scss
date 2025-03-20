@@ -13,7 +13,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: $font-size-sm;
   color: #333;
   margin-bottom: 30px;
   transition: background-color 0.2s ease;
@@ -79,12 +79,12 @@
 .documentation-content {
   @include card;
   padding: 30px;
-  font-size: 16px;
-  line-height: 1.682em;
+  font-size: $font-size-base;
+  line-height: $line-height-relaxed;
   color: #333;
 
   .doc-title {
-    font-size: 24px;
+    font-size: $font-size-2xl;
     font-weight: $font-weight-bold;
     color: #444;
     margin-top: 5px;
@@ -92,13 +92,13 @@
   }
 
   .doc-body {
-    line-height: 1.6;
+    line-height: $line-height-normal;
     color: #444;
-    font-size: 16px;
+    font-size: $font-size-base;
 
     ::ng-deep {
       h1 {
-        font-size: 18px !important;
+        font-size: $font-size-xl !important;
         font-weight: $font-weight-bold !important;
         color: #444 !important;
         margin-top: 80px !important;
@@ -110,7 +110,7 @@
       }
 
       h2, h3 {
-        font-size: 16px !important;
+        font-size: $font-size-base !important;
         font-weight: $font-weight-bold !important;
         margin-top: 20px !important;
         margin-bottom: 10px !important;
@@ -122,6 +122,8 @@
 
       p {
         margin-bottom: 15px !important;
+        font-size: $font-size-base !important;
+        line-height: $line-height-relaxed !important;
       }
 
       a {
@@ -146,7 +148,7 @@
         width: 100% !important;
         border-collapse: collapse !important;
         margin-bottom: 20px !important;
-        font-size: 0.9em !important;
+        font-size: $font-size-sm !important;
 
         th, td {
           padding: 4px 0px 0px 8px !important;
@@ -176,7 +178,7 @@
 }
 
 .doc-meta {
-  font-size: 12px;
+  font-size: $font-size-xs;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -191,7 +193,7 @@
 
 .doc-date {
   color: #888;
-  font-size: 14px;
+  font-size: $font-size-sm;
 }
 
 .doc-body {
