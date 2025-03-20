@@ -26,13 +26,13 @@
     </div>
 
     <div *ngIf="!loading && documentations.length > 0" class="documentation-items">
-      <div *ngFor="let doc of documentations" class="documentation-item">
-        <a [routerLink]="['/documentation', doc.id]" class="doc-link">
-          <h3 class="doc-title">{{ doc.title }}</h3>
-          <p class="doc-library">Bibliothek: {{ doc.topic }}</p>
-          <p class="doc-content">{{ truncateContent(doc.content) }}</p>
-          <p class="doc-date">Aktualisiert: {{ doc.updatedAt | date:'dd.MM.yyyy' }}</p>
-          <p class="doc-author" *ngIf="doc.author">Autor: {{ doc.author }}</p>
+      <div *ngFor="let documentation of documentations" class="documentation-item">
+        <a [routerLink]="['/documentation', documentation.id]" class="doc-link">
+          <h3 class="doc-title">{{ documentation.title }}</h3>
+          <button class="copy-button" (click)="copyToClipboard('\\\\conad01\\info\\edv\\dokumentation\\' + documentation.libraryPath)" title="Pfad kopieren">
+            <i class="material-icons">content_copy</i>
+          </button>
+          <p class="doc-content">{{ truncateContent(documentation.content) }}</p>
         </a>
       </div>
     </div>

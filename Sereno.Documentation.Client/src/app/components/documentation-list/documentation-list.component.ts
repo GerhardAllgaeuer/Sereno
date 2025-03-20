@@ -123,4 +123,12 @@ export class DocumentationListComponent implements OnInit, OnDestroy {
     }
     return content;
   }
+
+  copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      console.log('Pfad in Zwischenablage kopiert');
+    }).catch(err => {
+      console.error('Fehler beim Kopieren:', err);
+    });
+  }
 } 
