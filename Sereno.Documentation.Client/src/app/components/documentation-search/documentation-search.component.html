@@ -37,14 +37,10 @@
     </div>
 
     <div class="search-results-list">
-      <div *ngFor="let result of searchResults" class="search-result-item">
-        <a [routerLink]="['/documentation', result.id]" class="result-link">
-          <h3 class="result-title">{{ result.title }}</h3>
-          <p class="result-library">{{ result.topic }}</p>
-          <p class="result-content">{{ truncateContent(result.content) }}</p>
-          <p class="result-author" *ngIf="result.author">{{ result.author }}</p>
-        </a>
-      </div>
+      <app-documentation-item *ngFor="let result of searchResults" 
+                            [documentation]="result"
+                            [showLibrary]="true">
+      </app-documentation-item>
     </div>
   </div>
 </div> 

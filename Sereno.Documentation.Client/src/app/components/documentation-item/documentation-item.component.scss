@@ -1,0 +1,78 @@
+.documentation-item {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .copy-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    color: #666;
+    display: inline-flex;
+    transition: color 0.2s ease;
+    margin-left: 16px;
+    font-size: 0.8rem;
+
+    &:hover {
+      color: #333;
+    }
+
+    i {
+      font-size: 16px;
+    }
+  }
+
+  .doc-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .doc-title-link {
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+  }
+
+  .doc-title {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  .doc-content {
+    margin: 8px 0;
+    color: #444;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .doc-library {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 4px 0;
+  }
+
+  .doc-author {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 4px 0 0 0;
+  }
+}

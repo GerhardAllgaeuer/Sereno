@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Documentation } from '../../models/documentation.model';
 import { DocumentationService } from '../../services/documentation.service';
 import { HttpClientModule } from '@angular/common/http';
+import { DocumentationItemComponent } from '../documentation-item/documentation-item.component';
 
 @Component({
   selector: 'app-documentation-list',
@@ -11,8 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     RouterModule,
-    DatePipe,
     HttpClientModule,
+    DocumentationItemComponent
   ],
   providers: [DocumentationService],
   templateUrl: './documentation-list.component.html',

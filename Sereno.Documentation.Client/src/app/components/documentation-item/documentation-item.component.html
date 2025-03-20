@@ -1,0 +1,13 @@
+<div class="documentation-item">
+  <div class="doc-header">
+    <a [routerLink]="['/documentation', documentation.id]" class="doc-title-link">
+      <h3 class="doc-title">{{ documentation.title }}</h3>
+    </a>
+    <button class="copy-button" (click)="copyToClipboard('\\\\conad01\\info\\edv\\dokumentation\\' + documentation.libraryPath)" title="Pfad kopieren">
+      <i class="material-icons">content_copy</i>
+    </button>
+  </div>
+  <a [routerLink]="['/documentation', documentation.id]" class="doc-link">
+    <p class="doc-content">{{ truncateContent(documentation.content) }}</p>
+  </a>
+</div> 

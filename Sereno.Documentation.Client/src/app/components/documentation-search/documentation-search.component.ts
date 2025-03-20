@@ -6,11 +6,17 @@ import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/
 import { Observable, of } from 'rxjs';
 import { Documentation } from '../../models/documentation.model';
 import { DocumentationService } from '../../services/documentation.service';
+import { DocumentationItemComponent } from '../documentation-item/documentation-item.component';
 
 @Component({
   selector: 'app-documentation-search',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    DocumentationItemComponent
+  ],
   templateUrl: './documentation-search.component.html',
   styleUrls: ['./documentation-search.component.scss']
 })
