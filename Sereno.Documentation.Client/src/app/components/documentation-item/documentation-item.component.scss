@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .documentation-item {
   background: white;
   border-radius: 8px;
@@ -28,14 +30,14 @@
     display: inline-flex;
     transition: color 0.2s ease;
     margin-left: 16px;
-    font-size: 0.8rem;
+    font-size: $font-size-xs;
 
     &:hover {
       color: #333;
     }
 
     i {
-      font-size: 16px;
+      font-size: $font-size-base;
     }
   }
 
@@ -53,25 +55,25 @@
 
   .doc-title {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: $font-size-lg;
     color: #333;
   }
 
   .doc-content {
     margin: 8px 0;
     color: #444;
-    font-size: 0.95rem;
+    font-size: $font-size-base;
     line-height: 1.5;
   }
 
   .doc-library {
-    font-size: 0.9rem;
+    font-size: $font-size-sm;
     color: #666;
     margin: 4px 0;
   }
 
   .doc-author {
-    font-size: 0.85rem;
+    font-size: $font-size-xs;
     color: #666;
     margin: 4px 0 0 0;
   }
