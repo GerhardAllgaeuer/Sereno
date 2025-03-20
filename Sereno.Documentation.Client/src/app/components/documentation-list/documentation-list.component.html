@@ -27,11 +27,13 @@
 
     <div *ngIf="!loading && documentations.length > 0" class="documentation-items">
       <div *ngFor="let documentation of documentations" class="documentation-item">
-        <a [routerLink]="['/documentation', documentation.id]" class="doc-link">
-          <h3 class="doc-title">{{ documentation.title }}</h3>
+        <div class="doc-header">
           <button class="copy-button" (click)="copyToClipboard('\\\\conad01\\info\\edv\\dokumentation\\' + documentation.libraryPath)" title="Pfad kopieren">
             <i class="material-icons">content_copy</i>
           </button>
+        </div>
+        <a [routerLink]="['/documentation', documentation.id]" class="doc-link">
+          <h3 class="doc-title">{{ documentation.title }}</h3>
           <p class="doc-content">{{ truncateContent(documentation.content) }}</p>
         </a>
       </div>
