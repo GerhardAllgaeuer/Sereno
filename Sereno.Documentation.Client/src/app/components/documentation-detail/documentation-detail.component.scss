@@ -211,13 +211,14 @@
   color: #666;
   display: inline-flex;
   align-items: center;
+  transition: color 0.2s ease;
 
   &:hover {
     color: #333;
   }
 
   i {
-    font-size: 12px;
+    font-size: $font-size-xs;
   }
 }
 

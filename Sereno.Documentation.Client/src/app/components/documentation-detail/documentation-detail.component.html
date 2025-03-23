@@ -24,7 +24,6 @@
 
     <div class="doc-body">
       <div *ngIf="documentation">
-        <a href="documentation-detail.component.html">documentation-detail.component.html</a>
         <div [innerHTML]="(documentation.htmlContent || '') | safeHtml"></div>
       </div>
       <p *ngIf="!documentation.htmlContent">{{ documentation.content }}</p>
