@@ -39,6 +39,12 @@ namespace Sereno.Office.Excel.Writer
 
 
         /// <summary>
+        /// Spalte, bei der gestartet wird
+        /// </summary>
+        public int StartColumn { get; set; } = 1;
+
+
+        /// <summary>
         /// Einfügen, mit Anlegen von neuen Zeilen
         /// </summary>
         public bool LineAdd { get; set; } = true;
@@ -114,7 +120,7 @@ namespace Sereno.Office.Excel.Writer
         /// <summary>
         /// Aufhören bei Zeile (Debug)
         /// </summary>
-        public int? StopAt { get; set;}
+        public int? StopAt { get; set; }
 
 
         /// <summary>

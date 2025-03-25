@@ -1,0 +1,22 @@
+@use 'variables' as *;
+
+// Shared component styles
+.copy-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: 8px;
+  color: #666;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #333;
+  }
+
+  i {
+    font-size: $font-size-xs;
+  }
+} 

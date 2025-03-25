@@ -337,16 +337,12 @@ namespace Sereno.Office.Excel.Writer
 
         private static void SetDataSetValues(DataRow dataRow, IXLRow excelRow, DataSetInsertOptions options, TableInsertResult insertResult)
         {
-            int count = 1;
+            int count = options.StartColumn;
 
             foreach (var value in dataRow.ItemArray)
             {
                 if (value != null)
                 {
-
-                    if (value.ToString() == "0")
-                    {
-                    }
 
                     Type t = value.GetType();
 
