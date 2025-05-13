@@ -21,6 +21,7 @@ namespace Sereno.System.Api.Controllers
         }
 
         [Route("api/v1/[controller]/[action]")]
+        [HttpPost]
         public IActionResult Login([FromBody] LoginRequest login)
         {
             Context? context = HttpContext.Items["Context"] as Context;
