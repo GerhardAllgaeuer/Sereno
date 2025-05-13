@@ -15,19 +15,26 @@ namespace Sereno.Test.Database
 
         public void ContainValues(object[] expectedRows)
         {
+            // Sicherstellen, dass beide Seiten nicht leer sind
+            rows.Should().NotBeNull("tatsächliche Daten dürfen nicht null sein");
+            rows.Should().NotBeEmpty("tatsächliche Daten dürfen nicht leer sein");
+
+            expectedRows.Should().NotBeNull("erwartete Daten dürfen nicht null sein");
+            expectedRows.Should().NotBeEmpty("erwartete Daten dürfen nicht leer sein");
+
+            // Erwartete Objekte in Dictionaries umwandeln
             var expectedDicts = expectedRows.Select(obj =>
                 obj.GetType().GetProperties()
                     .ToDictionary(p => p.Name, p => p.GetValue(obj))
             ).ToList();
 
-            rows.Should().AllSatisfy(row =>
-            {
-                var filteredRow = row.Where(kvp => expectedDicts.Any(e => e.ContainsKey(kvp.Key)))
-                                     .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            // Sicherstellen, dass die Anzahl exakt übereinstimmt
+            rows.Count.Should().Be(expectedDicts.Count, "die Anzahl der Zeilen muss exakt übereinstimmen");
 
-                expectedDicts.Should().ContainEquivalentOf(filteredRow);
-            });
+            // Inhaltlich prüfen, dass alle expectedDicts in rows vorhanden sind (Reihenfolge egal)
+            rows.Should().BeEquivalentTo(expectedDicts);
         }
+
 
         public void ContainValues(List<object> expectedRows)
         {

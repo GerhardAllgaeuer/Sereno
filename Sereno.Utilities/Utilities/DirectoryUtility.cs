@@ -12,6 +12,13 @@ namespace Sereno.Utilities
             CleanUpDirectory(directory);
         }
 
+        public static void EnsureDirectory(FileInfo fileInfo)
+        {
+            if (!fileInfo.Exists)
+            {
+                DirectoryUtility.EnsureDirectory(fileInfo!.Directory!);
+            }
+        }
 
         public static void EnsureDirectory(DirectoryInfo directory)
         {
