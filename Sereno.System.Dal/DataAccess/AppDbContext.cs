@@ -25,7 +25,10 @@ namespace Sereno.Identity.DataAccess
             return new AppDbContext(options, context);
         }
 
-        public DbSet<User> Documents { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+
 
 
         public string GetPrimaryKey()

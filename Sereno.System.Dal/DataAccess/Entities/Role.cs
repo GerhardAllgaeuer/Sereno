@@ -3,18 +3,15 @@ using Sereno.Database.Logging.TlDb1;
 
 namespace Sereno.Identity.DataAccess.Entities
 {
-    [Table("syrUsr")]
-    public class User : ILogging
+    [Table("syrGrp")]
+    public class Role : ILogging
     {
 
         [Column(TypeName = "nvarchar(200)")]
         public required string Id { get; set; }
 
-        [Column(TypeName = "nvarchar(500)")]
-        public required string Email { get; set; }
-
-        [Column(TypeName = "nvarchar(1000)")]
-        public string? Hash { get; set; }
+        [Column(TypeName = "nvarchar(200)")]
+        public required string Description { get; set; }
 
 
         public DateTime? Create { get; set; }
