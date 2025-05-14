@@ -6,7 +6,6 @@ namespace Sereno.System.DataAccess.Entities
     [Table("syrGrp")]
     public class Role : ILogging
     {
-
         [Column(TypeName = "nvarchar(200)")]
         public required string Id { get; set; }
 

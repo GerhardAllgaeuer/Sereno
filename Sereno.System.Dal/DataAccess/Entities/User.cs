@@ -7,8 +7,11 @@ namespace Sereno.System.DataAccess.Entities
     public class User : ILogging
     {
 
-        [Column(TypeName = "nvarchar(200)")]
+        [Column(TypeName = "nvarchar(50)")]
         public required string Id { get; set; }
+
+        [Column(TypeName = "nvarchar(200)")]
+        public required string Name { get; set; }
 
         [Column(TypeName = "nvarchar(500)")]
         public string? Email { get; set; }

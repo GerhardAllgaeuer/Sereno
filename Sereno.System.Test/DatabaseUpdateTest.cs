@@ -12,16 +12,28 @@ namespace Sereno.System
         {
             using var context = DbContextFactory.CreateTestDb(appContext);
 
-            string id = "TestUser";
-
-            // Neue Document-Entität erstellen
             var user = new User
             {
-                Id = id,
+                Id = Guid.NewGuid().ToString(),
+                Name = "TestUser"
+            };
+            context.Users.Add(user);
+
+
+            var role = new Role
+            {
+                Id = "Administrator",
+            };
+            context.Users.Add(user);
+
+
+            var userRole = new UserRole
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = user.Id,
+                RoleId = role.Id,
             };
 
-            // Hinzufügen und speichern
-            context.Users.Add(user);
             context.SaveChanges();
         }
     }
