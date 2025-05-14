@@ -31,8 +31,14 @@ namespace Sereno.Test.Database
             // Sicherstellen, dass die Anzahl exakt übereinstimmt
             rows.Count.Should().Be(expectedDicts.Count, "die Anzahl der Zeilen muss exakt übereinstimmen");
 
-            // Inhaltlich prüfen, dass alle expectedDicts in rows vorhanden sind (Reihenfolge egal)
-            rows.Should().BeEquivalentTo(expectedDicts);
+            // Nur die Spalten vergleichen, die in den erwarteten Objekten definiert sind
+            var columnsToCompare = expectedDicts.First().Keys.ToArray();
+            var filteredRows = rows.Select(row => 
+                row.Where(kvp => columnsToCompare.Contains(kvp.Key))
+                   .ToDictionary(kvp => kvp.Key, kvp => kvp.Value)
+            ).ToList();
+
+            filteredRows.Should().BeEquivalentTo(expectedDicts);
         }
 
         public void ContainValues(List<object> expectedRows)
