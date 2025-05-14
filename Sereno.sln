@@ -45,13 +45,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Documentation.Api", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Documentation.Content", "Sereno.Documentation.Content\Sereno.Documentation.Content.csproj", "{71884475-F82A-436B-B3F9-ABE1AA7C184D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Identity.Api", "Sereno.Identity.Api\Sereno.Identity.Api.csproj", "{D1DF30A1-73B4-40A7-BA8D-EFE7524C0191}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Identity1.Dto", "Sereno.Identity1.Dto\Sereno.Identity1.Dto.csproj", "{9D0EEC12-08FF-CC61-5829-9B77357F2FB6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Identity1.Dal", "Sereno.Identity1.Dal\Sereno.Identity1.Dal.csproj", "{FBAC2613-49B6-15BB-A68C-5944272583E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.Identity1.Api", "Sereno.Identity1.Api\Sereno.Identity1.Api.csproj", "{69271E69-9511-CBBD-8529-DFB4D4EABE72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.System.Dal", "Sereno.System.Dal\Sereno.System.Dal.csproj", "{5CBC7906-FDEC-73F8-00C5-2359021B5D0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sereno.System.Api", "Sereno.System.Api\Sereno.System.Api.csproj", "{2F8F424A-481F-6521-1672-74B491480151}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,10 +149,6 @@ Global
 		{71884475-F82A-436B-B3F9-ABE1AA7C184D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71884475-F82A-436B-B3F9-ABE1AA7C184D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71884475-F82A-436B-B3F9-ABE1AA7C184D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1DF30A1-73B4-40A7-BA8D-EFE7524C0191}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1DF30A1-73B4-40A7-BA8D-EFE7524C0191}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1DF30A1-73B4-40A7-BA8D-EFE7524C0191}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1DF30A1-73B4-40A7-BA8D-EFE7524C0191}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9D0EEC12-08FF-CC61-5829-9B77357F2FB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9D0EEC12-08FF-CC61-5829-9B77357F2FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D0EEC12-08FF-CC61-5829-9B77357F2FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -163,6 +161,14 @@ Global
 		{69271E69-9511-CBBD-8529-DFB4D4EABE72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69271E69-9511-CBBD-8529-DFB4D4EABE72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69271E69-9511-CBBD-8529-DFB4D4EABE72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CBC7906-FDEC-73F8-00C5-2359021B5D0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CBC7906-FDEC-73F8-00C5-2359021B5D0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CBC7906-FDEC-73F8-00C5-2359021B5D0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CBC7906-FDEC-73F8-00C5-2359021B5D0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F8F424A-481F-6521-1672-74B491480151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F8F424A-481F-6521-1672-74B491480151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F8F424A-481F-6521-1672-74B491480151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F8F424A-481F-6521-1672-74B491480151}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

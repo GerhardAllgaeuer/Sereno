@@ -22,8 +22,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sereno.Communication\Sereno.Communication.csproj" />
-    <ProjectReference Include="..\Sereno.Identity.Dal\Sereno.Identity1.Dal.csproj" />
-    <ProjectReference Include="..\Sereno.Identity.Dto\Sereno.Identity1.Dto.csproj" />
+    <ProjectReference Include="..\Sereno.Identity1.Dal\Sereno.Identity1.Dal.csproj" />
+    <ProjectReference Include="..\Sereno.Identity1.Dto\Sereno.Identity1.Dto.csproj" />
   </ItemGroup>
 
 </Project>
