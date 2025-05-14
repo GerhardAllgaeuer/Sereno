@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Sereno.Database.Logging.TlDb1;
 
-namespace Sereno.Identity.DataAccess.Entities
+namespace Sereno.System.DataAccess.Entities
 {
     [Table("syrGrp")]
     public class Role : ILogging
@@ -11,7 +11,7 @@ namespace Sereno.Identity.DataAccess.Entities
         public required string Id { get; set; }
 
         [Column(TypeName = "nvarchar(200)")]
-        public required string Description { get; set; }
+        public string? Description { get; set; }
 
 
         public DateTime? Create { get; set; }

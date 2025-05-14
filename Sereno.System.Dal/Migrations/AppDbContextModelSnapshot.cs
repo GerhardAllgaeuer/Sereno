@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Sereno.Identity.DataAccess;
+using Sereno.System.DataAccess;
 
 #nullable disable
 
@@ -22,7 +22,7 @@ namespace Sereno.Identity.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Sereno.Identity.DataAccess.Entities.Role", b =>
+            modelBuilder.Entity("Sereno.System.DataAccess.Entities.Role", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(200)")
@@ -37,7 +37,6 @@ namespace Sereno.Identity.Migrations
                         .HasColumnName("vCreateUser");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(200)")
                         .HasColumnName("vDescription");
 
@@ -56,7 +55,7 @@ namespace Sereno.Identity.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("Sereno.Identity.DataAccess.Entities.User", b =>
+            modelBuilder.Entity("Sereno.System.DataAccess.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(200)")
@@ -71,7 +70,6 @@ namespace Sereno.Identity.Migrations
                         .HasColumnName("vCreateUser");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("vEmail");
 
@@ -94,7 +92,7 @@ namespace Sereno.Identity.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("Sereno.Identity.DataAccess.Entities.UserRole", b =>
+            modelBuilder.Entity("Sereno.System.DataAccess.Entities.UserRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(50)")
@@ -137,15 +135,15 @@ namespace Sereno.Identity.Migrations
                     b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
-            modelBuilder.Entity("Sereno.Identity.DataAccess.Entities.UserRole", b =>
+            modelBuilder.Entity("Sereno.System.DataAccess.Entities.UserRole", b =>
                 {
-                    b.HasOne("Sereno.Identity.DataAccess.Entities.Role", "Role")
+                    b.HasOne("Sereno.System.DataAccess.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Sereno.Identity.DataAccess.Entities.User", "User")
+                    b.HasOne("Sereno.System.DataAccess.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

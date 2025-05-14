@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
 
-namespace Sereno.Identity.DataAccess
+namespace Sereno.System.DataAccess
 {
     public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {

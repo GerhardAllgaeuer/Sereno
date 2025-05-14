@@ -35,7 +35,6 @@ namespace Sereno.Test.Database
             rows.Should().BeEquivalentTo(expectedDicts);
         }
 
-
         public void ContainValues(List<object> expectedRows)
         {
             ContainValues(expectedRows.ToArray());

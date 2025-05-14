@@ -16,7 +16,7 @@ namespace Sereno.Identity.Migrations
                 columns: table => new
                 {
                     vId = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    vDescription = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                    vDescription = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     dCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     vCreateUser = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     dModify = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -32,7 +32,7 @@ namespace Sereno.Identity.Migrations
                 columns: table => new
                 {
                     vId = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    vEmail = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    vEmail = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     vHash = table.Column<string>(type: "nvarchar(1000)", nullable: true),
                     dCreate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     vCreateUser = table.Column<string>(type: "nvarchar(500)", nullable: true),

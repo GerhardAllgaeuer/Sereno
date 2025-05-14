@@ -10,9 +10,6 @@ namespace Sereno.Documentation
         [TestMethod]
         public void Update_Data_Auto()
         {
-
-            Console.WriteLine(connectionString);
-
             using var context = DbContextFactory.CreateTestDb(appContext);
 
             string id = Guid.NewGuid().ToString();

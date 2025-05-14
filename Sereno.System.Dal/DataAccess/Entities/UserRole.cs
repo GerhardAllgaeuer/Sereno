@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Sereno.Database.Logging.TlDb1;
 
-namespace Sereno.Identity.DataAccess.Entities
+namespace Sereno.System.DataAccess.Entities
 {
     [Table("syrUsrGrp")]
     public class UserRole : ILogging

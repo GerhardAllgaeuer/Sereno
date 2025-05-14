@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using Sereno.Database.Logging.TlDb1;
 
-namespace Sereno.Identity.DataAccess.Entities
+namespace Sereno.System.DataAccess.Entities
 {
     [Table("syrUsr")]
     public class User : ILogging
@@ -11,7 +11,7 @@ namespace Sereno.Identity.DataAccess.Entities
         public required string Id { get; set; }
 
         [Column(TypeName = "nvarchar(500)")]
-        public required string Email { get; set; }
+        public string? Email { get; set; }
 
         [Column(TypeName = "nvarchar(1000)")]
         public string? Hash { get; set; }

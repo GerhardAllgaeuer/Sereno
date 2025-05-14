@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sereno.Database;
 using Sereno.Database.Logging.TlDb1;
-using Sereno.Identity.DataAccess.Entities;
+using Sereno.System.DataAccess.Entities;
 
-namespace Sereno.Identity.DataAccess
+
+namespace Sereno.System.DataAccess
 {
     public class AppDbContext : DbContext
     {
@@ -33,7 +34,7 @@ namespace Sereno.Identity.DataAccess
 
         public string GetPrimaryKey()
         {
-            return System.Guid.NewGuid().ToString();
+            return Guid.NewGuid().ToString();
         }
 
 
