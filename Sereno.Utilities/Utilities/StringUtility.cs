@@ -120,7 +120,7 @@ namespace Sereno.Utilities
         /// - Ausnahmen, die exakt übereinstimmen
         /// - Ausnahmen, die Wildcard-Muster enthalten
         /// </summary>
-        public static bool IsExcluded(string text, Dictionary<string, string> excludes, Dictionary<string, string> wildcardExcludes = null)
+        public static bool IsExcluded(string? text, Dictionary<string, string>? excludes, Dictionary<string, string>? wildcardExcludes = null)
         {
             if (text == null)
                 return false;

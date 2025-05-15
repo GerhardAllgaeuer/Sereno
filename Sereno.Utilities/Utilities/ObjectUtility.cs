@@ -9,29 +9,25 @@ namespace Sereno.Utilities
 {
     public class ObjectUtility
     {
-
-        public static PropertyInfo GetPropertyInfo(object obj, string propertyName)
+        public static PropertyInfo? GetPropertyInfo(object? obj, string propertyName)
         {
-            PropertyInfo propertyInfo = null; 
-            if (obj != null && !string.IsNullOrWhiteSpace(propertyName))
+            if (obj == null || string.IsNullOrWhiteSpace(propertyName))
             {
-                propertyInfo = obj?.GetType().GetProperty(propertyName);
+                return null;
             }
-            return propertyInfo;
+            
+            return obj.GetType().GetProperty(propertyName);
         }
 
-        public static object GetPropertyValue(object obj, string propertyName)
+        public static object? GetPropertyValue(object? obj, string propertyName)
         {
-            object result = null;
-            if (obj != null && !string.IsNullOrWhiteSpace(propertyName))
+            if (obj == null || string.IsNullOrWhiteSpace(propertyName))
             {
-                PropertyInfo propertyInfo = obj?.GetType().GetProperty(propertyName);
-                if (propertyInfo != null)
-                {
-                    result = propertyInfo.GetValue(obj);
-                }
+                return null;
             }
-            return result;
+
+            var propertyInfo = obj.GetType().GetProperty(propertyName);
+            return propertyInfo?.GetValue(obj);
         }
     }
 }

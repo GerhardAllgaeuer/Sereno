@@ -84,7 +84,11 @@ namespace Sereno.Documentation
 
         public void CleanupTargetFilesDirectory()
         {
-            DirectoryUtility.CleanUpDirectory(this.TargetFilesDirectory);
+            if (TargetFilesDirectory == null)
+            {
+                throw new InvalidOperationException("TargetFilesDirectory is not set");
+            }
+            DirectoryUtility.CleanUpDirectory(TargetFilesDirectory);
         }
 
         public void DeleteAllDocumentsInDatabase()
@@ -122,10 +126,10 @@ namespace Sereno.Documentation
             {
                 Columns =
                 [
-                    new MappingColumn() { ColumnName = nameof(DocumentationFile.Title), SourceProperty = nameof(DocumentationFile.Title) },
-                    new MappingColumn() { ColumnName = nameof(DocumentationFile.Author), SourceProperty = nameof(DocumentationFile.Author) },
-                    new MappingColumn() { ColumnName = nameof(DocumentationFile.RelativeSourceFilePath), SourceProperty = nameof(DocumentationFile.RelativeSourceFilePath) },
-                    new MappingColumn() { ColumnName = nameof(DocumentationFile.Path), SourceProperty = nameof(DocumentationFile.Path) },
+                    new MappingColumn(nameof(DocumentationFile.Title), nameof(DocumentationFile.Title)),
+                    new MappingColumn(nameof(DocumentationFile.Author), nameof(DocumentationFile.Author)),
+                    new MappingColumn(nameof(DocumentationFile.RelativeSourceFilePath), nameof(DocumentationFile.RelativeSourceFilePath)),
+                    new MappingColumn(nameof(DocumentationFile.Path), nameof(DocumentationFile.Path)),
                 ]
             };
 

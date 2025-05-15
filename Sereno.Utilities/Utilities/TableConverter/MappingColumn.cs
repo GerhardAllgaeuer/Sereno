@@ -1,4 +1,6 @@
-﻿namespace Sereno.Utilities.TableConverter
+﻿using System;
+
+namespace Sereno.Utilities.TableConverter
 {
 
     /// <summary>
@@ -10,13 +12,13 @@
         /// <summary>
         /// Bezeichnung / Titel der Spalte
         /// </summary>
-        public string ColumnName { get; set; }
+        public string ColumnName { get; set; } = string.Empty;
 
 
         /// <summary>
         /// Property vom Objekt, dem gemappt wird
         /// </summary>
-        public string SourceProperty { get; set; }
+        public string SourceProperty { get; set; } = string.Empty;
 
 
         /// <summary>
@@ -24,5 +26,14 @@
         /// </summary>
         public bool ConvertBoolToX { get; set; }
 
+        public MappingColumn()
+        {
+        }
+
+        public MappingColumn(string columnName, string sourceProperty)
+        {
+            ColumnName = columnName ?? throw new ArgumentNullException(nameof(columnName));
+            SourceProperty = sourceProperty ?? throw new ArgumentNullException(nameof(sourceProperty));
+        }
     }
 }

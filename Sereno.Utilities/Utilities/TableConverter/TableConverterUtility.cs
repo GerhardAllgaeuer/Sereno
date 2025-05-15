@@ -17,9 +17,7 @@ namespace Sereno.Utilities.TableConverter
         /// </summary>
         public static DataSet DataSetFromObjectList<T>(List<T> objectList, MappingInfo tableInfo)
         {
-            DataSet result = new DataSet();
             DataTable table = DataTableFromObjectList<T>(objectList, tableInfo);
-
             return table.DataSet;
         }
 
@@ -28,59 +26,55 @@ namespace Sereno.Utilities.TableConverter
         /// </summary>
         public static DataTable DataTableFromObjectList<T>(List<T> objectList, MappingInfo tableInfo)
         {
-            DataTable result = null;
-
-            if (tableInfo != null &&
-                tableInfo.Columns != null &&
-                objectList != null &&
-                objectList.Count > 0)
+            if (tableInfo?.Columns == null || objectList == null || objectList.Count == 0)
             {
-                result = new DataTable(tableInfo.TableName);
+                return new DataTable();
+            }
 
-                // Erstelle ein DataSet und füge ihm eine Tabelle hinzu
-                DataSet dataSet = new DataSet("DataSet");
-                dataSet.Tables.Add(result);
+            var result = new DataTable(tableInfo.TableName);
 
-                foreach (MappingColumn column in tableInfo.Columns)
+            // Erstelle ein DataSet und füge ihm eine Tabelle hinzu
+            var dataSet = new DataSet("DataSet");
+            dataSet.Tables.Add(result);
+
+            foreach (MappingColumn column in tableInfo.Columns)
+            {
+                if (string.IsNullOrWhiteSpace(column.SourceProperty))
                 {
-                    // Ermittle den Propertytyp basierend auf dem Mapping
-
-                    PropertyInfo propertyInfo = ObjectUtility.GetPropertyInfo(objectList[0], column.SourceProperty);
-                    if (propertyInfo != null)
-                    {
-                        if (propertyInfo.PropertyType.IsEnum)
-                        {
-                            result.Columns.Add(column.ColumnName, typeof(string));
-                        }
-                        else
-                        {
-                            result.Columns.Add(column.ColumnName, propertyInfo.PropertyType);
-                        }
-                    }
-                    else
-                    {
-                        result.Columns.Add(column.ColumnName, typeof(string));
-                    }
+                    result.Columns.Add(column.ColumnName, typeof(string));
+                    continue;
                 }
 
-                foreach (var obj in objectList)
+                // Ermittle den Propertytyp basierend auf dem Mapping
+                var propertyInfo = ObjectUtility.GetPropertyInfo(objectList[0], column.SourceProperty);
+                if (propertyInfo != null)
                 {
-                    if (obj != null)
-                    {
-                        // Füge die Daten aus den Objekten in die Tabelle ein, basierend auf dem Mapping
-                        var row = result.NewRow();
-                        foreach (MappingColumn column in tableInfo.Columns)
-                        {
-                            if (!string.IsNullOrWhiteSpace(column.ColumnName))
-                            {
-                                object value = ObjectUtility.GetPropertyValue(obj, column.SourceProperty);
-                                row[column.ColumnName] = value;
-                            }
-                        }
-                        result.Rows.Add(row);
-                    }
+                    result.Columns.Add(column.ColumnName, 
+                        propertyInfo.PropertyType.IsEnum ? typeof(string) : propertyInfo.PropertyType);
+                }
+                else
+                {
+                    result.Columns.Add(column.ColumnName, typeof(string));
                 }
             }
+
+            foreach (var obj in objectList)
+            {
+                if (obj == null) continue;
+
+                // Füge die Daten aus den Objekten in die Tabelle ein, basierend auf dem Mapping
+                var row = result.NewRow();
+                foreach (MappingColumn column in tableInfo.Columns)
+                {
+                    if (!string.IsNullOrWhiteSpace(column.ColumnName))
+                    {
+                        object? value = ObjectUtility.GetPropertyValue(obj, column.SourceProperty);
+                        row[column.ColumnName] = value ?? null;
+                    }
+                }
+                result.Rows.Add(row);
+            }
+
             return result;
         }
 
