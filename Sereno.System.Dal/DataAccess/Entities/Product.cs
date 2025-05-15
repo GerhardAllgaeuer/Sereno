@@ -3,14 +3,15 @@ using Sereno.Database.Logging.TlDb1;
 
 namespace Sereno.System.DataAccess.Entities
 {
-    [Table("syrRole")]
-    public class Role : ILogging
+    [Table("sysProduct")]
+    public class Product : ILogging
     {
         [Column(TypeName = "nvarchar(200)")]
         public required string Id { get; set; }
 
         [Column(TypeName = "nvarchar(200)")]
         public string? Description { get; set; }
+
 
 
         public DateTime? Create { get; set; }

@@ -30,6 +30,9 @@ namespace Sereno.System.DataAccess
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
+        public DbSet<Device> Devices { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Config> ProductConfigs { get; set; }
 
 
         public string GetPrimaryKey()

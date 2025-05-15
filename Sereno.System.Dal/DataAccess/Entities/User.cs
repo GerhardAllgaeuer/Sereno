@@ -3,7 +3,7 @@ using Sereno.Database.Logging.TlDb1;
 
 namespace Sereno.System.DataAccess.Entities
 {
-    [Table("syrUsr")]
+    [Table("syrUser")]
     public class User : ILogging
     {
 

@@ -3,11 +3,18 @@ using Sereno.Database.Logging.TlDb1;
 
 namespace Sereno.System.DataAccess.Entities
 {
-    [Table("syrUsrRol")]
-    public class UserRole : ILogging
+    [Table("sysConfig")]
+    public class Config : ILogging
     {
         [Column(TypeName = "nvarchar(50)")]
         public required string Id { get; set; }
+
+
+        [Column(TypeName = "nvarchar(500)")]
+        public required string DeviceId { get; set; }
+
+        [ForeignKey("DeviceId")]
+        public Device Device { get; set; } = null!;
 
         [Column(TypeName = "nvarchar(50)")]
         public required string UserId { get; set; }
@@ -16,11 +23,14 @@ namespace Sereno.System.DataAccess.Entities
         public User User { get; set; } = null!;
 
         [Column(TypeName = "nvarchar(200)")]
-        public required string RoleId { get; set; }
+        public required string ProductId { get; set; }
 
-        [ForeignKey("RoleId")]
-        public Role Role { get; set; } = null!;
+        [ForeignKey("ProductId")]
+        public Product Product { get; set; } = null!;
 
+
+        [Column(TypeName = "nvarchar(max)")]
+        public required string Data { get; set; }
 
         public DateTime? Create { get; set; }
 
