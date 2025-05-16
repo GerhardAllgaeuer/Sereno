@@ -13,13 +13,15 @@ namespace Sereno.System
         {
             using var context = DbContextFactory.CreateTestDb(appContext);
 
+
             // User, Roles
 
             var user = new User
             {
-                Id = Guid.NewGuid().ToString(),
-                Name = "TestUser",
-                Email = "test@sereno.com"
+                Id = "TestUser",
+                Description = "TestUser",
+                Email = "test@sereno.com",
+                StateId = State.Active.Id
             };
             context.Users.Add(user);
 

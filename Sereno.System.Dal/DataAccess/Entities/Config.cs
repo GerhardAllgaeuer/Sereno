@@ -16,7 +16,7 @@ namespace Sereno.System.DataAccess.Entities
         [ForeignKey("DeviceId")]
         public Device Device { get; set; } = null!;
 
-        [Column(TypeName = "nvarchar(50)")]
+        [Column(TypeName = "nvarchar(200)")]
         public required string UserId { get; set; }
 
         [ForeignKey("UserId")]

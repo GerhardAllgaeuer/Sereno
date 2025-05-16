@@ -9,7 +9,7 @@ namespace Sereno.System.DataAccess.Entities
         [Column(TypeName = "nvarchar(50)")]
         public required string Id { get; set; }
 
-        [Column(TypeName = "nvarchar(50)")]
+        [Column(TypeName = "nvarchar(200)")]
         public required string UserId { get; set; }
 
         [ForeignKey("UserId")]

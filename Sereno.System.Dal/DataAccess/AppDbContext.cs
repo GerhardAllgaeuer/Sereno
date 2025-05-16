@@ -2,6 +2,7 @@
 using Sereno.Database;
 using Sereno.Database.Logging.TlDb1;
 using Sereno.System.DataAccess.Entities;
+using System.Reflection.Emit;
 
 
 namespace Sereno.System.DataAccess
@@ -25,6 +26,8 @@ namespace Sereno.System.DataAccess
 
             return new AppDbContext(options, context);
         }
+
+        public DbSet<State> States { get; set; }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -61,6 +64,19 @@ namespace Sereno.System.DataAccess
 
             EntityFrameworkUtility.EnableTriggersOnTables(modelBuilder);
             EntityFrameworkUtility.SetDatabaseColumnPrefixes(modelBuilder);
+
+            SeedMasterData(modelBuilder);
+        }
+
+        private void SeedMasterData(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<State>().HasData(
+                State.All.Select(s => new
+                {
+                    s.Id,
+                    s.Description
+                })
+            );
         }
     }
 }

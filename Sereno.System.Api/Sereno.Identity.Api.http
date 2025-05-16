@@ -1,4 +1,4 @@
-@Sereno.Identity.Api_HostAddress = http://localhost:5072
+@Sereno.System.Api_HostAddress = http://localhost:7092
 
 GET {{Sereno.Identity.Api_HostAddress}}/weatherforecast/
 Accept: application/json
