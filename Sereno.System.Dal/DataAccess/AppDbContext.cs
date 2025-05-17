@@ -65,18 +65,9 @@ namespace Sereno.System.DataAccess
             EntityFrameworkUtility.EnableTriggersOnTables(modelBuilder);
             EntityFrameworkUtility.SetDatabaseColumnPrefixes(modelBuilder);
 
-            SeedMasterData(modelBuilder);
+            Seeder.SeedMasterData(modelBuilder);
         }
 
-        private void SeedMasterData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<State>().HasData(
-                State.All.Select(s => new
-                {
-                    s.Id,
-                    s.Description
-                })
-            );
-        }
+
     }
 }
