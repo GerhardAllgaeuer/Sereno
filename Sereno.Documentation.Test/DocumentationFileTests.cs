@@ -10,6 +10,7 @@ using Sereno.Utilities;
 using Sereno.Utilities.DirectorySync;
 using Microsoft.Extensions.Configuration;
 using Sereno.Documentation.Synchronization;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Sereno.Documentation
 {

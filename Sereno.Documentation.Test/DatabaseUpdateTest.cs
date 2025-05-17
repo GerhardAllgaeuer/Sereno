@@ -1,4 +1,5 @@
-﻿using Sereno.Documentation.DataAccess.Entities;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Sereno.Documentation.DataAccess.Entities;
 using Sereno.Documentation.Test;
 
 namespace Sereno.Documentation

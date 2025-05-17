@@ -3,6 +3,7 @@ using Sereno.TlDb1.DataAccess;
 using Sereno.TlDb1.DataAccess.Entities;
 using FluentAssertions;
 using Sereno.Utilities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Sereno.Database.TlDb1.Test;
 

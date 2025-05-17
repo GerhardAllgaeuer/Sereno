@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sereno.Office.Word;
 using Sereno.Office.Word.SimpleStructure;
 using Sereno.Office.Word.Word.SimpleStructure.Converter;

@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sereno.Office.Word;
 using Sereno.Test;
 using Sereno.Utilities;

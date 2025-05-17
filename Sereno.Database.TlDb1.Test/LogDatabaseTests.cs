@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.Data.SqlClient;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sereno.Test.Database;
 
 namespace Sereno.Database.TlDb1.Test;

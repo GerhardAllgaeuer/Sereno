@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sereno.Documentation.Synchronization;
 using Sereno.Documentation.Test;
 
