@@ -5,9 +5,15 @@ namespace Sereno.System.DataAccess
 {
     public class ConnexiaSeeder
     {
-        public void SeedMasterData(ModelBuilder modelBuilder)
+        public static void SeedMasterData(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<Product>().HasData(
+                State.All.Select(s => new
+                {
+                    s.Id,
+                    s.Description
+                })
+            );
         }
     }
 }
